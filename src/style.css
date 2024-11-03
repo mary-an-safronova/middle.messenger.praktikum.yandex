@@ -1,10 +1,24 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* fonts */
+  --font-family-main: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* font wiegth */
+  --font-weigth-bold: 600;
+  --font-weigth-medium: 500;
+  --font-weigth-regular: 400;
+  /* colors */
+  --primary-bg-color: #ffffff;
+  --secondary-bg-color: #fbfbfb;
+  --active-bg-color: #e4edfd;
+  --text-primary-color: #1e1e1e;
+  --text-secondary-color: #999999;
+  --text-light-color: #ffffff;
+  --error-color: #ff2f2f;
+  --link-color: #3369f3;
+  --box-shadow-color: rgba(0, 0, 0, 0.14);
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
+  font-family: var(--font-family-main);
+  color: var(--text-dark-color);
+  background-color: var(--primary-bg-color);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -22,11 +36,4 @@ body {
 #app {
   max-width: 1280px;
   margin: 0 auto;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
 }

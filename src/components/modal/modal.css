@@ -1,0 +1,21 @@
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0px 0px 6px 0px var(--box-shadow-color);
+  border-radius: 12px;
+  padding: 0 30px;
+}
+
+.modal__size-s {
+  width: 162px;
+}
+
+.modal__size-m {
+  width: 210px;
+}
+
+.modal__size-l {
+  width: 340px;
+}

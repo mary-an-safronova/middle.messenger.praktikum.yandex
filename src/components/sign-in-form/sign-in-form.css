@@ -1,0 +1,29 @@
+.form {
+  padding: 50px 0 30px;
+}
+
+.form__wrap {
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+.form__elements {
+  display: flex;
+  flex-direction: column;
+  gap: 169px;
+  margin-top: 50px;
+}
+
+.form__inputs-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.form__btns-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
