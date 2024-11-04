@@ -1,7 +1,7 @@
 import "./style.css";
 import Handlebars from "handlebars";
 import * as Components from "./components";
-import { SignInPage } from "./pages";
+import { SignUpPage } from "./pages";
 
 // Регистрация хелперов
 Handlebars.registerHelper({
@@ -15,10 +15,10 @@ Object.entries(Components).forEach(([name, template]) => {
   Handlebars.registerPartial(name, template);
 });
 
-const signInPage = Handlebars.compile(SignInPage);
+const signUpPage = Handlebars.compile(SignUpPage);
 
 document.addEventListener("DOMContentLoaded", () => {
   const root = document.querySelector<HTMLDivElement>("#app");
 
-  root!.innerHTML = signInPage({});
+  root!.innerHTML = signUpPage({});
 });

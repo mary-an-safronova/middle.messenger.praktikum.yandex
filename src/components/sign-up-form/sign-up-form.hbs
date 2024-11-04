@@ -1,0 +1,66 @@
+<form class="form" id="sign-up-form" name="sign-up-form">
+    <fieldset class="form__wrap">
+        {{> Title size="size-l" text="Регистрация" }}
+        <div class="form__elements">
+            <div class="form__inputs-wrap">
+                {{> Input name="email" 
+                    id="email" 
+                    type="text" 
+                    value=""
+                    required="true"
+                    placeholder="Почта"
+                }}
+                {{> Input name="login" 
+                    id="login" 
+                    type="text" 
+                    value=""
+                    required="true"
+                    placeholder="Логин"
+                }}
+                {{> Input name="first_name" 
+                    id="first_name" 
+                    type="text" 
+                    value=""
+                    required="true"
+                    placeholder="Имя"
+                }}
+                {{> Input name="second_name" 
+                    id="second_name" 
+                    type="text" 
+                    value=""
+                    required="true"
+                    placeholder="Фамилия"
+                }}
+                {{> Input name="phone" 
+                    id="phone" 
+                    type="tel" 
+                    value=""
+                    required="true"
+                    placeholder="Телефон"
+                }}
+                {{> Input name="password" 
+                    id="password" 
+                    type="password" 
+                    value=""
+                    required="true"
+                    placeholder="Пароль"
+                }}
+                {{> Input name="confirmation_password" 
+                    id="confirmation_password" 
+                    type="password" 
+                    value=""
+                    required="true"
+                    placeholder="Пароль (ещё раз)"
+                }}
+            </div>
+            <div class="form__btns-wrap">
+                {{> Button styleType="active" 
+                    type="submit" 
+                    text="Зарегистрироваться" 
+                }}
+                {{> Link size="small" text="Войти" }}
+            </div>
+            
+        </div>
+    </fieldset>
+</form>
