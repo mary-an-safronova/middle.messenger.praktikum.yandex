@@ -20,6 +20,9 @@ const pages = {
   signInPage: [Pages.SignInPage],
   signUpPage: [Pages.SignUpPage],
   navigatePage: [Pages.NavigatePage],
+  addUserModal: [Pages.AddUserModal],
+  deleteUserModal: [Pages.DeleteUserModal],
+  fileUploadModal: [Pages.FileUploadModal],
 };
 
 // Навигация по страницам

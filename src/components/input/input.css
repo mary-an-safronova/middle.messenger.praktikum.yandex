@@ -2,8 +2,14 @@
   position: relative;
 }
 
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+}
+
 .input__label {
   position: relative;
+  display: block;
+  width: 100%;
 }
 
 .input__element {
@@ -19,8 +25,26 @@
   }
 }
 
-input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+.input__placeholder_type-file {
+  display: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-align: center;
+  font-weight: var(--font-weigth-medium);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--link-color);
+  width: 122px;
+  margin: auto;
+}
+
+.input__element_type-file {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+  display: block;
+  width: 0;
+  height: 0;
 }
 
 .input__placeholder {
