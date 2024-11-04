@@ -23,6 +23,8 @@ const pages = {
   addUserModal: [Pages.AddUserModal],
   deleteUserModal: [Pages.DeleteUserModal],
   fileUploadModal: [Pages.FileUploadModal],
+  internalServerErrorPage: [Pages.InternalServerErrorPage],
+  badRequestPage: [Pages.BadRequestPage],
 };
 
 // Навигация по страницам

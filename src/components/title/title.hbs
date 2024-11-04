@@ -1,3 +1,5 @@
-<h1 class="title title_{{size}} title_{{type}}">
-  {{text}}
-</h1>
+{{#if (eq tag "h2")}}
+  <h2 class="title title_{{size}} title_{{type}}">{{text}}</h2>
+{{else}}
+  <h1 class="title title_{{size}} title_{{type}}">{{text}}</h1>
+{{/if}}
