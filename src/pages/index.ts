@@ -8,4 +8,5 @@ export { BadRequestPage } from "./400-error-page";
 export { ProfilePage } from "./profile";
 export { ChangePasswordPage } from "./change-password-page";
 export { ChangeUserInfoPage } from "./change-user-info-page";
+export { ChatPage } from "./chat-page";
 export { NavigatePage } from "./navigate";

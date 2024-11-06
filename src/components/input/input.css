@@ -25,6 +25,48 @@ input:-webkit-autofill {
   }
 }
 
+.input__element_type-search {
+  background-color: var(--avatar-light-bg-color);
+  border-bottom: none;
+  padding: 6px 34px;
+  height: 32px;
+  font-size: 12px;
+  line-height: 12px;
+  border-radius: 5px;
+}
+
+.input__placeholder_type-search {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(0, -50%);
+  font-weight: var(--font-weigth-medium);
+  font-size: 12px;
+  line-height: 12px;
+  color: var(--text-secondary-color);
+  transition: opacity 0.2s ease;
+  opacity: 1;
+}
+
+.input__search-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-110%, -50%);
+  transition: left 0.2s ease, transform 0.2s ease;
+}
+
+.input__element_type-search:focus + .input__placeholder_type-search {
+  opacity: 0;
+}
+
+.input__element_type-search:focus
+  + .input__placeholder_type-search
+  + .input__search-icon {
+  left: 10px;
+  transform: translate(0, -50%);
+}
+
 .input__placeholder_type-file {
   display: inherit;
   cursor: pointer;

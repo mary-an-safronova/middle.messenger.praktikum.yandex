@@ -8,6 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .avatar__cover {
@@ -18,7 +19,6 @@
   z-index: 2;
   width: 100%;
   aspect-ratio: 1 / 1;
-  border-radius: 50%;
   background-color: var(--avatar-dark-bg-color);
   display: flex;
   align-items: center;

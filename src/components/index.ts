@@ -16,3 +16,6 @@ export { UserInfoButtonRaw } from "./user-info-button-raw";
 export { Avatar } from "./avatar";
 export { ChangedProfileData } from "./changed-profile-data";
 export { ErrorComponent } from "./error-component";
+export { MessageContactsBlock } from "./message-contacts-block";
+export { MessageContactsList } from "./message-contacts-list";
+export { MessageContactCard } from "./message-contact-card";
