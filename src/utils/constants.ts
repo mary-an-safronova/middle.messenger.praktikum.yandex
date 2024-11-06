@@ -1,58 +1,29 @@
 import { avatar } from "../assets";
 
-export const userProfileInfo = [
-  {
-    key: "Почта",
-    value: "pochta@yandex.ru",
-  },
-  {
-    key: "Логин",
-    value: "ivanivanov",
-  },
-  {
-    key: "Имя",
-    value: "Иван",
-  },
-  {
-    key: "Фамилия",
-    value: "Иванов",
-  },
-  {
-    key: "Имя в чате",
-    value: "Иван",
-  },
-  {
-    key: "Телефон",
-    value: "+7 (909) 967 30 30",
-  },
-];
+export const userProfileInfoNames = {
+  email: "Почта",
+  login: "Логин",
+  first_name: "Имя",
+  second_name: "Фамилия",
+  display_name: "Имя в чате",
+  phone: "Телефон",
+};
 
-export const userProfilePasswordInfo = [
-  {
-    key: "Старый пароль",
-    value: "•••••••••",
-  },
-  {
-    key: "Новый пароль",
-    value: "•••••••••••",
-  },
-  {
-    key: "Повторите новый пароль",
-    value: "•••••••••••",
-  },
-];
+export const userProfileInfoData = {
+  id: 123,
+  first_name: "Petya",
+  second_name: "Pupkin",
+  display_name: "Petya Pupkin",
+  phone: "+79001001100",
+  login: "userLogin",
+  avatar: avatar,
+  email: "string@ya.ru",
+};
 
-export const userInfoButtons = [
-  {
-    name: "Изменить данные",
-  },
-  {
-    name: "Изменить пароль",
-  },
-  {
-    name: "Выйти",
-  },
-];
+export const userProfilePasswordData = {
+  oldPassword: "•••••••••",
+  newPassword: "•••••••••••",
+};
 
 export const messageContactsData = [
   {

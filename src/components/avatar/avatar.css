@@ -11,6 +11,14 @@
   overflow: hidden;
 }
 
+.avatar__img {
+  position: absolute;
+  z-index: 2;
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
 .avatar__cover {
   opacity: 0;
   visibility: hidden;

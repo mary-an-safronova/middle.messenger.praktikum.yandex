@@ -12,9 +12,9 @@ import {
 } from "./assets";
 import {
   messageContactsData,
-  userInfoButtons,
-  userProfileInfo,
-  userProfilePasswordInfo,
+  userProfileInfoData,
+  userProfileInfoNames,
+  userProfilePasswordData,
 } from "./utils/constants";
 
 // Регистрация хелперов
@@ -46,17 +46,23 @@ const pages = {
       iconLeft,
       iconRight,
       defaultAvatarIcon,
-      userProfileInfo,
-      userInfoButtons,
+      userProfileInfoNames,
+      userProfileInfoData,
     },
   ],
   changePasswordPage: [
     Pages.ChangePasswordPage,
-    { iconLeft, iconRight, defaultAvatarIcon, userProfilePasswordInfo },
+    { iconLeft, iconRight, defaultAvatarIcon, userProfilePasswordData },
   ],
   changeUserInfoPage: [
     Pages.ChangeUserInfoPage,
-    { iconLeft, iconRight, defaultAvatarIcon, userProfileInfo },
+    {
+      iconLeft,
+      iconRight,
+      defaultAvatarIcon,
+      userProfileInfoNames,
+      userProfileInfoData,
+    },
   ],
   chatPage: [
     Pages.ChatPage,
