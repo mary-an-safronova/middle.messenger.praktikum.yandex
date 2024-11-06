@@ -5,4 +5,7 @@ export { DeleteUserModal } from "./delete-user-modal";
 export { FileUploadModal } from "./file-upload-modal";
 export { InternalServerErrorPage } from "./500-error-page";
 export { BadRequestPage } from "./400-error-page";
+export { ProfilePage } from "./profile";
+export { ChangePasswordPage } from "./change-password-page";
+export { ChangeUserInfoPage } from "./change-user-info-page";
 export { NavigatePage } from "./navigate";

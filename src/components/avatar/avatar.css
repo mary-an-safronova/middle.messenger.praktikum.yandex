@@ -1,0 +1,41 @@
+.avatar {
+  position: relative;
+  width: 130px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background-color: var(--avatar-light-bg-color);
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar__cover {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background-color: var(--avatar-dark-bg-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar:hover .avatar__cover {
+  opacity: 0.5;
+  visibility: visible;
+  cursor: pointer;
+}
+
+.avatar__text {
+  font-size: 13px;
+  line-height: 14px;
+  font-weight: var(--font-weigth-medium);
+  color: var(--text-light-color);
+  width: 50%;
+  text-align: center;
+}

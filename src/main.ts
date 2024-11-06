@@ -2,6 +2,10 @@ import "./style.css";
 import Handlebars from "handlebars";
 import * as Components from "./components";
 import * as Pages from "./pages";
+import iconRight from "./assets/icons/circle_arrow_right.svg";
+import iconLeft from "./assets/icons/circle_arrow_left.svg";
+import defaultAvatarIcon from "./assets/icons/avatar_img.svg";
+import { userInfoButtons, userProfileInfo, userProfilePasswordInfo } from "./utils/constants";
 
 // Регистрация хелперов
 Handlebars.registerHelper({
@@ -25,6 +29,9 @@ const pages = {
   fileUploadModal: [Pages.FileUploadModal],
   internalServerErrorPage: [Pages.InternalServerErrorPage],
   badRequestPage: [Pages.BadRequestPage],
+  profilePage: [Pages.ProfilePage, { iconLeft, iconRight, defaultAvatarIcon, userProfileInfo, userInfoButtons }],
+  changePasswordPage: [Pages.ChangePasswordPage, { iconLeft, iconRight, defaultAvatarIcon, userProfilePasswordInfo }],
+  changeUserInfoPage: [Pages.ChangeUserInfoPage, { iconLeft, iconRight, defaultAvatarIcon, userProfileInfo }]
 };
 
 // Навигация по страницам

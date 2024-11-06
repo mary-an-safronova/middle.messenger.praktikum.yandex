@@ -8,6 +8,9 @@
   /* colors */
   --primary-bg-color: #ffffff;
   --secondary-bg-color: #fbfbfb;
+  --secondary-dark-bg-color: #eaeaea;
+  --avatar-light-bg-color: #efefef;
+  --avatar-dark-bg-color: #000000;
   --active-bg-color: #e4edfd;
   --text-primary-color: #1e1e1e;
   --text-secondary-color: #999999;
@@ -33,6 +36,5 @@ body {
 }
 
 #app {
-  max-width: 1280px;
   width: 100%;
 }

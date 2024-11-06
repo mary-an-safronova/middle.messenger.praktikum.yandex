@@ -1,0 +1,15 @@
+{{> BackButton }}
+<div class="profile">
+    <div class="profile__avatar-wrap">
+        {{> Avatar defaultAvatarIcon=defaultAvatarIcon }}
+        {{> Title text="Иван" size="size-m" }}
+    </div>
+    <div class="profile__info-raws-wrap">
+        {{#> UserInfo userInfo=userProfileInfo }}
+            {{> UserInfoItem userInfoItemKey=key userInfoItemValue=value }}
+        {{/UserInfo}}
+        {{#> UserInfo userInfo=userInfoButtons }}
+            {{> UserInfoButtonRaw userInfoButton=name }}
+        {{/UserInfo}}
+    </div>
+</div>

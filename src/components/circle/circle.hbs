@@ -1,0 +1,7 @@
+<div class="circle {{#if direction}}circle_size-m{{/if}}">
+    {{#if direction}}
+        <img src="{{#if (eq direction "right")}}{{iconRight}}{{else if (eq direction "left")}}{{iconLeft}}{{/if}}" alt="Стрелка">
+        {{else}}
+        <p class="circle__number">{{circleNumber}}</p>
+    {{/if}}
+</div>
