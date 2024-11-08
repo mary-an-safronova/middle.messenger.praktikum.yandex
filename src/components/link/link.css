@@ -1,0 +1,28 @@
+.link {
+  text-decoration: none;
+  color: var(--link-color);
+  font-weight: var(--font-weigth-medium);
+  &:hover {
+    opacity: 0.6;
+    cursor: pointer;
+  }
+}
+
+.link_decorated {
+  text-decoration: underline;
+}
+
+.link_small {
+  font-size: 11px;
+  line-height: 11px;
+}
+
+.link_medium {
+  font-size: 13px;
+  line-height: 13px;
+}
+
+.link_large {
+  font-size: 12px;
+  line-height: 16px;
+}

@@ -1,0 +1,18 @@
+.button {
+  width: 280px;
+  height: 37px;
+  border: none;
+  border-radius: 8px;
+  font-weight: var(--font-weigth-medium);
+  font-size: 13px;
+  line-height: 13px;
+  &:hover {
+    opacity: 0.6;
+    cursor: pointer;
+  }
+}
+
+.button_active {
+  background-color: var(--link-color);
+  color: var(--text-light-color);
+}

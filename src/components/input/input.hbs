@@ -1,0 +1,34 @@
+<div class="input">
+    <label class="input__label" for="{{name}}">
+        <input class="input__element 
+            {{#if (and (eq type 'password') error)}}input__element_is-invalid{{/if}}
+            {{#if (eq type 'file')}}input__element_type-file{{/if}}
+            {{#if (eq type 'search')}}input__element_type-search{{/if}}" 
+            type="{{type}}" 
+            name="{{name}}" 
+            id="{{name}}" 
+            value="{{value}}" 
+            placeholder=" "
+            required="{{required}}"
+            maxlength="18"
+            autocomplete="off"
+            accept="{{#if (eq type 'file')}}image/png, image/jpeg{{/if}}"
+        >
+        <span class="
+            {{#if (eq type 'file')}}
+                input__placeholder_type-file
+            {{else if (eq type "search")}}
+                input__placeholder_type-search
+            {{else}}
+                input__placeholder
+            {{/if}}"
+        >{{placeholder}}
+        </span>
+        {{#if (eq type "search")}}
+            <img class="input__search-icon" src="{{searchIcon}}" alt="Поиск" />
+        {{/if}}
+    </label>
+    {{#if errorText}}
+        <p class="input__error-text">{{errorText}}</p>
+    {{/if}}
+</div>

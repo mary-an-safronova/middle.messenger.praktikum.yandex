@@ -1,0 +1,14 @@
+.user-info-item__part {
+  font-size: 13px;
+  line-height: 13px;
+  font-weight: var(--font-weigth-medium);
+  margin: 10px 0;
+}
+
+.user-info-item__part_name {
+  color: var(--text-primary-color);
+}
+
+.user-info-item__part_value {
+  color: var(--text-secondary-color);
+}

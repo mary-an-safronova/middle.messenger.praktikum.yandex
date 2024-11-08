@@ -1,0 +1,21 @@
+<form class="form" id={{formName}} name={{formName}}>
+    <fieldset class="form__wrap">
+        {{> Title size="size-s" text=titleText type=titleType }}
+        <div class="form__elements {{#if formElInCenter}}form__elements_position-center{{/if}}">
+            {{> Input name=inputName 
+                id=inputName 
+                type=inputType 
+                value=value
+                required="true"
+                placeholder=placeholder
+            }}
+            {{> Button styleType="active" 
+                type="submit" 
+                text=buttonText 
+            }}
+        </div>
+        {{#if formErrorText}}
+            <p class="form__error-text">{{formErrorText}}</p>
+        {{/if}}
+    </fieldset>
+</form>

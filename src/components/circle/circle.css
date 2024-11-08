@@ -1,0 +1,24 @@
+.circle {
+  background-color: var(--link-color);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 3000;
+}
+
+.circle__number {
+  margin: 0;
+  font-size: 11px;
+  line-height: 12px;
+  font-weight: var(--font-weigth-medium);
+  color: var(--text-light-color);
+}
+
+.circle_size-m {
+  width: 28px;
+  height: 28px;
+}

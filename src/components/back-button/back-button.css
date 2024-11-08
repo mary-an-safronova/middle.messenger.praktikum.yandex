@@ -1,0 +1,17 @@
+.back-button {
+  position: fixed;
+  border-right: 1px solid var(--secondary-dark-bg-color);
+  background-color: var(--secondary-bg-color);
+  width: 64px;
+  max-height: 100wh;
+  height: 100%;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-button:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}
