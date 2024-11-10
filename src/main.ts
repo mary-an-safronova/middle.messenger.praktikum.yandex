@@ -50,12 +50,13 @@ const pages = {
       userProfileInfoData,
     },
   ],
-  changePasswordPage: [
-    Pages.ChangePasswordPage,
+  changedPasswordPage: [
+    Pages.ChangedPasswordPage,
     { iconLeft, iconRight, defaultAvatarIcon, userProfilePasswordData },
   ],
-  changeUserInfoPage: [
-    Pages.ChangeUserInfoPage,
+  changePasswordModal: [Pages.ChangePasswordModal],
+  changedUserInfoPage: [
+    Pages.ChangedUserInfoPage,
     {
       iconLeft,
       iconRight,
@@ -64,6 +65,7 @@ const pages = {
       userProfileInfoData,
     },
   ],
+  changeUserInfoModal: [Pages.ChangeUserInfoModal],
   chatPage: [
     Pages.ChatPage,
     { searchIcon, arrowRight, avatar, messageContactsData },

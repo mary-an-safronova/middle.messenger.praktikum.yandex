@@ -1,31 +1,28 @@
-<form class="form" id="sign-in-form" name="sign-in-form">
-    <fieldset class="form__wrap">
-        {{> Title size="size-l" text="Вход" }}
-        <div class="form__elements">
-            <div class="form__inputs-wrap">
-                {{> Input name="login" 
-                    id="login" 
-                    type="text" 
-                    value=""
-                    required="true"
-                    placeholder="Логин"
-                }}
-                {{> Input name="password" 
-                    id="password" 
-                    type="password" 
-                    value=""
-                    required="true"
-                    placeholder="Пароль"
-                }}
-            </div>
-            <div class="form__btns-wrap">
-                {{> Button styleType="active" 
-                    type="submit" 
-                    text="Авторизоваться" 
-                }}
-                {{> Link size="small" text="Нет аккаунта?" }}
-            </div>
-            
+{{#> FormWrap id="sign-in-form" name="sign-in-form" titleSize="size-l" titleText="Вход" }}
+    <div class="sign-in-form__elements">
+        <div class="sign-in-form__inputs-wrap">
+            {{> Input name="login" 
+                id="login" 
+                type="text" 
+                value=""
+                required="true"
+                placeholder="Логин"
+            }}
+            {{> Input name="password" 
+                id="password" 
+                type="password" 
+                value=""
+                required="true"
+                placeholder="Пароль"
+            }}
         </div>
-    </fieldset>
-</form>
+        <div class="sign-in-form__btns-wrap">
+            {{> Button styleType="active" 
+                type="submit" 
+                text="Авторизоваться" 
+            }}
+            {{> Link size="small" text="Нет аккаунта?" }}
+        </div>
+        
+    </div>
+{{/FormWrap }}

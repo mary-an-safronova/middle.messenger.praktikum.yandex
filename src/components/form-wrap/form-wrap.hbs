@@ -1,0 +1,6 @@
+<form class="form-wrap {{#if (eq titleSize "size-s")}}form-wrap_small{{else if (eq titleSize "size-l")}}form-wrap_large{{/if}}" id={{formName}} name={{formName}}>
+    <fieldset class="form-wrap__wrap">
+        {{> Title size=titleSize text=titleText type=titleType }}
+        {{> @partial-block }}
+    </fieldset>
+</form>
