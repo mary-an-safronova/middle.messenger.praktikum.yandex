@@ -1,6 +1,6 @@
-{{#>FormWrap id="sign-up-form" name="sign-up-form" titleSize="size-l" titleText="Регистрация" }}
-    <div class="sign-up-form__elements">
-        <div class="sign-up-form__inputs-wrap">
+{{#>FormWrap id="change-user-info-form" name="change-user-info-form" titleSize="size-l" titleText="Изменить данные" }}
+    <div class="change-user-info-form__elements">
+        <div class="change-user-info-form__inputs-wrap">
             {{> Input name="email" 
                 id="email" 
                 type="text" 
@@ -29,6 +29,13 @@
                 required="true"
                 placeholder="Фамилия"
             }}
+            {{> Input name="display_name" 
+                id="display_name" 
+                type="text" 
+                value=""
+                required="true"
+                placeholder="Имя в чате"
+            }}
             {{> Input name="phone" 
                 id="phone" 
                 type="tel" 
@@ -36,27 +43,10 @@
                 required="true"
                 placeholder="Телефон"
             }}
-            {{> Input name="password" 
-                id="password" 
-                type="password" 
-                value=""
-                required="true"
-                placeholder="Пароль"
-            }}
-            {{> Input name="confirmation_password" 
-                id="confirmation_password_in_sign-up" 
-                type="password" 
-                value=""
-                required="true"
-                placeholder="Пароль (ещё раз)"
-            }}
         </div>
-        <div class="sign-up-form__btns-wrap">
-            {{> Button styleType="active" 
-                type="submit" 
-                text="Зарегистрироваться" 
-            }}
-            {{> Link size="small" text="Войти" }}
-        </div> 
+        {{> Button styleType="active" 
+            type="submit" 
+            text="Изменить" 
+        }}
     </div>
 {{/FormWrap }}
