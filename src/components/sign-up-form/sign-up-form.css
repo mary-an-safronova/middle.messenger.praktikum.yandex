@@ -1,0 +1,19 @@
+.sign-up-form__elements {
+  display: flex;
+  flex-direction: column;
+  gap: 62px;
+  margin-top: 50px;
+}
+
+.sign-up-form__inputs-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sign-up-form__btns-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}

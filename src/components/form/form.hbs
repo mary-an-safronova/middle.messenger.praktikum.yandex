@@ -1,0 +1,18 @@
+{{#> FormWrap id=formName name=formName titleSize="size-s" text=titleText type=titleType }}
+    <div class="form__elements {{#if formElInCenter}}form__elements_position-center{{/if}}">
+        {{> Input name=inputName 
+            id=inputName 
+            type=inputType 
+            value=value
+            required="true"
+            placeholder=placeholder
+        }}
+        {{> Button styleType="active" 
+            type="submit" 
+            text=buttonText 
+        }}
+    </div>
+    {{#if formErrorText}}
+        <p class="form__error-text">{{formErrorText}}</p>
+    {{/if}}
+{{/FormWrap }}

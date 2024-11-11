@@ -1,0 +1,27 @@
+<li class="message-contact-card">
+    <div class="message-contact-card__line"></div>
+    <div class="message-contact-card__wrap {{#if (more unread_count 0)}}message-contact-card__wrap_bg-active{{/if}}">
+        <div class="message-contact-card__img-wrap">
+            {{#if avatar}}
+                <img class="message-contact-card__img" src="{{avatar}}" alt="Аватар контакта">
+            {{/if}}
+        </div>
+        <div class="message-contact-card__text-wrap">
+            <div class="message-contact-card__name-time-wrap">
+                <p class="message-contact-card__bold-text message-contact-card__text">{{title}}</p>
+                <p class="message-contact-card__text message-contact-card__time">{{last_message.time}}</p>
+            </div>
+            <div class="message-contact-card__name-time-wrap">
+                <p class="message-contact-card__text message-contact-card__text-message">
+                    {{#if (eq last_message.user "Я")}}
+                        <span class="message-contact-card__bold-text">Вы:&nbsp;</span>
+                    {{/if}}
+                    {{last_message.content}}
+                </p>
+                {{#if unread_count }}
+                    {{> Circle circleNumber=unread_count }}
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</li>

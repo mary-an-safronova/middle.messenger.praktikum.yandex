@@ -1,0 +1,15 @@
+.user-info-button__part {
+  font-size: 13px;
+  line-height: 13px;
+  font-weight: var(--font-weigth-medium);
+  margin: 10px 0;
+  color: var(--link-color);
+  &:hover {
+    opacity: 0.5;
+    cursor: pointer;
+  }
+}
+
+.user-info-button__part_extra {
+  color: var(--error-color);
+}

@@ -1,0 +1,20 @@
+.form__elements {
+  display: flex;
+  flex-direction: column;
+  gap: 33px;
+  margin-top: 59px;
+}
+
+.form__elements_position-center {
+  gap: 45px;
+  margin-top: 43px;
+}
+
+.form__error-text {
+  margin-top: 14px;
+  font-weight: var(--font-weigth-medium);
+  font-size: 11px;
+  line-height: 11px;
+  color: var(--error-color);
+  text-align: center;
+}
