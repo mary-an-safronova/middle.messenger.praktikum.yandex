@@ -1,29 +1,32 @@
 :root {
   /* fonts */
-  --font-family-main: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-family-main: inter, system-ui, avenir, helvetica, arial, sans-serif;
+
   /* font wiegth */
   --font-weigth-bold: 600;
   --font-weigth-medium: 500;
   --font-weigth-regular: 400;
+
   /* colors */
-  --primary-bg-color: #ffffff;
+  --primary-bg-color: #fff;
   --secondary-bg-color: #fbfbfb;
   --secondary-dark-bg-color: #eaeaea;
   --avatar-light-bg-color: #efefef;
-  --avatar-dark-bg-color: #000000;
+  --avatar-dark-bg-color: #000;
   --active-bg-color: #e4edfd;
   --text-primary-color: #1e1e1e;
-  --text-secondary-color: #999999;
-  --text-light-color: #ffffff;
+  --text-secondary-color: #999;
+  --text-light-color: #fff;
   --error-color: #ff2f2f;
   --link-color: #3369f3;
-  --box-shadow-color: rgba(0, 0, 0, 0.14);
+  --box-shadow-color: rgb(0 0 0 / 14%);
+  --bg-overlay-color: rgb(0 0 0 / 60%);
 
   font-family: var(--font-family-main);
   color: var(--text-dark-color);
   background-color: var(--primary-bg-color);
   font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizelegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

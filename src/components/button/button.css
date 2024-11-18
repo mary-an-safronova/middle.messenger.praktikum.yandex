@@ -6,6 +6,7 @@
   font-weight: var(--font-weigth-medium);
   font-size: 13px;
   line-height: 13px;
+
   &:hover {
     opacity: 0.6;
     cursor: pointer;

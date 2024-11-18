@@ -1,1 +1,1 @@
-export { default as ChangePasswordModal } from "./change-password-modal.hbs?raw";
+export { default as ChangePasswordModal } from './change-password-modal.hbs?raw';

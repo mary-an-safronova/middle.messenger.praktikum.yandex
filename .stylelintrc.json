@@ -1,0 +1,29 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": ["include", "extend", "mixin"]
+      }
+    ],
+    "block-no-empty": true,
+    "color-no-invalid-hex": true,
+    "declaration-no-important": true,
+    "function-url-no-scheme-relative": true,
+    "no-empty-source": true,
+    "property-no-unknown": true,
+    "selector-class-pattern": "^[a-zA-Z0-9_-]+([a-zA-Z0-9-]+)?(--[a-zA-Z0-9-]+)?$",
+    "selector-pseudo-element-colon-notation": "single",
+    "string-no-newline": true,
+    "unit-no-unknown": [true, {
+      "ignoreUnits": ["wh", "vw"]
+    }],
+    "value-no-vendor-prefix": true,
+    "font-weight-notation": "numeric",
+    "no-descending-specificity": true
+  },
+  "ignoreFiles": [
+    "dist/*"
+  ]
+}

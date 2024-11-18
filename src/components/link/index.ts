@@ -1,2 +1,3 @@
-import "./link.css";
-export { default as Link } from "./link.hbs?raw";
+import './link.css';
+
+export { default as Link } from './link.hbs?raw';

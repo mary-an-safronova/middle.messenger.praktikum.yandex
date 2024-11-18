@@ -3,7 +3,7 @@
 }
 
 input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  box-shadow: 0 0 0 1000px white inset;
 }
 
 .input__label {
@@ -20,6 +20,7 @@ input:-webkit-autofill {
   font-size: 13px;
   line-height: 13px;
   width: 100%;
+
   &:hover {
     cursor: pointer;
   }
@@ -110,7 +111,7 @@ input:-webkit-autofill {
 .input__element:focus + .input__placeholder,
 .input__element:not(:placeholder-shown) + .input__placeholder {
   transform: scale(1) translateY(-100%) translateX(0);
-  top: 0px;
+  top: 0;
   font-weight: var(--font-weigth-medium);
   font-size: 9px;
   line-height: 9px;

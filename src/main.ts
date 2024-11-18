@@ -1,7 +1,7 @@
-import "./style.css";
-import Handlebars from "handlebars";
-import * as Components from "./components";
-import * as Pages from "./pages";
+import './style.css';
+import Handlebars from 'handlebars';
+import * as Components from './components';
+import * as Pages from './pages';
 import {
   iconRight,
   iconLeft,
@@ -9,13 +9,13 @@ import {
   searchIcon,
   arrowRight,
   avatar,
-} from "./assets";
+} from './assets';
 import {
   messageContactsData,
   userProfileInfoData,
   userProfileInfoNames,
   userProfilePasswordData,
-} from "./utils/constants";
+} from './utils/constants';
 
 // Регистрация хелперов
 Handlebars.registerHelper({
@@ -52,7 +52,9 @@ const pages = {
   ],
   changedPasswordPage: [
     Pages.ChangedPasswordPage,
-    { iconLeft, iconRight, defaultAvatarIcon, userProfilePasswordData },
+    {
+      iconLeft, iconRight, defaultAvatarIcon, userProfilePasswordData,
+    },
   ],
   changePasswordModal: [Pages.ChangePasswordModal],
   changedUserInfoPage: [
@@ -68,41 +70,44 @@ const pages = {
   changeUserInfoModal: [Pages.ChangeUserInfoModal],
   chatPage: [
     Pages.ChatPage,
-    { searchIcon, arrowRight, avatar, messageContactsData },
+    {
+      searchIcon, arrowRight, avatar, messageContactsData,
+    },
   ],
 };
 
+type PageKey = keyof typeof pages;
+
 // Навигация по страницам
-function navigate(page: string) {
-  //@ts-ignore
+function navigate(page: PageKey) {
   const [source, context] = pages[page];
-  const root = document.querySelector<HTMLDivElement>("#app");
+  const root = document.querySelector<HTMLDivElement>('#app');
 
   const temlpatingFunction = Handlebars.compile(source);
   root!.innerHTML = temlpatingFunction(context);
 
   // Сохраняем состояние в историю
-  history.pushState({ page }, "", `#${page}`);
+  history.pushState({ page }, '', `#${page}`);
 }
 
 // Обработчик события для 'popstate'
-window.addEventListener("popstate", (event) => {
+window.addEventListener('popstate', (event) => {
   if (event.state && event.state.page) {
     navigate(event.state.page);
   } else {
     // Возврат на страницу навигации
-    navigate("navigatePage");
+    navigate('navigatePage');
   }
 });
 
 // Инициализация после загрузки документа
-document.addEventListener("DOMContentLoaded", () => navigate("navigatePage"));
+document.addEventListener('DOMContentLoaded', () => navigate('navigatePage'));
 
-document.addEventListener("click", (e) => {
-  //@ts-ignore
-  const page = e.target.getAttribute("page");
+document.addEventListener('click', (e) => {
+  const target = e.target as HTMLElement;
+  const page = target.getAttribute('page');
   if (page) {
-    navigate(page);
+    navigate(page as PageKey);
 
     e.preventDefault();
     e.stopImmediatePropagation();

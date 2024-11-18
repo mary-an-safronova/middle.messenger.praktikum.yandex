@@ -62,7 +62,7 @@
 .message-contact-card__bold-text {
   font-size: 13px;
   line-height: 13px;
-  font-weight: var(--font-weigth-bold) !important;
+  font-weight: var(--font-weigth-bold);
   color: var(--text-primary-color);
 }
 
@@ -77,6 +77,7 @@
   white-space: normal;
   width: 193px;
   display: -webkit-box;
+
   /* display 2 lines only */
   -webkit-line-clamp: 2;
   line-clamp: 2;
