@@ -1,18 +1,20 @@
 <div class="input">
     <label class="input__label" for="{{name}}">
-        <input class="input__element 
+        <input class="input__element
             {{#if (and (eq type 'password') error)}}input__element_is-invalid{{/if}}
             {{#if (eq type 'file')}}input__element_type-file{{/if}}
-            {{#if (eq type 'search')}}input__element_type-search{{/if}}" 
-            type="{{type}}" 
-            name="{{name}}" 
-            id="{{name}}" 
-            value="{{value}}" 
+            {{#if (eq type 'search')}}input__element_type-search{{/if}}
+            {{#if itemType}}input__element_item-type{{/if}}"
+            type="{{type}}"
+            name="{{name}}"
+            id="{{name}}"
+            value="{{value}}"
             placeholder=" "
             required="{{required}}"
-            maxlength="18"
+            maxlength="{{maxlength}}"
             autocomplete="off"
             accept="{{#if (eq type 'file')}}image/png, image/jpeg{{/if}}"
+            onchange="{{onchange}}"
         >
         <span class="
             {{#if (eq type 'file')}}

@@ -1,3 +1,14 @@
+.user-info-item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid var(--secondary-dark-bg-color);
+}
+
+.user-info-item:last-child {
+  border-bottom: none;
+}
+
 .user-info-item__part {
   font-size: 13px;
   line-height: 13px;

@@ -1,17 +1,24 @@
+import { pages } from './constants';
+
 export type TUser = {
     id?: number,
-    first_name: string,
-    second_name: string,
+    first_name?: string,
+    second_name?: string,
     display_name?: string,
     phone?: string,
-    login: string,
+    login?: string,
     avatar?: string,
-    email: string,
+    email?: string,
 }
 
-export type TUserPass = {
-    oldPassword: string,
-    newPassword: string,
+export type TUserPassword = {
+  oldPassword?: string;
+  newPassword?: string;
+  confirmation_password?: string;
+}
+
+export type TFile = {
+  file?: string;
 }
 
 type TLastMessage = {
@@ -28,3 +35,5 @@ export type TMessage = {
     created_by: number,
     last_message: TLastMessage,
 }
+
+export type PageKey = keyof typeof pages;

@@ -1,5 +1,17 @@
-import { avatar } from '../assets';
-import { TMessage, TUser, TUserPass } from './types';
+import { TUser } from './types';
+import * as Pages from '../pages';
+import {
+  iconRight,
+  iconLeft,
+  avatarIcon,
+  searchIcon,
+  arrowRight,
+  avatar,
+} from '../assets';
+import {
+  messageContactsData,
+  userProfileInfoData,
+} from './fakeData';
 
 export const userProfileInfoNames: TUser = {
   email: 'Почта',
@@ -10,369 +22,28 @@ export const userProfileInfoNames: TUser = {
   phone: 'Телефон',
 };
 
-export const userProfileInfoData: TUser = {
-  id: 123,
-  first_name: 'Petya',
-  second_name: 'Pupkin',
-  display_name: 'Petya Pupkin',
-  phone: '+79001001100',
-  login: 'userLogin',
-  avatar,
-  email: 'string@ya.ru',
+export const pages = {
+  signInPage: [Pages.SignInPage],
+  signUpPage: [Pages.SignUpPage],
+  navigatePage: [Pages.NavigatePage],
+  addUserModal: [Pages.AddUserModal],
+  deleteUserModal: [Pages.DeleteUserModal],
+  internalServerErrorPage: [Pages.InternalServerErrorPage],
+  badRequestPage: [Pages.BadRequestPage],
+  profilePage: [
+    Pages.ProfilePage,
+    {
+      iconLeft,
+      iconRight,
+      avatarIcon,
+      userProfileInfoNames,
+      userProfileInfoData,
+    },
+  ],
+  chatPage: [
+    Pages.ChatPage,
+    {
+      searchIcon, arrowRight, avatar, messageContactsData,
+    },
+  ],
 };
-
-export const userProfilePasswordData: TUserPass = {
-  oldPassword: '•••••••••',
-  newPassword: '•••••••••••',
-};
-
-export const messageContactsData: TMessage[] = [
-  {
-    id: 123,
-    title: 'my-chat',
-    avatar,
-    unread_count: 15,
-    created_by: 12345,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar: '/path/to/avatar.jpg',
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '12 Апр 2020',
-      content: 'this is message content',
-    },
-  },
-  {
-    id: 123,
-    title: 'Вадим',
-    avatar,
-    unread_count: 1,
-    created_by: 12345,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar: '/path/to/avatar.jpg',
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '12 Апр 2020',
-      content:
-        'Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой. Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.',
-    },
-  },
-  {
-    id: 123,
-    title: 'Андрей',
-    avatar: '',
-    unread_count: 0,
-    created_by: 12345,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar: '/path/to/avatar.jpg',
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '12 Апр 2020',
-      content: 'this is message content',
-    },
-  },
-  {
-    id: 123,
-    title: 'my-chat',
-    avatar,
-    unread_count: 15,
-    created_by: 12345,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar: '/path/to/avatar.jpg',
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '12 Апр 2020',
-      content: 'this is message content',
-    },
-  },
-  {
-    id: 123,
-    title: 'Вадим',
-    avatar,
-    unread_count: 1,
-    created_by: 12345,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar: '/path/to/avatar.jpg',
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '12 Апр 2020',
-      content:
-        'Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой. Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.',
-    },
-  },
-  {
-    id: 123,
-    title: 'Андрей',
-    avatar: '',
-    unread_count: 0,
-    created_by: 12345,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar: '/path/to/avatar.jpg',
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '12 Апр 2020',
-      content: 'this is message content',
-    },
-  },
-  {
-    id: 123,
-    title: 'my-chat',
-    avatar,
-    unread_count: 15,
-    created_by: 12345,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar: '/path/to/avatar.jpg',
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '12 Апр 2020',
-      content: 'this is message content',
-    },
-  },
-  {
-    id: 123,
-    title: 'Вадим',
-    avatar,
-    unread_count: 1,
-    created_by: 12345,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar: '/path/to/avatar.jpg',
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '12 Апр 2020',
-      content:
-        'Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой. Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.',
-    },
-  },
-  {
-    id: 123,
-    title: 'Андрей',
-    avatar: '',
-    unread_count: 0,
-    created_by: 12345,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar: '/path/to/avatar.jpg',
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '12 Апр 2020',
-      content: 'this is message content',
-    },
-  },
-  {
-    id: 123,
-    title: 'my-chat',
-    avatar,
-    unread_count: 15,
-    created_by: 12345,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar: '/path/to/avatar.jpg',
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '12 Апр 2020',
-      content: 'this is message content',
-    },
-  },
-  {
-    id: 123,
-    title: 'Вадим',
-    avatar,
-    unread_count: 1,
-    created_by: 12345,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar: '/path/to/avatar.jpg',
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '12 Апр 2020',
-      content:
-        'Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой. Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.',
-    },
-  },
-  {
-    id: 123,
-    title: 'Андрей',
-    avatar: '',
-    unread_count: 0,
-    created_by: 12345,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar: '/path/to/avatar.jpg',
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '12 Апр 2020',
-      content: 'this is message content',
-    },
-  },
-  {
-    id: 123,
-    title: 'my-chat',
-    avatar,
-    unread_count: 15,
-    created_by: 12345,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar: '/path/to/avatar.jpg',
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '12 Апр 2020',
-      content: 'this is message content',
-    },
-  },
-  {
-    id: 123,
-    title: 'Вадим',
-    avatar,
-    unread_count: 1,
-    created_by: 12345,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar: '/path/to/avatar.jpg',
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '12 Апр 2020',
-      content:
-        'Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой. Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.',
-    },
-  },
-  {
-    id: 123,
-    title: 'Андрей',
-    avatar: '',
-    unread_count: 0,
-    created_by: 12345,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar: '/path/to/avatar.jpg',
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '12 Апр 2020',
-      content: 'this is message content',
-    },
-  },
-  {
-    id: 123,
-    title: 'my-chat',
-    avatar,
-    unread_count: 15,
-    created_by: 12345,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar: '/path/to/avatar.jpg',
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '12 Апр 2020',
-      content: 'this is message content',
-    },
-  },
-  {
-    id: 123,
-    title: 'Вадим',
-    avatar,
-    unread_count: 1,
-    created_by: 12345,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar: '/path/to/avatar.jpg',
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '12 Апр 2020',
-      content:
-        'Привет! Смотри, тут всплыл интересный кусок лунной космической истории — НАСА в какой-то момент попросила Хассельблад адаптировать модель SWC для полетов на Луну. Сейчас мы все знаем что астронавты летали с моделью 500 EL — и к слову говоря, все тушки этих камер все еще находятся на поверхности Луны, так как астронавты с собой забрали только кассеты с пленкой. Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали на аукционе за 45000 евро.',
-    },
-  },
-  {
-    id: 123,
-    title: 'Андрей',
-    avatar: '',
-    unread_count: 0,
-    created_by: 12345,
-    last_message: {
-      user: {
-        first_name: 'Petya',
-        second_name: 'Pupkin',
-        avatar: '/path/to/avatar.jpg',
-        email: 'my@email.com',
-        login: 'userLogin',
-        phone: '8(911)-222-33-22',
-      },
-      time: '12 Апр 2020',
-      content: 'this is message content',
-    },
-  },
-];
