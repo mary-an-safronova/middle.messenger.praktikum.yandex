@@ -83,6 +83,7 @@ export default class SignUpForm extends Block {
         styleType: 'active',
         type: 'submit',
         text: 'Зарегистрироваться',
+        variant: 'text',
       }),
 
       SignInLink: new Link({

@@ -1,7 +1,5 @@
 export { SignInPage } from './sign-in';
 export { SignUpPage } from './sign-up';
-export { AddUserModal } from './add-user-modal';
-export { DeleteUserModal } from './delete-user-modal';
 export { InternalServerErrorPage } from './500-error-page';
 export { BadRequestPage } from './404-error-page';
 export { ProfilePage } from './profile';

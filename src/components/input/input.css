@@ -6,6 +6,10 @@ input:-webkit-autofill {
   box-shadow: 0 0 0 1000px white inset;
 }
 
+.input_message {
+  width: 91%;
+}
+
 .input__label {
   position: relative;
   display: block;
@@ -130,11 +134,20 @@ input:-webkit-autofill {
   padding-top: 7px;
 }
 
-.input__element_item-type {
+.input__element_infoitem {
   border-bottom: none;
   font-size: 13px;
   line-height: 13px;
   font-weight: var(--font-weigth-medium);
   color: var(--text-secondary-color);
   text-align: right;
+}
+
+.input__element_message {
+  border-bottom: none;
+  background-color: var(--avatar-light-bg-color);
+  border-radius: 30px;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  /* width: 91%; */
 }

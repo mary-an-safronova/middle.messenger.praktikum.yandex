@@ -7,6 +7,11 @@ import {
   searchIcon,
   arrowRight,
   avatar,
+  photoVideoIcon,
+  fileIcon,
+  locationIcon,
+  deleteIcon,
+  addIcon,
 } from '../assets';
 import {
   messageContactsData,
@@ -26,8 +31,6 @@ export const pages = {
   signInPage: [Pages.SignInPage],
   signUpPage: [Pages.SignUpPage],
   navigatePage: [Pages.NavigatePage],
-  addUserModal: [Pages.AddUserModal],
-  deleteUserModal: [Pages.DeleteUserModal],
   internalServerErrorPage: [Pages.InternalServerErrorPage],
   badRequestPage: [Pages.BadRequestPage],
   profilePage: [
@@ -47,3 +50,29 @@ export const pages = {
     },
   ],
 };
+
+export const fileMessageModalItems = [
+  {
+    icon: photoVideoIcon,
+    text: 'Фото или Видео',
+  },
+  {
+    icon: fileIcon,
+    text: 'Файл',
+  },
+  {
+    icon: locationIcon,
+    text: 'Локация',
+  },
+];
+
+export const menuModalItems = [
+  {
+    icon: addIcon,
+    text: 'Добавить пользователя',
+  },
+  {
+    icon: deleteIcon,
+    text: 'Удалить пользователя',
+  },
+];

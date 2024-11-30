@@ -19,7 +19,7 @@ export default class UserInfoItem extends Block {
         type: props.inputType,
         value: props.inputValue,
         required: props.required,
-        itemType: true,
+        styleType: 'infoitem',
       }),
     });
   }

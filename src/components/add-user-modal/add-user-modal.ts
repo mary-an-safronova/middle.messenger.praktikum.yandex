@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, FormWrap } from '../../components';
-import { handleInputChange } from '../../components/utils';
+import { Form, FormWrap } from '..';
+import { handleInputChange, handleOverlayClick } from '../utils';
 import { Block } from '../../core';
 import { navigate } from '../../utils/navigate';
 import { TFormState } from './types';
@@ -27,6 +27,8 @@ export default class AddUserModal extends Block {
         change: (evt: Event) => { // Отслеживание изменения инпутов
           handleInputChange(evt, this.props.formState, this.setProps.bind(this));
         },
+
+        click: (event: MouseEvent) => handleOverlayClick(event, props.onModalClose), // Клик на оверлей модального окна
       },
 
       AddUserFormWrap: new FormWrap({
@@ -55,7 +57,7 @@ export default class AddUserModal extends Block {
 
   render(): string {
     return `
-      {{#> ModalOverlay}}
+      {{#> ModalOverlay onclick="{{onclick}}"}}
         {{#> Modal size="size-l"}}
             {{{ AddUserFormWrap }}}
         {{/Modal}}

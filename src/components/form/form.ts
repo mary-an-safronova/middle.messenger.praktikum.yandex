@@ -32,6 +32,7 @@ export default class Form extends Block {
         styleType: 'active',
         type: 'submit',
         text: props.buttonText,
+        variant: 'text',
       }),
     });
   }

@@ -33,6 +33,7 @@ export default class SignInForm extends Block {
         styleType: 'active',
         type: 'submit',
         text: 'Авторизоваться',
+        variant: 'text',
       }),
 
       SignInLink: new Link({

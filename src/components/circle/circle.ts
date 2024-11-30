@@ -7,7 +7,7 @@ export default class Circle extends Block {
   constructor(props: TCircleProps) {
     super('div', {
       ...props,
-      className: `circle ${props.direction! ? 'circle_size-m' : ''}`,
+      className: `circle circle_${props.direction}`,
 
       direction: props.direction,
       iconRight: iconRight,

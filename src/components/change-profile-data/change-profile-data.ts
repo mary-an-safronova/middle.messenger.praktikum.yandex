@@ -19,6 +19,7 @@ export default class ChangeProfileData extends Block {
         type: 'submit',
         text: 'Сохранить',
         styleType: 'active',
+        variant: 'text',
       }),
     });
   }

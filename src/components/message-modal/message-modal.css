@@ -1,0 +1,24 @@
+.message-modal {
+  position: absolute;
+  box-shadow: 0 0 6px 0 var(--box-shadow-color);
+  background-color: var(--primary-bg-color);
+  border-radius: 12px;
+  padding: 15px;
+  z-index: 8000;
+}
+
+.message-modal_bottom {
+  top: -138px;
+  left: -10px;
+}
+
+.message-modal_top {
+  top: 64px;
+  right: 10px;
+}
+
+.message-modal__inner-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

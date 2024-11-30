@@ -9,5 +9,7 @@ export type TInputProps = {
   placeholder?: string;
   searchIcon?: string;
   errorText?: string;
-  itemType?: boolean;
+  styleType?: 'default' | 'infoitem' | 'message';
+  standartPlaceholder?: string;
+  onChange?: (evt: Event) => void;
 };

@@ -5,7 +5,7 @@ export default class Input extends Block {
   constructor(props: TInputProps) {
     super('div', {
       ...props,
-      className: 'input',
+      className: `input input_${props.styleType}`,
       name: props.name,
       id: props.id,
       type: props.type,
@@ -16,23 +16,32 @@ export default class Input extends Block {
       placeholder: props.placeholder,
       searchIcon: props.searchIcon,
       errorText: props.errorText,
-      itemType: props.itemType,
+      styleType: props.styleType,
+      standartPlaceholder: props.standartPlaceholder,
+      onhange: props.onChange,
+
+      events: {
+        input: (evt: Event) => {
+          if (props.onChange) {
+            props.onChange(evt);
+          }
+        },
+      },
     });
   }
 
   render(): string {
     return `
       <label class="input__label" for="{{name}}">
-        <input class="input__element
+        <input class="input__element input__element_{{styleType}}
           {{#if (and (eq type 'password') error)}}input__element_is-invalid{{/if}}
           {{#if (eq type 'file')}}input__element_type-file{{/if}}
-          {{#if (eq type 'search')}}input__element_type-search{{/if}}
-          {{#if itemType}}input__element_item-type{{/if}}"
+          {{#if (eq type 'search')}}input__element_type-search{{/if}}"
           type="{{type}}"
           name="{{name}}"
           id="{{name}}"
           value="{{value}}"
-          placeholder=" "
+          placeholder="{{#if standartPlaceholder}}{{standartPlaceholder}}{{else}} {{/if}}"
           required="{{required}}"
           maxlength="{{maxlength}}"
           autocomplete="off"

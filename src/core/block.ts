@@ -153,6 +153,20 @@ export default class Block {
     Object.assign(this.props, nextProps); // Обновляем свойства
   };
 
+  // Метод для установки новых свойств у дочерних компонентов
+  // eslint-disable-next-line class-methods-use-this
+  setPropsForChildren = (children: Block | Block[], nextProps: any) => {
+    if (Array.isArray(children)) { // Если это массив, проходим по каждому дочернему элементу
+      children.forEach((child) => {
+        if (child instanceof Block) { // Если текущий элемент экземпляр класса Block, устанавливаем новые свойства
+          child.setProps(nextProps);
+        }
+      });
+    } else if (children instanceof Block) {
+      children.setProps(nextProps);
+    }
+  };
+
   // Геттер для получения элемента
   get element(): HTMLElement | null {
     return this._element; // Возвращаем HTML-элемент

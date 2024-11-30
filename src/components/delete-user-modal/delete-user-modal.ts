@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, FormWrap } from '../../components';
-import { handleInputChange } from '../../components/utils';
+import { Form, FormWrap } from '..';
+import { handleInputChange, handleOverlayClick } from '../utils';
 import { Block } from '../../core';
 import { navigate } from '../../utils/navigate';
 import { TformState } from './types';
@@ -13,6 +13,7 @@ export default class DeleteUserModal extends Block {
     super('div', {
       ...props,
       formState,
+      onclick: props.onModalClose,
 
       events: {
         submit: (evt: Event) => { // Сабмит формы
@@ -27,6 +28,8 @@ export default class DeleteUserModal extends Block {
         change: (evt: Event) => { // Отслеживание изменения инпутов
           handleInputChange(evt, this.props.formState, this.setProps.bind(this));
         },
+
+        click: (event: MouseEvent) => handleOverlayClick(event, props.onModalClose), // Клик на оверлей модального окна
       },
 
       DeleteUserFormWrap: new FormWrap({
@@ -55,7 +58,7 @@ export default class DeleteUserModal extends Block {
 
   render(): string {
     return `
-      {{#> ModalOverlay}}
+      {{#> ModalOverlay onclick="{{onclick}}"}}
         {{#> Modal size="size-l"}}
           {{{ DeleteUserFormWrap }}}
         {{/Modal}}
