@@ -10,7 +10,7 @@ export default class ChatPage extends Block {
   private selectedCardId: string | null = null; // Хранит ID выбранной карточки
 
   constructor(props: Record<string, any>) {
-    const isSelected: boolean = false;
+    const isSelected = false;
 
     super('div', {
       ...props,

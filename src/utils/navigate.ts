@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable new-cap */
 import Handlebars from 'handlebars';
 import { renderDOM } from '../core';
@@ -15,7 +16,12 @@ export default function navigate(page: PageKey) {
   const root = document.querySelector<HTMLDivElement>(rootId);
 
   const temlpatingFunction = Handlebars.compile(source);
-  root!.innerHTML = temlpatingFunction(context);
+
+  if (root) {
+    root.innerHTML = temlpatingFunction(context);
+  } else {
+    console.error(`Element with ID "${rootId}" not found`);
+  }
 
   // Сохраняем состояние в историю
   history.pushState({ page }, '', `#${page}`);

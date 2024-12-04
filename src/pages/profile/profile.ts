@@ -32,9 +32,9 @@ export default class ProfilePage extends Block {
   }
 
   constructor(props: Record<string, any>) {
-    const isAvatarChangeModal: boolean = false;
-    const isPasswordChange: boolean = false;
-    const isUserDataChange: boolean = false;
+    const isAvatarChangeModal = false;
+    const isPasswordChange = false;
+    const isUserDataChange = false;
 
     const avatarFormState: TAvatarForm = props.formState || { file: '' }; // Состояние формы изменения аватара
 

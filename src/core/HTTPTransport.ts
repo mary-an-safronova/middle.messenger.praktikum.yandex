@@ -1,5 +1,6 @@
-/* eslint-disable func-names */
+/* eslint-disable no-shadow */
 /* eslint-disable class-methods-use-this */
+/* eslint-disable func-names */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 enum METHODS {
   GET = 'GET',
@@ -62,7 +63,7 @@ export default class HTTPTransport {
       xhr.onerror = () => reject(new Error('Network Error'));
       xhr.ontimeout = () => reject(new Error('Request timed out'));
 
-      if (method === METHODS.GET || !data) {
+      if (method === METHODS.GET && !data) {
         xhr.send();
       } else {
         xhr.setRequestHeader('Content-Type', 'application/json'); // Устанавливаем тип контента для POST и PUT

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -38,7 +39,7 @@ export default class Block {
    * @returns {void}
    */
 
-  constructor(tagName: string = 'div', propsWithChildren: Record<string, any> = {}) {
+  constructor(tagName = 'div', propsWithChildren: Record<string, any> = {}) {
     const eventBus = new EventBus(); // Создаем новый экземпляр EventBus
     this.eventBus = () => eventBus; // Присваиваем метод для получения EventBus
 
@@ -122,7 +123,12 @@ export default class Block {
   }
 
   // Метод жизненного цикла, может переопределяться пользователем
-  componentDidMount(_oldProps?: Record<string, any>): void {}
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  componentDidMount(): void {
+    Object.values(this.children).forEach((child) => {
+      child.dispatchComponentDidMount();
+    });
+  }
 
   // Метод для вызова события монтирования компонента
   // eslint-disable-next-line class-methods-use-this
@@ -140,6 +146,7 @@ export default class Block {
   }
 
   // Метод жизненного цикла, может переопределяться пользователем
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   componentDidUpdate(_oldProps: Record<string, any>, _newProps: Record<string, any>): boolean {
     return true; // По умолчанию возвращаем true, что значит, что обновление происходит
   }
@@ -296,11 +303,21 @@ export default class Block {
 
   // Метод для показа компонента
   show(): void {
-    this.getContent()!.style.display = 'block';
+    const content = this.getContent();
+    if (content) {
+      content.style.display = 'block';
+    } else {
+      console.warn('getContent() returned null or undefined');
+    }
   }
 
   // Метод для скрытия компонента
   hide(): void {
-    this.getContent()!.style.display = 'none';
+    const content = this.getContent();
+    if (content) {
+      content.style.display = 'none';
+    } else {
+      console.warn('getContent() returned null or undefined');
+    }
   }
 }
