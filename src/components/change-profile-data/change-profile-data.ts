@@ -26,7 +26,7 @@ export default class ChangeProfileData extends Block {
 
   render(): string {
     return `
-      <form class="change-profile-data" onsubmit={{submit}}>
+      <form class="change-profile-data" id="{{formName}}" name="{{formName}}" onsubmit={{submit}}>
         {{{ ChangeProfileAvatar }}}
         <div class="change-profile-data__info-wrap">
           {{{ children }}}

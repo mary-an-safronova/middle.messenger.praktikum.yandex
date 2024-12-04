@@ -18,12 +18,16 @@ export default class Input extends Block {
       errorText: props.errorText,
       styleType: props.styleType,
       standartPlaceholder: props.standartPlaceholder,
-      onhange: props.onChange,
 
       events: {
-        input: (evt: Event) => {
+        change: (evt: Event) => {
           if (props.onChange) {
             props.onChange(evt);
+          }
+        },
+        blur: (evt: Event) => {
+          if (props.onBlur) {
+            props.onBlur(evt);
           }
         },
       },
@@ -63,7 +67,7 @@ export default class Input extends Block {
         {{/if}}
       </label>
       {{#if errorText}}
-        <p class="input__error-text">{{errorText}}</p>
+        <p class="input__error-text input__error-text_{{styleType}}">{{errorText}}</p>
       {{/if}}
     `;
   }

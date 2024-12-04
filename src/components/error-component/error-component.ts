@@ -1,6 +1,6 @@
 import { Link, Title } from '..';
 import { Block } from '../../core';
-import { navigate } from '../../utils/navigate';
+import { navigate } from '../../utils';
 import { TErrorComponentProps } from './types';
 
 export default class ErrorComponent extends Block {

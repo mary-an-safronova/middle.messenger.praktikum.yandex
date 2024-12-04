@@ -12,4 +12,5 @@ export type TInputProps = {
   styleType?: 'default' | 'infoitem' | 'message';
   standartPlaceholder?: string;
   onChange?: (evt: Event) => void;
+  onBlur?: (evt: Event) => void;
 };

@@ -21,7 +21,8 @@
     }],
     "value-no-vendor-prefix": true,
     "font-weight-notation": "numeric",
-    "no-descending-specificity": true
+    "no-descending-specificity": true,
+    "declaration-block-no-redundant-longhand-properties": null
   },
   "ignoreFiles": [
     "dist/*"

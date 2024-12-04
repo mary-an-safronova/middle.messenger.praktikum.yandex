@@ -8,29 +8,31 @@ export default class SignInForm extends Block {
       ...props,
 
       formState: props.formState,
+      errorState: props.errorState,
 
       LoginInput: new Input({
         name: 'login',
         type: 'text',
-        error: false,
+        error: props.errorState.login.error,
         value: props.formState.login,
         required: true,
         placeholder: 'Логин',
-        errorText: '',
+        errorText: props.errorState.login.errorText,
       }),
 
       PasswordInput: new Input({
         name: 'password',
         type: 'password',
-        error: false,
+        error: props.errorState.password.error,
         value: props.formState.password,
         required: true,
         placeholder: 'Пароль',
-        errorText: '',
+        errorText: props.errorState.password.errorText,
       }),
 
       SubmitButton: new Button({
         styleType: 'active',
+        disabled: false,
         type: 'submit',
         text: 'Авторизоваться',
         variant: 'text',

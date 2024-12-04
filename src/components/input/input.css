@@ -132,6 +132,23 @@ input:-webkit-autofill {
   line-height: 8px;
   margin: 0;
   padding-top: 7px;
+  position: fixed;
+}
+
+.input__error-text_message {
+  padding: 0;
+  position: absolute;
+  top: -8px;
+  left: 16px;
+}
+
+.input__error-text_infoitem {
+  padding: 0;
+  position: absolute;
+  bottom: 1px;
+  right: 0;
+  width: 510px;
+  text-align: end;
 }
 
 .input__element_infoitem {
@@ -149,5 +166,4 @@ input:-webkit-autofill {
   border-radius: 30px;
   padding: 10px 20px;
   box-sizing: border-box;
-  /* width: 91%; */
 }

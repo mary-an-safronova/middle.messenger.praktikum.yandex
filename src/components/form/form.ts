@@ -25,7 +25,7 @@ export default class Form extends Block {
         value: props.value,
         required: true,
         placeholder: props.placeholder,
-        errorText: '',
+        errorText: props.errorText,
       }),
 
       SubmitButton: new Button({

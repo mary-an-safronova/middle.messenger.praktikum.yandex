@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Block } from '../../core';
 import { TMessageModalItem } from '../../utils/types';
 

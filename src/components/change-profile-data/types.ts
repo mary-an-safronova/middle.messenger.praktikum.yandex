@@ -2,4 +2,5 @@
 export type TChangeProfileDataProps = {
   [x: string]: any;
   avatarIcon?: string;
+  formName?: string;
 };

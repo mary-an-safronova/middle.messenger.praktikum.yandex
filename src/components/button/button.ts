@@ -8,6 +8,7 @@ export default class Button extends Block {
       className: `button button_${props.styleType} button_${props.variant}`,
       styleType: props.styleType,
       type: props.type,
+      disabled: props.disabled,
       text: props.text,
       onclick: props.onClick,
       variant: props.variant,

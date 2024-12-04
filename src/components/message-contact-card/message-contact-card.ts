@@ -1,15 +1,10 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Block } from '../../core';
-import { TMessage } from '../../utils/types';
 import { Circle } from '../circle';
-import { userProfileInfoData } from '../../utils/fakeData';
+import { userProfileInfoData } from '../../utils';
+import { TMessageContactCardProps } from './types';
 
 export default class MessageContactCard extends Block {
-  constructor(props: TMessage & {
-    onSelect: (selectedId: string) => void;
-    isSelected: boolean;
-  }) {
+  constructor(props: TMessageContactCardProps) {
     const userEmail = userProfileInfoData.email;
 
     super('li', {

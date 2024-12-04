@@ -5,7 +5,7 @@ import { pages } from './constants';
 import { PageKey } from './types';
 
 // Навигация по страницам
-export function navigate(page: PageKey) {
+export default function navigate(page: PageKey) {
   const rootId = '#app';
   const [source, context] = pages[page];
   if (typeof source === 'function') {

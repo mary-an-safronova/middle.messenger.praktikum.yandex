@@ -1,31 +1,54 @@
 /* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form, FormWrap } from '..';
-import { handleInputChange, handleOverlayClick } from '../utils';
+import {
+  handleFormSubmit, handleInputChange, handleOverlayClick, inputErrorProps, navigate,
+} from '../../utils';
 import { Block } from '../../core';
-import { navigate } from '../../utils/navigate';
-import { TFormState } from './types';
+import { TAddUserForm } from '../../utils/types';
+import { TAddUserModalProps, TFormErrorState } from './types';
+import { handleValidate } from '../../utils/handle-validate';
 
 export default class AddUserModal extends Block {
-  constructor(props: Record<string, any>) {
-    const formState: TFormState = props.formState || { login: '' };
+  constructor(props: TAddUserModalProps) {
+    const formState: TAddUserForm = props.formState || { login: '' };
+
+    const errorState: TFormErrorState = props.errorState || {
+      login: inputErrorProps,
+    };
 
     super('div', {
       ...props,
       formState,
+      errorState,
 
       events: {
         submit: (evt: Event) => { // Сабмит формы
+          evt.stopPropagation();
           evt.preventDefault();
-          console.log('handleFormSubmit: ', this.props.formState);
-          navigate('navigatePage');
-          this.setProps({
-            formState: { login: '' },
-          });
+          if (!this.props.errorState.login.error) {
+            handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
+              login: this.props.formState,
+            });
+            navigate('chatPage');
+            this.setProps({ formState: { login: '' } });
+          } else {
+            console.log('errors: ', this.props.errorState);
+          }
         },
 
         change: (evt: Event) => { // Отслеживание изменения инпутов
           handleInputChange(evt, this.props.formState, this.setProps.bind(this));
+
+          const childAddUserForm = this.children.AddUserFormWrap.children.children;
+          handleValidate(
+            evt,
+            'login',
+            this.props.formState.login,
+            childAddUserForm.children.FormInput,
+            this.props.errorState,
+            this.setProps.bind(this),
+            this.setPropsForChildren.bind(this),
+          );
         },
 
         click: (event: MouseEvent) => handleOverlayClick(event, props.onModalClose), // Клик на оверлей модального окна
@@ -37,7 +60,6 @@ export default class AddUserModal extends Block {
         titleSize: 'size-s',
         titleText: 'Добавить пользователя',
         titleType: 'default',
-        onSubmit: props.submit,
 
         children: new Form({
           formElInCenter: false,
@@ -47,8 +69,8 @@ export default class AddUserModal extends Block {
           value: formState.login,
           placeholder: 'Логин',
           required: true,
-          inputError: false,
-          errorText: '',
+          inputError: errorState.login.error,
+          errorText: errorState.login.errorText,
           formErrorText: '',
         }),
       }),

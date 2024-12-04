@@ -4,7 +4,7 @@
 import { Input, MessageBlock, MessageContactCard } from '../../components';
 import { Block } from '../../core';
 import { searchIcon, arrowRight } from '../../assets';
-import { messageContactsData } from '../../utils/fakeData';
+import { messageContactsData } from '../../utils';
 
 export default class ChatPage extends Block {
   private selectedCardId: string | null = null; // Хранит ID выбранной карточки

@@ -6,4 +6,6 @@ export type TUserInfoItemProps = {
   name?: string;
   value?: string;
   inputItemType?: boolean;
-};
+  error: boolean;
+  errorText: string;
+}

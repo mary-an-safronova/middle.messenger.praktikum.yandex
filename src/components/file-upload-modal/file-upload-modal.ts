@@ -1,5 +1,5 @@
 import { Form, FormWrap } from '..';
-import { handleFormSubmit, handleInputChange, handleOverlayClick } from '../utils';
+import { handleFormSubmit, handleInputChange, handleOverlayClick } from '../../utils';
 import { Block } from '../../core';
 import { TFileUploadModalProps } from './types';
 

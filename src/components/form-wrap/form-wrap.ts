@@ -4,15 +4,8 @@ import { TFormWrapProps } from './types';
 
 export default class FormWrap extends Block {
   constructor(props: TFormWrapProps) {
-    super('form', {
+    super('div', {
       ...props,
-      className: `form-wrap form-wrap_${props.titleSize}`,
-
-      titleSize: props.titleSize,
-      id: props.formName,
-      name: props.formName,
-      onsubmit: props.onSubmit,
-
       children: props.children,
 
       FormWrapTitle: new Title({
@@ -25,10 +18,12 @@ export default class FormWrap extends Block {
 
   render(): string {
     return `
+    <form class="form-wrap form-wrap_${this.props.titleSize}" id="{{formName}}" name="{{formName}}" onsubmit="{{submit}}" novalidate>
       <fieldset class="form-wrap__wrap">
         {{{ FormWrapTitle }}}
         {{{ children }}}
       </fieldset>
+      </form>
     `;
   }
 }

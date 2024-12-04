@@ -1,13 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, IconTextItem } from '..';
 import { Block } from '../../core';
-import { TMessageModalItems } from '../../utils/types';
-
-export type TMessageModalProps = {
-  position: 'top' | 'bottom';
-  modalItems: TMessageModalItems;
-  onClick: (evt: MouseEvent) => void; // Изменено на функцию с параметром
-}
+import { TMessageModalProps } from './types';
 
 export default class MessageModal extends Block {
   constructor(props: TMessageModalProps) {

@@ -1,3 +1,11 @@
-export type TformState = {
-  login: string;
-};
+import { TDeleteUserForm, TInputError } from '../../utils/types';
+
+export type TFormErrorState = {
+  login: TInputError,
+}
+
+export type TDeleteUserModalProps = {
+  formState?: TDeleteUserForm;
+  errorState?: TFormErrorState;
+  onModalClose: () => void;
+}

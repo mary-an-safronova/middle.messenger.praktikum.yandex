@@ -1,48 +1,30 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable no-unneeded-ternary */
 /* eslint-disable no-console */
+/* eslint-disable no-unneeded-ternary */
 import { Block } from '../../core';
-import { TMessage, TMessageModalItems } from '../../utils/types';
 import { menuIcon, clipIcon, noAvatar } from '../../assets';
 import {
   AddUserModal,
   Button, Circle, DeleteUserModal, Input, Message, MessageModal,
 } from '..';
-import { fileMessageModalItems, menuModalItems } from '../../utils/constants';
-import { handleFormSubmit, handleInputChange, toggleModal } from '../utils';
-
-function clickOnModalItem(
-  evt: MouseEvent,
-  items: TMessageModalItems,
-) {
-  evt.stopPropagation();
-  const targetItem = (evt.target as HTMLElement);
-  const itemText = targetItem.innerText;
-  const itemClass = targetItem.closest('.icon-text__wrap');
-
-  items.forEach((item) => {
-    if (itemText === item.text && itemClass) {
-      console.log(`${item.text} on click`);
-    }
-  });
-}
-
-export type TFormState = {
-  message: string;
-};
-
-export type TMessageBlockProps = {
-  messageData?: TMessage;
-}
+import {
+  fileMessageModalItems, menuModalItems, handleFormSubmit, handleInputChange, toggleModal,
+  inputErrorProps,
+} from '../../utils';
+import { TMessageForm } from '../../utils/types';
+import { TFormErrorState, TMessageBlockProps } from './types';
+import { clickOnModalItem } from './utils';
+import { handleEmptyInputValidate } from '../../utils/handle-validate';
 
 export default class MessageBlock extends Block {
-  constructor(props: Record<string, any>) {
-    const formState: TFormState = props.formState || { message: '' };
+  constructor(props: TMessageBlockProps) {
+    const formState: TMessageForm = props.formState || { message: '' };
+    const errorState: TFormErrorState = props.errorState || { message: inputErrorProps };
 
     super('div', {
       ...props,
       className: 'message-block',
       formState,
+      errorState,
       isOpenMessageMenuModal: false,
       isOpenMessageFileModal: false,
       isOpenAddUserModal: false,
@@ -55,20 +37,41 @@ export default class MessageBlock extends Block {
       events: {
         submit: (evt: Event) => { // Сабмит формы
           evt.preventDefault();
-          handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
-            message: this.props.formState.message,
-          });
+          if (this.props.formState.message !== '') {
+            handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
+              message: this.props.formState.message,
+            });
 
-          this.setPropsForChildren(this.children.MyMessageItem, {
-            ...props,
-            content: this.props.formState.message,
-          });
-          // Сброс состояния формы после сабмита
-          this.setPropsForChildren(this.children.MessageInput, { value: '' });
+            this.setPropsForChildren(this.children.MyMessageItem, {
+              ...props,
+              content: this.props.formState.message,
+            });
+            // Сброс состояния формы после сабмита
+            this.setPropsForChildren(this.children.MessageInput, { value: '' });
+          } else {
+            handleEmptyInputValidate(
+              evt,
+              'message',
+              this.props.formState.message,
+              this.children.MessageInput,
+              this.props.errorState,
+              this.setProps.bind(this),
+              this.setPropsForChildren.bind(this),
+            );
+          }
         },
 
         change: (evt: Event) => { // Отслеживание изменения инпутов
           handleInputChange(evt, this.props.formState, this.setProps.bind(this));
+          handleEmptyInputValidate(
+            evt,
+            'message',
+            this.props.formState.message,
+            this.children.MessageInput,
+            this.props.errorState,
+            this.setProps.bind(this),
+            this.setPropsForChildren.bind(this),
+          );
         },
       },
 
@@ -119,9 +122,10 @@ export default class MessageBlock extends Block {
         name: 'message',
         id: 'message',
         type: 'text',
-        error: false,
+        error: errorState.message.error,
+        errorText: errorState.message.errorText,
         value: formState.message,
-        required: false,
+        required: true,
         styleType: 'message',
         standartPlaceholder: 'Сообщение',
       }),
@@ -140,8 +144,6 @@ export default class MessageBlock extends Block {
         onModalClose: () => toggleModal('isOpenDeleteUserModal', this.setProps.bind(this), this.props),
       }),
     });
-    console.log('this.props.messageData?.last_message', this.props.messageData?.last_message);
-    console.log('props.messageData?.last_message', props.messageData?.last_message);
   }
 
   render(): string {
@@ -167,7 +169,7 @@ export default class MessageBlock extends Block {
         {{{ MyMessageItem }}}
       </div>
 
-      <form id="{{message-form}}" name="{{message-form}}" class="message-block__interaction" onsubmit="{{submit}}">
+      <form id="{{message-form}}" name="{{message-form}}" class="message-block__interaction" onsubmit="{{submit}}" novalidate>
         {{{ ClipButton }}}
         {{{ MessageInput }}}
         {{{ SubmitButton }}}

@@ -2,8 +2,8 @@ import './style.css';
 import Handlebars from 'handlebars';
 import * as Components from './components';
 import { registerComponent } from './core';
+import { navigate } from './utils';
 import { PageKey } from './utils/types';
-import { navigate } from './utils/navigate';
 import { BlockConstructable } from './core/register-component';
 
 // Регистрация хелперов

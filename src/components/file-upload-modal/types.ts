@@ -1,6 +1,6 @@
-import { TFile } from '../../utils/types';
+import { TAvatarForm } from '../../utils/types';
 
 export type TFileUploadModalProps = {
-  avatarFormState: TFile;
+  avatarFormState: TAvatarForm;
   onModalClose: () => void;
 };

@@ -1,8 +1,11 @@
-type TSignInFormState = {
-  login: string;
-  password: string;
+import { TInputError, TSignInForm } from '../../utils/types';
+
+export type TFormErrorState = {
+  login: TInputError,
+  password: TInputError,
 }
 
 export type TSignInFormProps = {
-  formState: TSignInFormState;
+  formState: TSignInForm;
+  errorState: TFormErrorState;
 };
