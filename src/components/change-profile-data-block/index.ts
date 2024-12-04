@@ -1,2 +1,4 @@
-import "./change-profile-data-block.css";
-export { default as ChangeProfileDataBlock } from "./change-profile-data-block.hbs?raw";
+import './change-profile-data-block.css';
+
+// export { default as ChangeProfileDataBlock } from './change-profile-data-block.hbs?raw';
+export { default as ChangeProfileDataBlock } from './change-profile-data-block';

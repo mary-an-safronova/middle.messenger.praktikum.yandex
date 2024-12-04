@@ -1,0 +1,33 @@
+<div class="message-block">
+  {{#if isSelect}}
+    <div class="message-block__wrap">
+      <div class="message-block__head">
+        <div class="message-block__img-name-wrap">
+          <div class="message-block__img-wrap">
+            {{#if messageData.avatar}}
+              <img class="message-block__img" src="{{messageData.avatar}}" alt="Аватар контакта">
+            {{/if}}
+          </div>
+          <p class="message-block__bold-text">{{messageData.title}}</p>
+        </div>
+        <button class="message-block__button">
+          <img src="{{menu}}" alt="Меню">
+        </button>
+      </div>
+      <div class="message-block__content"></div>
+      <form class="message-block__interaction" onsubmit="{{onMessageSubmit}}">
+        <button class="message-block__button" type="button" onclick="{{onClipClick}}">
+          <img src="{{clipIcon}}" alt="Скрепка">
+        </button>
+        {{> Input}}
+        <button class="message-block__button" type="submit">
+          {{> Circle}}
+        </button>
+      </form>
+    </div>
+  {{else}}
+    <div class="message-block__no-select-contact">
+      <p class="message-block__no-select-contact-text">Выберите чат чтобы отправить сообщение</p>
+    </div>
+  {{/if}}
+</div>

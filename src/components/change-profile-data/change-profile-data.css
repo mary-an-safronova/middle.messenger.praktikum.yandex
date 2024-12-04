@@ -1,0 +1,13 @@
+.change-profile-data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 60px 0 153px;
+}
+
+.change-profile-data__info-wrap {
+  margin-top: 87px;
+  height: 340px;
+}
