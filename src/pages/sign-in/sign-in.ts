@@ -4,9 +4,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormWrap } from '../../components';
 import { SignInForm } from '../../components/sign-in-form';
-import {
-  handleFormSubmit, handleInputChange, inputErrorProps, navigate,
-} from '../../utils';
+import { handleFormSubmit, handleInputChange, navigate } from '../../utils';
+import { inputErrorProps } from '../../utils/constants';
 import { Block } from '../../core';
 import { TSignInForm } from '../../utils/types';
 import { TFormErrorState } from '../../components/sign-in-form/types';

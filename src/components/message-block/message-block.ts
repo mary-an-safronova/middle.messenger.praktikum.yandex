@@ -6,10 +6,8 @@ import {
   AddUserModal,
   Button, Circle, DeleteUserModal, Input, Message, MessageModal,
 } from '..';
-import {
-  fileMessageModalItems, menuModalItems, handleFormSubmit, handleInputChange, toggleModal,
-  inputErrorProps,
-} from '../../utils';
+import { handleFormSubmit, handleInputChange, toggleModal } from '../../utils';
+import { fileMessageModalItems, menuModalItems, inputErrorProps } from '../../utils/constants';
 import { TMessageForm } from '../../utils/types';
 import { TFormErrorState, TMessageBlockProps } from './types';
 import { clickOnModalItem } from './utils';

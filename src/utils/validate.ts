@@ -1,5 +1,5 @@
 /* eslint-disable object-shorthand */
-import { fieldsRegex } from '.';
+import { fieldsRegex } from './constants';
 
 export type TValidateField = {
   error: boolean;

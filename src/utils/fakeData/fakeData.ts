@@ -1,6 +1,6 @@
 /* eslint-disable object-shorthand */
-import { avatar } from '../assets';
-import { TMessage, TUser, TUserPassword } from './types';
+import { avatar } from '../../assets';
+import { TMessage, TUser, TUserPassword } from '../types';
 
 export const userProfileInfoData: TUser = {
   id: 123,

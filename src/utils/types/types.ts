@@ -1,4 +1,4 @@
-import { pages } from '..';
+import { pages } from '../constants';
 
 export type TUser = {
   id?: number;

@@ -8,15 +8,9 @@ import {
   ChangeProfileDataBlock,
   FileUploadModal,
 } from '../../components';
-import {
-  handleFormSubmit,
-  handleInputChange,
-  navigate,
-  userProfileInfoNames,
-  userProfileInfoData,
-  userProfilePasswordData,
-  inputErrorProps,
-} from '../../utils';
+import { handleFormSubmit, handleInputChange, navigate } from '../../utils';
+import { userProfileInfoData, userProfilePasswordData } from '../../utils/fakeData';
+import { userProfileInfoNames, inputErrorProps } from '../../utils/constants';
 import { TAvatarForm, TChangePasswordForm, TChangeUserForm } from '../../utils/types';
 import { Block } from '../../core';
 import { handleValidate } from '../../utils/handle-validate';

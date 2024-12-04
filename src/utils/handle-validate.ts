@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-params */
+import { Block } from '../core';
 import { validate } from './validate';
 
 export const handleValidate = (
@@ -9,7 +10,7 @@ export const handleValidate = (
   inputChild: any,
   errorState: Record<string, any>,
   setProps: (props: Record<string, any>) => void,
-  setPropsForChildren: any,
+  setPropsForChildren: (children: Block | Block[], nextProps: any) => void,
   prevInputValue?: string,
 ) => {
   const target = evt.target as HTMLInputElement;
@@ -36,7 +37,7 @@ export const handleEmptyInputValidate = (
   inputChild: any,
   errorState: Record<string, any>,
   setProps: (props: Record<string, any>) => void,
-  setPropsForChildren: any,
+  setPropsForChildren: (children: Block | Block[], nextProps: any) => void,
   prevInputValue?: string,
 ) => {
   const target = evt.target as HTMLInputElement;

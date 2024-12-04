@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-escape */
-import * as Pages from '../pages';
+import * as Pages from '../../pages';
 import {
   iconRight,
   iconLeft,
@@ -12,12 +12,12 @@ import {
   locationIcon,
   deleteIcon,
   addIcon,
-} from '../assets';
+} from '../../assets';
 import {
   messageContactsData,
   userProfileInfoData,
-} from '.';
-import { TInputError, TUser } from './types';
+} from '../fakeData';
+import { TInputError, TUser } from '../types';
 
 export const userProfileInfoNames: TUser = {
   email: 'Почта',

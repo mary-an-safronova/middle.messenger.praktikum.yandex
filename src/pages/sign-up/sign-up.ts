@@ -3,9 +3,8 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormWrap, SignUpForm } from '../../components';
-import {
-  handleFormSubmit, handleInputChange, inputErrorProps, navigate,
-} from '../../utils';
+import { handleFormSubmit, handleInputChange, navigate } from '../../utils';
+import { inputErrorProps } from '../../utils/constants';
 import { Block } from '../../core';
 import { TSignUpForm } from '../../utils/types';
 import { TFormErrorState } from '../../components/sign-up-form/types';

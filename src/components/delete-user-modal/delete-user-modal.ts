@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
 import { Form, FormWrap } from '..';
 import {
-  handleFormSubmit, handleInputChange, handleOverlayClick, inputErrorProps, navigate,
+  handleFormSubmit, handleInputChange, handleOverlayClick, navigate,
 } from '../../utils';
+import { inputErrorProps } from '../../utils/constants';
 import { Block } from '../../core';
 import { TDeleteUserForm } from '../../utils/types';
 import { TDeleteUserModalProps, TFormErrorState } from './types';

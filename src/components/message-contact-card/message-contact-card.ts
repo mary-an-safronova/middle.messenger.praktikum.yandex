@@ -1,6 +1,6 @@
 import { Block } from '../../core';
 import { Circle } from '../circle';
-import { userProfileInfoData } from '../../utils';
+import { userProfileInfoData } from '../../utils/fakeData';
 import { TMessageContactCardProps } from './types';
 
 export default class MessageContactCard extends Block {
