@@ -40,12 +40,12 @@ export default class AddUserModal extends Block {
         change: (evt: Event) => { // Отслеживание изменения инпутов
           handleInputChange(evt, this.props.formState, this.setProps.bind(this));
 
-          const childAddUserForm = this.children.AddUserFormWrap.children.children;
+          const childAddUserForm = (this.children.AddUserFormWrap as Block).children.children;
           handleValidate(
             evt,
             'login',
             this.props.formState.login,
-            childAddUserForm.children.FormInput,
+            (childAddUserForm as Block).children.FormInput,
             this.props.errorState,
             this.setProps.bind(this),
             this.setPropsForChildren.bind(this),
