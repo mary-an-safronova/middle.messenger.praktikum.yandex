@@ -39,12 +39,12 @@ export default class DeleteUserModal extends Block {
         change: (evt: Event) => { // Отслеживание изменения инпутов
           handleInputChange(evt, this.props.formState, this.setProps.bind(this));
 
-          const childDeleteUserForm = this.children.DeleteUserFormWrap.children.children;
+          const childDeleteUserForm = (this.children.DeleteUserFormWrap as Block).children.children;
           handleValidate(
             evt,
             'login',
             this.props.formState.login,
-            childDeleteUserForm.children.FormInput,
+            (childDeleteUserForm as Block).children.FormInput,
             this.props.errorState,
             this.setProps.bind(this),
             this.setPropsForChildren.bind(this),

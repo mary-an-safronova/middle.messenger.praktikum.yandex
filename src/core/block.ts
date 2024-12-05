@@ -1,3 +1,5 @@
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-tabs */
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -5,6 +7,15 @@
 import { nanoid } from 'nanoid';
 import Handlebars from 'handlebars';
 import { EventBus } from './index';
+
+type TBlockProps = Record<string, any>
+
+type TBlockChildren = Record<string, Block | Block[]>
+
+type TMeta = {
+	tagName: string;
+	props: TBlockProps
+}
 
 // Нельзя создавать экземпляр данного класса
 // Класс  Block  является основой для создания компонентов в приложении,
@@ -18,19 +29,17 @@ export default class Block {
     FLOW_CDU: 'flow:component-did-update', // Обновление
   };
 
-  _element!: HTMLElement | null; // HTML-элемент, который будет создан для компонента
+  _element: HTMLElement | null = null; // HTML-элемент, который будет создан для компонента
 
-  _meta: { tagName: string; props: Record<string, any> }; // Метаданные компонента (тег и свойства)
+  _meta: TMeta; // Метаданные компонента (тег и свойства)
 
   _id: string = nanoid(6); // Уникальный идентификатор компонента
 
   eventBus: () => EventBus; // Функция для получения экземпляра EventBus
 
-  children: Record<string, any>; // Дочерние компоненты
+  children: TBlockChildren; // Дочерние компоненты
 
-  props: Record<string, any>; // Свойства компонента
-
-  children2: Record<string, any>; // Дополнительные дочерние компоненты
+  props: TBlockProps; // Свойства компонента
 
   /** JSDoc
    * @param {string} tagName - HTML-тег для компонента
@@ -39,7 +48,7 @@ export default class Block {
    * @returns {void}
    */
 
-  constructor(tagName = 'div', propsWithChildren: Record<string, any> = {}) {
+  constructor(tagName = 'div', propsWithChildren = {}) {
     const eventBus = new EventBus(); // Создаем новый экземпляр EventBus
     this.eventBus = () => eventBus; // Присваиваем метод для получения EventBus
 
@@ -55,7 +64,6 @@ export default class Block {
 
     this._registerEvents(eventBus); // Регистрируем события
     eventBus.emit(Block.EVENTS.INIT); // Генерируем событие инициализации
-    this.children2 = {}; // Инициализируем дополнительное поле для дочерних компонентов
   }
 
   // Метод для регистрации событий в EventBus
@@ -68,7 +76,7 @@ export default class Block {
 
   // Метод для создания ресурсов компонента (HTML-элемента)
   _createResources(): void {
-    const { tagName, props }: { tagName: string; props: Record<string, any>; } = this._meta; // Извлекаем метаданные
+    const { tagName, props } = this._meta; // Извлекаем метаданные
     this._element = this._createDocumentElement(tagName); // Создаем HTML-элемент
 
     if (typeof props.className === 'string') { // Если есть класс
@@ -91,9 +99,9 @@ export default class Block {
 
   // Метод для извлечения дочерних компонентов и свойств
   // eslint-disable-next-line class-methods-use-this
-  _getChildrenAndProps(propsAndChildren: Record<string, any>): { props: Record<string, any>; children: Record<string, Block | Block[]>; } {
-    const children: Record<string, any> = {}; // Объект для хранения дочерних компонентов
-    const props: Record<string, any> = {}; // Объект для хранения свойств
+  _getChildrenAndProps(propsAndChildren: TBlockProps) {
+    const children: TBlockChildren = {}; // Объект для хранения дочерних компонентов
+    const props: TBlockProps = {}; // Объект для хранения свойств
 
     Object.entries(propsAndChildren).forEach(([key, value]) => { // Проходим по всем свойствам
       if (Array.isArray(value)) { // Если значение - массив
@@ -123,12 +131,8 @@ export default class Block {
   }
 
   // Метод жизненного цикла, может переопределяться пользователем
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  componentDidMount(): void {
-    Object.values(this.children).forEach((child) => {
-      child.dispatchComponentDidMount();
-    });
-  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
+  componentDidMount(): void {}
 
   // Метод для вызова события монтирования компонента
   // eslint-disable-next-line class-methods-use-this
@@ -137,7 +141,7 @@ export default class Block {
   }
 
   // Метод, вызываемый при обновлении компонента
-  _componentDidUpdate(oldProps: Record<string, any>, newProps: Record<string, any>): void {
+  _componentDidUpdate(oldProps: TBlockProps, newProps: TBlockProps): void {
     const shouldUpdate = this.componentDidUpdate(oldProps, newProps);
     if (!shouldUpdate) {
       return; // Если не нужно обновлять компонент, выходим
@@ -147,12 +151,12 @@ export default class Block {
 
   // Метод жизненного цикла, может переопределяться пользователем
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  componentDidUpdate(_oldProps: Record<string, any>, _newProps: Record<string, any>): boolean {
+  componentDidUpdate(_oldProps: TBlockProps, _newProps: TBlockProps): boolean {
     return true; // По умолчанию возвращаем true, что значит, что обновление происходит
   }
 
   // Метод для установки новых свойств
-  setProps = (nextProps: Record<string, any>): void => {
+  setProps = (nextProps: TBlockProps): void => {
     if (!nextProps) {
       return; // Если нет новых свойств, выходим
     }
@@ -162,7 +166,7 @@ export default class Block {
 
   // Метод для установки новых свойств у дочерних компонентов
   // eslint-disable-next-line class-methods-use-this
-  setPropsForChildren = (children: Block | Block[], nextProps: any) => {
+  setPropsForChildren = (children: Block | Block[], nextProps: TBlockProps) => {
     if (Array.isArray(children)) { // Если это массив, проходим по каждому дочернему элементу
       children.forEach((child) => {
         if (child instanceof Block) { // Если текущий элемент экземпляр класса Block, устанавливаем новые свойства
@@ -200,15 +204,15 @@ export default class Block {
   // Метод для компиляции шаблона с использованием Handlebars
   // eslint-disable-next-line class-methods-use-this
   _compile(): DocumentFragment {
-    const propsAndStubs: Record<string, any> = { ...this.props, children2: this.children2 || {} }; // Создаем объект с свойствами и дочерними компонентами
+    const propsAndStubs = { ...this.props }; // Создаем объект с свойствами и дочерними компонентами
 
     Object.entries(this.children).forEach(([key, child]) => { // Проходим по дочерним компонентам
       if (Array.isArray(child)) { // Если дочерних компонентов несколько
         propsAndStubs[key] = child.map( // Создаем заглушки для каждого дочернего компонента
-          (component: Block) => `<div data-id="${component._id}"></div>`,
+          (component) => `<div data-id="${component._id}"></div>`,
         );
       } else {
-        propsAndStubs[key] = `<div data-id="${(child as Block)._id}"></div>`; // Создаем заглушку для одного дочернего компонента
+        propsAndStubs[key] = `<div data-id="${child._id}"></div>`; // Создаем заглушку для одного дочернего компонента
       }
     });
 
@@ -218,7 +222,7 @@ export default class Block {
 
     Object.values(this.children).forEach((child) => { // Проходим по дочерним компонентам
       if (Array.isArray(child)) { // Если дочерних компонентов несколько
-        child.forEach((component: Block) => { // Проходим по каждому дочернему компоненту
+        child.forEach((component) => { // Проходим по каждому дочернему компоненту
           const stub = fragment.content.querySelector( // Ищем заглушку по id
             `[data-id="${component._id}"]`,
           );
@@ -226,21 +230,10 @@ export default class Block {
           stub?.replaceWith(component.getContent()); // Заменяем заглушку на содержимое дочернего компонента
         });
       } else {
-        const stub = fragment.content.querySelector(`[data-id="${(child as Block)._id}"]`); // Ищем заглушку для одного дочернего компонента
+        const stub = fragment.content.querySelector(`[data-id="${child._id}"]`); // Ищем заглушку для одного дочернего компонента
 
-        stub?.replaceWith((child as Block).getContent()); // Заменяем заглушку на содержимое дочернего компонента
+        stub?.replaceWith(child.getContent()); // Заменяем заглушку на содержимое дочернего компонента
       }
-    });
-
-    Object.entries(propsAndStubs.children2 || {}).forEach(([id, component]) => { // Проходим по дочерним компонентам
-      const stub = fragment.content.querySelector(`[data-id="${id}"]`); // Ищем заглушку
-
-      if (!stub) {
-        return; // Если не нашли, выходим
-      }
-
-      const content = (component as Block).getContent(); // Получаем содержимое компонента
-      stub.replaceWith(content); // Заменяем заглушку на содержимое компонента
     });
 
     return fragment.content; // Возвращаем заполненный фрагмент
@@ -270,16 +263,16 @@ export default class Block {
 
   // Метод для создания прокси для свойств
   // eslint-disable-next-line class-methods-use-this
-  _makePropsProxy(props: Record<string, any>): Record<string, any> {
+  _makePropsProxy(props: TBlockProps): TBlockProps {
     const eventBus = this.eventBus(); // Получаем экземпляр EventBus
     const emitBind = eventBus.emit.bind(eventBus); // Привязываем метод emit к текущему контексту
 
-    return new Proxy(props as any, { // Создаем прокси для свойств
-      get(target, prop) { // Перехватываем доступ к свойствам
+    return new Proxy(props, { // Создаем прокси для свойств
+      get(target: TBlockProps, prop: string) { // Перехватываем доступ к свойствам
         const value = target[prop]; // Получаем значение свойства
         return typeof value === 'function' ? value.bind(target) : value; // Если это функция, привязываем ее к текущему контексту
       },
-      set(target, prop: string, value: any): boolean { // Перехватываем установку свойств
+      set(target: TBlockProps, prop: string, value: any): boolean { // Перехватываем установку свойств
         const oldTarget = { ...target }; // Копируем старые свойства
         // eslint-disable-next-line no-param-reassign
         target[prop] = value; // Устанавливаем новое значение
@@ -297,8 +290,8 @@ export default class Block {
 
   // Метод для создания HTML-элемента по тегу
   // eslint-disable-next-line class-methods-use-this
-  _createDocumentElement(tagName: string): any {
-    return document.createElement(tagName);
+  _createDocumentElement(tagName: string): HTMLTemplateElement {
+    return document.createElement(tagName) as HTMLTemplateElement;
   }
 
   // Метод для показа компонента

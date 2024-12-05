@@ -143,14 +143,17 @@ export default class ProfilePage extends Block {
           change: (evt: Event) => { // Отслеживание изменения инпутов
             handleInputChange(evt, this.props.formState, this.setProps.bind(this));
 
-            const childChangePasswordForm = this.children.ChangePasswordDataWrap.children.children;
-            this.validateField(evt, 'oldPassword', this.props.formState.oldPassword, childChangePasswordForm.children.OldPasswordItem.children.InputItem);
-            this.validateField(evt, 'newPassword', this.props.formState.newPassword, childChangePasswordForm.children.NewPasswordItem.children.InputItem);
+            const childChangePasswordForm = (this.children.ChangePasswordDataWrap as Block).children.children;
+            const childOldPasswordItem = (childChangePasswordForm as Block).children.OldPasswordItem;
+            const childNewPasswordItem = (childChangePasswordForm as Block).children.NewPasswordItem;
+            const childConfirmationPasswordItem = (childChangePasswordForm as Block).children.ConfirmationPasswordItem;
+            this.validateField(evt, 'oldPassword', this.props.formState.oldPassword, (childOldPasswordItem as Block).children.InputItem);
+            this.validateField(evt, 'newPassword', this.props.formState.newPassword, (childNewPasswordItem as Block).children.InputItem);
             this.validateField(
               evt,
               'confirmation_password',
               this.props.formState.confirmation_password,
-              childChangePasswordForm.children.ConfirmationPasswordItem.children.InputItem,
+              (childConfirmationPasswordItem as Block).children.InputItem,
               this.props.formState.newPassword,
             );
           },
@@ -185,13 +188,13 @@ export default class ProfilePage extends Block {
           change: (evt: Event) => { // Отслеживание изменения инпутов
             handleInputChange(evt, this.props.formState, this.setProps.bind(this));
 
-            const childChangeProfileForm = this.children.ChangeUserDataWrap.children.children;
-            this.validateField(evt, 'email', this.props.formState.email, childChangeProfileForm.children.EmailItem.children.InputItem);
-            this.validateField(evt, 'login', this.props.formState.login, childChangeProfileForm.children.LoginItem.children.InputItem);
-            this.validateField(evt, 'first_name', this.props.formState.first_name, childChangeProfileForm.children.FirstNameItem.children.InputItem);
-            this.validateField(evt, 'second_name', this.props.formState.second_name, childChangeProfileForm.children.SecondNameItem.children.InputItem);
-            this.validateField(evt, 'display_name', this.props.formState.display_name, childChangeProfileForm.children.DisplayNameItem.children.InputItem);
-            this.validateField(evt, 'phone', this.props.formState.phone, childChangeProfileForm.children.PhoneItem.children.InputItem);
+            const childChangeProfileForm = (this.children.ChangeUserDataWrap as Block).children.children;
+            this.validateField(evt, 'email', this.props.formState.email, ((childChangeProfileForm as Block).children.EmailItem as Block).children.InputItem);
+            this.validateField(evt, 'login', this.props.formState.login, ((childChangeProfileForm as Block).children.LoginItem as Block).children.InputItem);
+            this.validateField(evt, 'first_name', this.props.formState.first_name, ((childChangeProfileForm as Block).children.FirstNameItem as Block).children.InputItem);
+            this.validateField(evt, 'second_name', this.props.formState.second_name, ((childChangeProfileForm as Block).children.SecondNameItem as Block).children.InputItem);
+            this.validateField(evt, 'display_name', this.props.formState.display_name, ((childChangeProfileForm as Block).children.DisplayNameItem as Block).children.InputItem);
+            this.validateField(evt, 'phone', this.props.formState.phone, ((childChangeProfileForm as Block).children.PhoneItem as Block).children.InputItem);
           },
 
           submit: (evt: Event) => { // Сабмит формы

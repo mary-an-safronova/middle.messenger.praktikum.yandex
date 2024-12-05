@@ -84,19 +84,19 @@ export default class SignUpPage extends Block {
         change: (evt: Event) => { // Отслеживание изменения инпутов
           handleInputChange(evt, this.props.formState, this.setProps.bind(this));
 
-          const childSignUpForm = this.children.SignUpFormWrap.children.children;
+          const childSignUpForm = (this.children.SignUpFormWrap as Block).children.children;
 
-          this.validateField(evt, 'email', this.props.formState.email, childSignUpForm.children.EmailInput);
-          this.validateField(evt, 'login', this.props.formState.login, childSignUpForm.children.LoginInput);
-          this.validateField(evt, 'first_name', this.props.formState.first_name, childSignUpForm.children.FirstNameInput);
-          this.validateField(evt, 'second_name', this.props.formState.second_name, childSignUpForm.children.SecondNameInput);
-          this.validateField(evt, 'phone', this.props.formState.phone, childSignUpForm.children.PhoneInput);
-          this.validateField(evt, 'password', this.props.formState.password, childSignUpForm.children.PasswordInput);
+          this.validateField(evt, 'email', this.props.formState.email, (childSignUpForm as Block).children.EmailInput);
+          this.validateField(evt, 'login', this.props.formState.login, (childSignUpForm as Block).children.LoginInput);
+          this.validateField(evt, 'first_name', this.props.formState.first_name, (childSignUpForm as Block).children.FirstNameInput);
+          this.validateField(evt, 'second_name', this.props.formState.second_name, (childSignUpForm as Block).children.SecondNameInput);
+          this.validateField(evt, 'phone', this.props.formState.phone, (childSignUpForm as Block).children.PhoneInput);
+          this.validateField(evt, 'password', this.props.formState.password, (childSignUpForm as Block).children.PasswordInput);
           this.validateField(
             evt,
             'confirmation_password',
             this.props.formState.confirmation_password,
-            childSignUpForm.children.ConfirmationPasswordInput,
+            (childSignUpForm as Block).children.ConfirmationPasswordInput,
             this.props.formState.password,
           );
         },

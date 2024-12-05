@@ -58,10 +58,10 @@ export default class SignInPage extends Block {
         change: (evt: Event) => { // Отслеживание изменения инпутов
           handleInputChange(evt, this.props.formState, this.setProps.bind(this));
 
-          const childSignInForm = this.children.SignInFormWrap.children.children;
+          const childSignInForm = (this.children.SignInFormWrap as Block).children.children;
 
-          this.validateField(evt, 'login', this.props.formState.login, childSignInForm.children.LoginInput);
-          this.validateField(evt, 'password', this.props.formState.password, childSignInForm.children.PasswordInput);
+          this.validateField(evt, 'login', this.props.formState.login, (childSignInForm as Block).children.LoginInput);
+          this.validateField(evt, 'password', this.props.formState.password, (childSignInForm as Block).children.PasswordInput);
         },
 
         click: (evt: Event) => { // Клик на ссылку
