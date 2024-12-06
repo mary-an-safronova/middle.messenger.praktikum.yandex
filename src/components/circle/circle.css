@@ -18,7 +18,8 @@
   color: var(--text-light-color);
 }
 
-.circle_size-m {
+.circle_right,
+.circle_left {
   width: 28px;
   height: 28px;
 }

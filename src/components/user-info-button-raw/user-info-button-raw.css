@@ -1,9 +1,22 @@
+.user-info-button {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border-bottom: 1px solid var(--secondary-dark-bg-color);
+}
+
+.user-info-button:last-child {
+  border-bottom: none;
+}
+
+
 .user-info-button__part {
   font-size: 13px;
   line-height: 13px;
   font-weight: var(--font-weigth-medium);
   margin: 10px 0;
   color: var(--link-color);
+
   &:hover {
     opacity: 0.5;
     cursor: pointer;

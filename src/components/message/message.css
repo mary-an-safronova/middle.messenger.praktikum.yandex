@@ -1,0 +1,36 @@
+.message {
+  display: flex;
+  flex-direction: column;
+  align-self: end;
+  margin-bottom: 30px;
+}
+
+.message_right {
+  justify-self: end;
+}
+
+.message_left {
+  justify-self: start;
+}
+
+.message__wrap {
+  max-width: 402px;
+  border-radius: 12px;
+  padding: 11px;
+}
+
+.message__wrap_right {
+  background-color: var(--primary-bg-message);
+}
+
+.message__wrap_left {
+  background-color: var(--active-bg-color);
+}
+
+.message__text {
+  font-size: 12px;
+  line-height: 15px;
+  font-weight: var(--font-weigth-medium);
+  color: var(--text-primary-color);
+  margin: 0;
+}

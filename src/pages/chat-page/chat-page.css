@@ -2,12 +2,22 @@
   display: flex;
 }
 
-.chat-page__input-wrap {
+.chat-page__contacts-block {
+  width: 24.2%; /* 310px */
+  height: 100vh;
+  background-color: var(--secondary-bg-color);
+  border-right: 1px solid var(--secondary-dark-bg-color);
+  padding-top: 21px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.chat-page__contacts-block__input-wrap {
   padding: 0 10px;
   margin: 23px 0 14px;
 }
 
-.chat-page__profile-btn {
+.chat-page__contacts-block__profile-btn {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -22,14 +32,59 @@
   color: var(--text-secondary-color);
 }
 
+.chat-page__contacts-list {
+  list-style-type: none;
+  overflow: hidden;
+  position: fixed;
+  width: 24vw;
+}
+
+.chat-page__contacts-list__scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: calc(100vh - 100px);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.chat-page__contacts-list__scroll::-webkit-scrollbar {
+  width: 3px;
+}
+
+.chat-page__contacts-list__scroll::-webkit-scrollbar-track {
+  background: var(--secondary-bg-color);
+}
+
+.chat-page__contacts-list__scroll::-webkit-scrollbar-thumb {
+  width: 3px;
+  background: var(--secondary-dark-bg-color);
+  border: 1px solid var(--secondary-dark-bg-color);
+  border-radius: 50%;
+}
+
+.chat-page__contacts-list__scroll::-webkit-scrollbar-track-piece:end {
+  margin-bottom: 100px;
+}
+
+.chat-page__contacts-list__scroll::-webkit-scrollbar-track-piece:start {
+  margin-top: 50px;
+}
+
 .chat-page__message-block {
+  width: 75.7vw;
+  height: 100vh;
+}
+
+.chat-page__no-select-contact {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 75.7%;
+  width: 100%;
+  height: 100%;
 }
 
-.chat-page__message-block-text {
+.chat-page__no-select-contact-text {
   font-size: 12px;
   line-height: 12px;
   font-weight: var(--font-weigth-medium);

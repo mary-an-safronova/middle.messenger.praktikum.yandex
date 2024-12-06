@@ -3,7 +3,11 @@
 }
 
 input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  box-shadow: 0 0 0 1000px white inset;
+}
+
+.input_message {
+  width: 91%;
 }
 
 .input__label {
@@ -20,6 +24,7 @@ input:-webkit-autofill {
   font-size: 13px;
   line-height: 13px;
   width: 100%;
+
   &:hover {
     cursor: pointer;
   }
@@ -110,7 +115,7 @@ input:-webkit-autofill {
 .input__element:focus + .input__placeholder,
 .input__element:not(:placeholder-shown) + .input__placeholder {
   transform: scale(1) translateY(-100%) translateX(0);
-  top: 0px;
+  top: 0;
   font-weight: var(--font-weigth-medium);
   font-size: 9px;
   line-height: 9px;
@@ -127,4 +132,38 @@ input:-webkit-autofill {
   line-height: 8px;
   margin: 0;
   padding-top: 7px;
+  position: fixed;
+}
+
+.input__error-text_message {
+  padding: 0;
+  position: absolute;
+  top: -8px;
+  left: 16px;
+}
+
+.input__error-text_infoitem {
+  padding: 0;
+  position: absolute;
+  bottom: 1px;
+  right: 0;
+  width: 510px;
+  text-align: end;
+}
+
+.input__element_infoitem {
+  border-bottom: none;
+  font-size: 13px;
+  line-height: 13px;
+  font-weight: var(--font-weigth-medium);
+  color: var(--text-secondary-color);
+  text-align: right;
+}
+
+.input__element_message {
+  border-bottom: none;
+  background-color: var(--avatar-light-bg-color);
+  border-radius: 30px;
+  padding: 10px 20px;
+  box-sizing: border-box;
 }

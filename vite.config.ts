@@ -1,9 +1,10 @@
-import { defineConfig } from "vite";
+/* eslint-disable import/no-extraneous-dependencies */
+import { defineConfig } from 'vite';
 
 export default defineConfig({
-  root: ".",
+  root: '.',
   build: {
-    outDir: "dist",
+    outDir: 'dist',
   },
   server: {
     port: 3000,

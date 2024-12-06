@@ -1,22 +1,6 @@
 <div class="chat-page">
-    {{#> MessageContactsBlock }}
-        <button class="chat-page__profile-btn">Профиль
-            <img src="{{arrowRight}}" alt="Стрелка вправо">
-        </button>
-        <div class="chat-page__input-wrap">
-            {{> Input 
-                name="search-input"
-                type="search"
-                value=""
-                placeholder="Поиск"
-            }}
-        </div>
-        {{#> MessageContactsList }}
-            {{> MessageContactsList messageContactsData=messageContactsData }}
-        {{/MessageContactsList}}
-    {{/MessageContactsBlock}}
-    <div class="chat-page__message-block">
-        <p class="chat-page__message-block-text">Выберите чат чтобы отправить сообщение</p>
-    </div>
-    
+  {{> MessageContactsBlock }}
+  <div class="chat-page__message-block">
+    <p class="chat-page__message-block-text">Выберите чат чтобы отправить сообщение</p>
+  </div>
 </div>

@@ -1,15 +1,15 @@
-{{#> FormWrap id=formName name=formName titleSize="size-s" text=titleText type=titleType }}
+{{#>FormWrap id=formName name=formName titleSize="size-s" text=titleText type=titleType }}
     <div class="form__elements {{#if formElInCenter}}form__elements_position-center{{/if}}">
-        {{> Input name=inputName 
-            id=inputName 
-            type=inputType 
+        {{> Input name=inputName
+            id=inputName
+            type=inputType
             value=value
             required="true"
             placeholder=placeholder
         }}
-        {{> Button styleType="active" 
-            type="submit" 
-            text=buttonText 
+        {{> Button styleType="active"
+            type="submit"
+            text=buttonText
         }}
     </div>
     {{#if formErrorText}}

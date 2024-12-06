@@ -1,4 +1,14 @@
-{{#> RawItemWrap }}
+<li class="user-info-item">
     <p class="user-info-item__part user-info-item__part_name">{{name}}</p>
-    <p class="user-info-item__part user-info-item__part_value">{{value}}</p>
-{{/RawItemWrap }}
+    {{#if inputItemType}}
+      {{> Input name="{{inputName}}"
+        id="{{inputName}}"
+        type="{{type}}"
+        value="{{value}}"
+        required="{{required}}"
+        placeholder="{{placeholder}}"
+      }}
+    {{else}}
+      <p class="user-info-item__part user-info-item__part_value">{{value}}</p>
+    {{/if}}
+</li>
