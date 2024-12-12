@@ -1,23 +1,13 @@
 /* eslint-disable no-useless-escape */
-import * as Pages from '../../pages';
 import {
-  iconRight,
-  iconLeft,
-  avatarIcon,
-  searchIcon,
-  arrowRight,
-  avatar,
   photoVideoIcon,
   fileIcon,
   locationIcon,
   deleteIcon,
   addIcon,
 } from '../../assets';
-import {
-  messageContactsData,
-  userProfileInfoData,
-} from '../fakeData';
 import { TInputError, TUser } from '../types';
+import Router from '../../core/router';
 
 export const userProfileInfoNames: TUser = {
   email: 'Почта',
@@ -26,30 +16,6 @@ export const userProfileInfoNames: TUser = {
   second_name: 'Фамилия',
   display_name: 'Имя в чате',
   phone: 'Телефон',
-};
-
-export const pages = {
-  signInPage: [Pages.SignInPage],
-  signUpPage: [Pages.SignUpPage],
-  navigatePage: [Pages.NavigatePage],
-  internalServerErrorPage: [Pages.InternalServerErrorPage],
-  badRequestPage: [Pages.BadRequestPage],
-  profilePage: [
-    Pages.ProfilePage,
-    {
-      iconLeft,
-      iconRight,
-      avatarIcon,
-      userProfileInfoNames,
-      userProfileInfoData,
-    },
-  ],
-  chatPage: [
-    Pages.ChatPage,
-    {
-      searchIcon, arrowRight, avatar, messageContactsData,
-    },
-  ],
 };
 
 export const fileMessageModalItems = [
@@ -129,3 +95,14 @@ export const inputErrorProps: TInputError = {
   error: false,
   errorText: '',
 };
+
+export const PATH = {
+  signIn: '/',
+  signUp: '/sign-up',
+  settings: '/settings',
+  messenger: '/messenger',
+  badRequest: '/bad-request',
+};
+
+const APP_ROOT_ELEMENT = '#app';
+export const router = new Router(APP_ROOT_ELEMENT);

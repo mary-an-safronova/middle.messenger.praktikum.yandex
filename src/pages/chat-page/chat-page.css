@@ -12,12 +12,12 @@
   box-sizing: border-box;
 }
 
-.chat-page__contacts-block__input-wrap {
+.chat-page__contacts-input-wrap {
   padding: 0 10px;
   margin: 23px 0 14px;
 }
 
-.chat-page__contacts-block__profile-btn {
+.chat-page__contacts-profile-btn {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -39,7 +39,7 @@
   width: 24vw;
 }
 
-.chat-page__contacts-list__scroll {
+.chat-page__contacts-list-scroll {
   overflow-y: auto;
   overflow-x: hidden;
   max-height: calc(100vh - 100px);
@@ -48,26 +48,26 @@
   padding: 0;
 }
 
-.chat-page__contacts-list__scroll::-webkit-scrollbar {
+.chat-page__contacts-list-scroll::-webkit-scrollbar {
   width: 3px;
 }
 
-.chat-page__contacts-list__scroll::-webkit-scrollbar-track {
+.chat-page__contacts-list-scroll::-webkit-scrollbar-track {
   background: var(--secondary-bg-color);
 }
 
-.chat-page__contacts-list__scroll::-webkit-scrollbar-thumb {
+.chat-page__contacts-list-scroll::-webkit-scrollbar-thumb {
   width: 3px;
   background: var(--secondary-dark-bg-color);
   border: 1px solid var(--secondary-dark-bg-color);
   border-radius: 50%;
 }
 
-.chat-page__contacts-list__scroll::-webkit-scrollbar-track-piece:end {
+.chat-page__contacts-list-scroll::-webkit-scrollbar-track-piece:end {
   margin-bottom: 100px;
 }
 
-.chat-page__contacts-list__scroll::-webkit-scrollbar-track-piece:start {
+.chat-page__contacts-list-scroll::-webkit-scrollbar-track-piece:start {
   margin-top: 50px;
 }
 

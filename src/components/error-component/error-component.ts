@@ -1,6 +1,6 @@
 import { Link, Title } from '..';
 import { Block } from '../../core';
-import { navigate } from '../../utils';
+import { PATH, router } from '../../utils/constants';
 import { TErrorComponentProps } from './types';
 
 export default class ErrorComponent extends Block {
@@ -13,7 +13,7 @@ export default class ErrorComponent extends Block {
         click: (evt: Event) => { // Клик на ссылку
           const target = evt.target as HTMLElement;
           if (target.closest('.link')) {
-            navigate('navigatePage');
+            router.go(PATH.messenger);
           }
         },
       },

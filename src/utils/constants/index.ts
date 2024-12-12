@@ -1,8 +1,9 @@
 export {
   userProfileInfoNames,
-  pages,
   fileMessageModalItems,
   menuModalItems,
   fieldsRegex,
   inputErrorProps,
+  PATH,
+  router,
 } from './constants';

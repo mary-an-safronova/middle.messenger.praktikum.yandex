@@ -1,22 +1,33 @@
 /* eslint-disable no-console */
 /* eslint-disable object-shorthand */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Input, MessageBlock, MessageContactCard } from '../../components';
+import {
+  Button, Input, MessageBlock, MessageContactCard,
+} from '../../components';
 import { Block } from '../../core';
 import { searchIcon, arrowRight } from '../../assets';
 import { messageContactsData } from '../../utils/fakeData';
+import { PATH, router } from '../../utils/constants';
 
 export default class ChatPage extends Block {
   private selectedCardId: string | null = null; // Хранит ID выбранной карточки
 
-  constructor(props: Record<string, any>) {
+  constructor() {
     const isSelected = false;
 
     super('div', {
-      ...props,
       className: 'chat-page',
       isSelected,
       ChatMessageBlock: new MessageBlock({}), // Инициализируем пустым блоком сообщений
+
+      ProfileButton: new Button({
+        type: 'button',
+        onClick: () => router.go(PATH.settings),
+        variant: 'textAndImg',
+        text: 'Профиль',
+        imgIcon: arrowRight,
+        imgIconAlt: 'Стрелка вправо',
+        extraClass: 'chat-page__contacts-profile-btn',
+      }),
 
       SearchInput: new Input({
         name: 'search-input',
@@ -58,17 +69,13 @@ export default class ChatPage extends Block {
   render(): string {
     return `
         <div class="chat-page__contacts-block">
-
-          <button class="chat-page__contacts-block__profile-btn">Профиль
-            <img src=${arrowRight} alt="Стрелка вправо">
-          </button>
-
-          <div class="chat-page__contacts-block__input-wrap">
+          {{{ ProfileButton }}}
+          <div class="chat-page__contacts-input-wrap">
             {{{ SearchInput }}}
           </div>
 
           <div class="chat-page__contacts-list">
-            <ul class="chat-page__contacts-list__scroll">
+            <ul class="chat-page__contacts-list-scroll">
               {{#each ContactCards}}
                 {{{ this }}}
               {{/each}}

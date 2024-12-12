@@ -9,7 +9,6 @@ export { SignUpForm } from './sign-up-form';
 export { Form } from './form';
 export { FormWrap } from './form-wrap';
 export { Circle } from './circle';
-export { BackButton } from './back-button';
 export { UserInfoItem } from './user-info-item';
 export { UserInfo } from './user-info';
 export { UserInfoButtonRaw } from './user-info-button-raw';

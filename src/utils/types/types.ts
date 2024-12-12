@@ -1,5 +1,3 @@
-import { pages } from '../constants';
-
 export type TUser = {
   id?: number;
   first_name?: string;
@@ -36,8 +34,6 @@ export type TMessage = {
   last_message?: TLastMessage;
 };
 
-export type PageKey = keyof typeof pages;
-
 export type TMessageModalItem = {
   icon: string;
   text: string;
@@ -63,9 +59,9 @@ export type TSignUpForm = {
 export type TAvatarForm = { file: string };
 
 export type TChangePasswordForm = {
-  oldPassword: string;
-  newPassword: string;
-  confirmation_password: string;
+  oldPassword?: string;
+  newPassword?: string;
+  confirmation_password?: string;
 };
 
 export type TChangeUserForm = TUser;

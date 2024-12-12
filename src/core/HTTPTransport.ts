@@ -18,27 +18,32 @@ headers?: Record<string, string>;
 // Тип Omit удаляет из первого типа ключ, переданный вторым аргументом
 type OptionsWithoutMethod = Omit<Options, 'method'>;
 
+type HTTPMethod = (url: string, options?: OptionsWithoutMethod) => Promise<XMLHttpRequest>
+
 export default class HTTPTransport {
-  get(url: string, options: OptionsWithoutMethod = {}): Promise<XMLHttpRequest> {
+  get: HTTPMethod = (url, options = {}) => {
     const { data } = options;
     const queryString = this.createQueryString(data);
     const fullUrl = queryString ? `${url}?${queryString}` : url;
     return this.request(fullUrl, { ...options, method: METHODS.GET });
-  }
+  };
 
-  post(url: string, options: OptionsWithoutMethod = {}): Promise<XMLHttpRequest> {
-    return this.request(url, { ...options, method: METHODS.POST });
-  }
+  post: HTTPMethod = (url, options = {}) => (
+    this.request(url, { ...options, method: METHODS.POST })
+  );
 
-  put(url: string, options: OptionsWithoutMethod = {}): Promise<XMLHttpRequest> {
-    return this.request(url, { ...options, method: METHODS.PUT });
-  }
+  put: HTTPMethod = (url, options = {}) => (
+    this.request(url, { ...options, method: METHODS.PUT })
+  );
 
-  delete(url: string, options: OptionsWithoutMethod = {}): Promise<XMLHttpRequest> {
-    return this.request(url, { ...options, method: METHODS.DELETE });
-  }
+  delete: HTTPMethod = (url, options = {}) => (
+    this.request(url, { ...options, method: METHODS.DELETE })
+  );
 
-  private request(url: string, options: Options): Promise<XMLHttpRequest> {
+  private request(
+    url: string,
+    options: Options,
+  ): Promise<XMLHttpRequest> {
     const { method, data, headers = {} } = options;
 
     return new Promise((resolve, reject) => {

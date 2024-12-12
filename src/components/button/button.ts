@@ -5,7 +5,7 @@ export default class Button extends Block {
   constructor(props: TButtonProps) {
     super('button', {
       ...props,
-      className: `button button_${props.styleType} button_${props.variant}`,
+      className: `button button_${props.styleType} button_${props.variant} ${props.extraClass}`,
       styleType: props.styleType,
       type: props.type,
       disabled: props.disabled,
@@ -15,6 +15,7 @@ export default class Button extends Block {
       imgIcon: props.imgIcon,
       imgIconAlt: props.imgIconAlt,
       children: props.children,
+      extraClass: props.extraClass,
 
       events: {
         click: (evt: Event) => {
@@ -38,6 +39,10 @@ export default class Button extends Block {
       {{/if}}
       {{#if (eq variant "btnWithChildren")}}
         {{{ children }}}
+      {{/if}}
+      {{#if (eq variant "textAndImg")}}
+        {{text}}
+        <img src="{{imgIcon}}" alt="{{imgIconAlt}}">
       {{/if}}
     `;
   }

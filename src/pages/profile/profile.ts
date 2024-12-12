@@ -3,14 +3,19 @@
 /* eslint-disable object-shorthand */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  Avatar, BackButton, ChangeProfileData, ChangePasswordDataBlock,
+  Avatar, ChangeProfileData, ChangePasswordDataBlock,
   Title, UserInfo, UserInfoButtons,
   ChangeProfileDataBlock,
   FileUploadModal,
+  Button,
+  Circle,
 } from '../../components';
-import { handleFormSubmit, handleInputChange, navigate } from '../../utils';
+import { handleFormSubmit, handleInputChange } from '../../utils';
 import { userProfileInfoData, userProfilePasswordData } from '../../utils/fakeData';
-import { userProfileInfoNames, inputErrorProps } from '../../utils/constants';
+import {
+  userProfileInfoNames, inputErrorProps, router, PATH,
+
+} from '../../utils/constants';
 import { TAvatarForm, TChangePasswordForm, TChangeUserForm } from '../../utils/types';
 import { Block } from '../../core';
 import { handleValidate } from '../../utils/handle-validate';
@@ -31,26 +36,26 @@ export default class ProfilePage extends Block {
     );
   }
 
-  constructor(props: Record<string, any>) {
+  constructor() {
     const isAvatarChangeModal = false;
     const isPasswordChange = false;
     const isUserDataChange = false;
 
-    const avatarFormState: TAvatarForm = props.formState || { file: '' }; // Состояние формы изменения аватара
+    const avatarFormState: TAvatarForm = { file: '' }; // Состояние формы изменения аватара
 
-    const passwordFormState: TChangePasswordForm = props.passwordFormState || { // Состояние формы изменения пароля юзера
+    const passwordFormState: TChangePasswordForm = { // Состояние формы изменения пароля юзера
       oldPassword: userProfilePasswordData.oldPassword,
       newPassword: userProfilePasswordData.newPassword,
       confirmation_password: userProfilePasswordData.newPassword,
     };
 
-    const passwordErrorState: TChangePassFormErrorState = props.passwordFormState || { // Состояние ошибок ввода формы изменения пароля юзера
+    const passwordErrorState: TChangePassFormErrorState = { // Состояние ошибок ввода формы изменения пароля юзера
       oldPassword: inputErrorProps,
       newPassword: inputErrorProps,
       confirmation_password: inputErrorProps,
     };
 
-    const userDataFormState: TChangeUserForm = props.userDataFormState || { // Состояние формы изменения данных юзера
+    const userDataFormState: TChangeUserForm = { // Состояние формы изменения данных юзера
       email: userProfileInfoData.email,
       login: userProfileInfoData.login,
       first_name: userProfileInfoData.first_name,
@@ -60,7 +65,7 @@ export default class ProfilePage extends Block {
       avatar: userProfileInfoData.avatar,
     };
 
-    const changeUserErrorState: TChangeUserFormErrorState = props.errorState || { // Состояние ошибок ввода формы изменения данных юзера
+    const changeUserErrorState: TChangeUserFormErrorState = { // Состояние ошибок ввода формы изменения данных юзера
       email: inputErrorProps,
       login: inputErrorProps,
       first_name: inputErrorProps,
@@ -71,8 +76,6 @@ export default class ProfilePage extends Block {
     };
 
     super('div', {
-      ...props,
-
       isAvatarChangeModal,
       isPasswordChange,
       isUserDataChange,
@@ -83,7 +86,36 @@ export default class ProfilePage extends Block {
       passwordErrorState,
 
       // Компоненты
-      ProfileBackButton: new BackButton({}),
+      ProfileBackButton: new Button({
+        extraClass: 'profile__back-button',
+        type: 'button',
+        onClick: () => {
+          if (!this.props.isUserDataChange && !this.props.isPasswordChange) {
+            router.back();
+          }
+        },
+        variant: 'btnWithChildren',
+        children: new Circle({
+          direction: 'left',
+        }),
+      }),
+
+      ChangeBackButton: new Button({
+        extraClass: 'profile__back-button',
+        type: 'button',
+        onClick: () => {
+          if (this.props.isUserDataChange) {
+            this.setProps({ isUserDataChange: false });
+          }
+          if (this.props.isPasswordChange) {
+            this.setProps({ isPasswordChange: false });
+          }
+        },
+        variant: 'btnWithChildren',
+        children: new Circle({
+          direction: 'left',
+        }),
+      }),
 
       ProfileAvatar: new Avatar({
         avatarIcon: userDataFormState.avatar,
@@ -120,7 +152,7 @@ export default class ProfilePage extends Block {
         },
 
         logOutButtonClick: () => { // Выход из аккаунта
-          navigate('navigatePage');
+          router.go(PATH.signIn);
         },
       }),
 
@@ -236,13 +268,17 @@ export default class ProfilePage extends Block {
 
   render(): string {
     return `
-      {{{ ProfileBackButton }}}
+
       <div class="profile">
+
         {{#if isPasswordChange}}
+          {{{ ChangeBackButton }}}
           {{{ ChangePasswordDataWrap }}}
         {{else if isUserDataChange}}
+          {{{ ChangeBackButton }}}
           {{{ ChangeUserDataWrap }}}
         {{else}}
+          {{{ ProfileBackButton }}}
           <div class="profile__avatar-wrap">
             {{{ ProfileAvatar }}}
             {{{ ProfileTitle }}}
@@ -253,6 +289,7 @@ export default class ProfilePage extends Block {
           </div>
         {{/if}}
       </div>
+
       {{#if isAvatarChangeModal}}
         {{{ ProfileAvatarFileUploadModal }}}
       {{/if}}
