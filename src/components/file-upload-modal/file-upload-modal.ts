@@ -1,5 +1,4 @@
 import { Form, FormWrap } from '..';
-import { handleFormSubmit, handleInputChange, handleOverlayClick } from '../../utils';
 import { Block } from '../../core';
 import { TFileUploadModalProps } from './types';
 
@@ -7,24 +6,6 @@ export default class FileUploadModal extends Block {
   constructor(props: TFileUploadModalProps) {
     super('div', {
       ...props,
-
-      formState: props.avatarFormState,
-      onclick: props.onModalClose,
-
-      events: {
-        submit: (evt: Event) => {
-          handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
-            formState: this.props.formState,
-          });
-          props.onModalClose();
-        },
-
-        change: (evt: Event) => { // Отслеживание изменения инпутов
-          handleInputChange(evt, this.props.formState, this.setProps.bind(this));
-        },
-
-        click: (event: MouseEvent) => handleOverlayClick(event, props.onModalClose), // Клик на оверлей модального окна
-      },
 
       FileUploadFormWrap: new FormWrap({
         id: 'file-upload-form',
@@ -39,7 +20,7 @@ export default class FileUploadModal extends Block {
           inputType: 'file',
           inputName: 'file',
           value: props.avatarFormState.file,
-          placeholder: 'Выбрать файл на компьютере',
+          placeholder: props.placeholder,
           required: true,
           inputError: false,
           errorText: '',

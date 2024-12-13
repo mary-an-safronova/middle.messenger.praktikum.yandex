@@ -56,7 +56,7 @@ export type TSignUpForm = {
   confirmation_password: string;
 };
 
-export type TAvatarForm = { file: string };
+export type TAvatarForm = { file?: string; };
 
 export type TChangePasswordForm = {
   oldPassword?: string;

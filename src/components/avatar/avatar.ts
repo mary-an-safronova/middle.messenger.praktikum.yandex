@@ -10,7 +10,13 @@ export default class Avatar extends Block {
       avatarIcon: props.avatarIcon,
 
       events: {
-        click: props.changeAvatarClick,
+        click: (evt: Event) => {
+          evt.stopPropagation();
+          if (props.changeAvatarClick) {
+            evt.preventDefault();
+            props.changeAvatarClick();
+          }
+        },
       },
     });
   }

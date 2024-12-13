@@ -10,7 +10,7 @@ import {
   Button,
   Circle,
 } from '../../components';
-import { handleFormSubmit, handleInputChange } from '../../utils';
+import { handleFormSubmit, handleInputChange, handleOverlayClick } from '../../utils';
 import { userProfileInfoData, userProfilePasswordData } from '../../utils/fakeData';
 import {
   userProfileInfoNames, inputErrorProps, router, PATH,
@@ -41,8 +41,6 @@ export default class ProfilePage extends Block {
     const isPasswordChange = false;
     const isUserDataChange = false;
 
-    const avatarFormState: TAvatarForm = { file: '' }; // Состояние формы изменения аватара
-
     const passwordFormState: TChangePasswordForm = { // Состояние формы изменения пароля юзера
       oldPassword: userProfilePasswordData.oldPassword,
       newPassword: userProfilePasswordData.newPassword,
@@ -62,7 +60,6 @@ export default class ProfilePage extends Block {
       second_name: userProfileInfoData.second_name,
       display_name: userProfileInfoData.display_name,
       phone: userProfileInfoData.phone,
-      avatar: userProfileInfoData.avatar,
     };
 
     const changeUserErrorState: TChangeUserFormErrorState = { // Состояние ошибок ввода формы изменения данных юзера
@@ -74,6 +71,10 @@ export default class ProfilePage extends Block {
       phone: inputErrorProps,
       avatar: inputErrorProps,
     };
+
+    const avatarFormState: TAvatarForm = {
+      file: userProfileInfoData.avatar,
+    }; // Состояние формы изменения аватара
 
     super('div', {
       isAvatarChangeModal,
@@ -118,7 +119,7 @@ export default class ProfilePage extends Block {
       }),
 
       ProfileAvatar: new Avatar({
-        avatarIcon: userDataFormState.avatar,
+        avatarIcon: avatarFormState.file,
 
         changeAvatarClick: () => {
           this.setProps({
@@ -159,18 +160,30 @@ export default class ProfilePage extends Block {
       // Компонент - модальное окно с формой изменения аватара пользователя
       ProfileAvatarFileUploadModal: new FileUploadModal({
         avatarFormState: avatarFormState,
+        placeholder: 'Выбрать файл на компьютере',
 
-        onModalClose: () => {
-          this.setProps({
-            isAvatarChangeModal: false,
-          });
+        events: {
+          change: (evt: Event) => { // Отслеживание изменения инпутов
+            handleInputChange(evt, this.props.formState, this.setProps.bind(this));
+          },
+
+          submit: (evt: Event) => {
+            handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
+              formState: this.props.formState,
+            });
+            this.setProps({ isAvatarChangeModal: false });
+            const avatarComponent = this.children.ProfileAvatar;
+            this.setPropsForChildren(avatarComponent, { avatarIcon: this.props.formState.file });
+          },
+
+          click: (event: MouseEvent) => handleOverlayClick(event, () => {
+            this.setProps({ isAvatarChangeModal: false });
+          }), // Клик на оверлей модального окна
         },
       }),
 
       // Компонент с формой изменения пароля пользователя
       ChangePasswordDataWrap: new ChangeProfileData({
-        avatarIcon: userDataFormState.avatar,
-
         events: {
           change: (evt: Event) => { // Отслеживание изменения инпутов
             handleInputChange(evt, this.props.formState, this.setProps.bind(this));
@@ -213,7 +226,6 @@ export default class ProfilePage extends Block {
 
       // Компонент с формой изменения данных пользователя
       ChangeUserDataWrap: new ChangeProfileData({
-        avatarIcon: userDataFormState.avatar,
         formName: 'changec-profile-data',
 
         events: {
@@ -271,6 +283,11 @@ export default class ProfilePage extends Block {
 
       <div class="profile">
 
+        <div class="profile__avatar-wrap">
+          {{{ ProfileAvatar }}}
+          {{{ ProfileTitle }}}
+        </div>
+
         {{#if isPasswordChange}}
           {{{ ChangeBackButton }}}
           {{{ ChangePasswordDataWrap }}}
@@ -279,10 +296,7 @@ export default class ProfilePage extends Block {
           {{{ ChangeUserDataWrap }}}
         {{else}}
           {{{ ProfileBackButton }}}
-          <div class="profile__avatar-wrap">
-            {{{ ProfileAvatar }}}
-            {{{ ProfileTitle }}}
-          </div>
+
           <div class="profile__info-raws-wrap">
             {{{ ProfileUserInfo }}}
             {{{ ProfileUserInfoButtons }}}
