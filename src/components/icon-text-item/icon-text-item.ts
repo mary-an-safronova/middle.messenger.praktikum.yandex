@@ -3,7 +3,7 @@ import { TMessageModalItem } from '../../utils/types';
 
 export default class IconTextItem extends Block {
   constructor(props: TMessageModalItem & {
-    buttonType: string;
+    buttonType: 'button' | 'submit' | 'reset';
     onClick: (evt: MouseEvent) => void,
   }) {
     super('button', {

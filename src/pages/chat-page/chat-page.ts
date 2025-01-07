@@ -1,24 +1,42 @@
 /* eslint-disable no-console */
 /* eslint-disable object-shorthand */
 import {
+  AddChatModal,
   Button, Input, MessageBlock, MessageContactCard,
 } from '../../components';
 import { Block } from '../../core';
-import { searchIcon, arrowRight } from '../../assets';
-import { messageContactsData } from '../../utils/fakeData';
-import { PATH, router } from '../../utils/constants';
+import { searchIcon, arrowRight, addWhiteIcon } from '../../assets';
+import { inputErrorProps, PATH, router } from '../../utils/constants';
+import store, { StoreData, withStore } from '../../core/store';
+import * as chatsControllers from '../../services/chats';
 
-export default class ChatPage extends Block {
+const mapStateToProps = ({ currentUser, chatList, currentChat }: StoreData) => ({
+  currentUser,
+  chatList,
+  currentChat,
+});
+
+class ChatPage extends Block {
   private selectedCardId: string | null = null; // Хранит ID выбранной карточки
 
   constructor() {
     const isSelected = false;
+    const isAddChatModal = false;
+    const addChatFormState = { title: '' };
+    const errorState = { title: inputErrorProps };
+
+    const messageContactsList = store.getState().chatList; // Состояние данных юзера
 
     super('div', {
       className: 'chat-page',
       isSelected,
+      isAddChatModal,
+      addChatFormState,
+      errorState,
+
       ChatMessageBlock: new MessageBlock({}), // Инициализируем пустым блоком сообщений
 
+      // Переход на страницу профиля
       ProfileButton: new Button({
         type: 'button',
         onClick: () => router.go(PATH.settings),
@@ -29,6 +47,7 @@ export default class ChatPage extends Block {
         extraClass: 'chat-page__contacts-profile-btn',
       }),
 
+      // Поиск чата
       SearchInput: new Input({
         name: 'search-input',
         type: 'search',
@@ -37,11 +56,12 @@ export default class ChatPage extends Block {
         searchIcon: searchIcon,
       }),
 
-      ContactCards: messageContactsData.map((contactCardProps) => new MessageContactCard({
+      // Список чатов
+      ContactCards: messageContactsList?.map((contactCardProps) => new MessageContactCard({
         ...contactCardProps,
         isSelected: isSelected,
 
-        onSelect: (selectedId: string) => {
+        onSelect: async (selectedId: string | null) => {
           // Если есть выбранная карточка, сбрасываем ее состояние
           if (this.selectedCardId) {
             const previousCard = this.props.ContactCards.find((card: MessageContactCard) => card.props.id.toString() === this.selectedCardId);
@@ -54,15 +74,42 @@ export default class ChatPage extends Block {
           this.selectedCardId = selectedId;
 
           // Обновляем ChatMessageBlock с данными выбранной карточки
-          const selectedContact = messageContactsData.find((contact) => contact.id.toString() === this.selectedCardId);
+          const selectedContact = messageContactsList.find((contact) => contact.id?.toString() === this.selectedCardId);
           if (selectedContact) {
             this.setProps({ isSelected: true });
-            this.setPropsForChildren(this.children.ChatMessageBlock, { messageData: selectedContact });
+            store.set('currentChat.chat', selectedContact);
+            const { currentChat } = store.getState(); // Выбранный чат
+            console.log('currentChat.id: ', currentChat?.chat?.id);
+            await chatsControllers.getChatUsers(currentChat?.chat?.id); // Получаем пользователей чата
+            const chatUsers = store.getState().currentChat?.chat_users; // Выбранный чат
+            console.log('chatUsers in CHAT PAGE: ', chatUsers);
+            this.setPropsForChildren(this.children.ChatMessageBlock, { messageData: selectedContact, chatUsers: chatUsers });
           } else {
             console.error('Выбранный контакт не найден');
           }
         },
       })),
+
+      // Кнопка добавления нового чата
+      AddChatButton: new Button({
+        type: 'button',
+        onClick: () => {
+          this.setProps({ isAddChatModal: true });
+        },
+        variant: 'image',
+        imgIcon: addWhiteIcon,
+        imgIconAlt: 'Добавить чат',
+        extraClass: 'chat-page__add-chat-btn',
+      }),
+
+      // Модальное окно с формой создания нового чата
+      AddNewChatModal: new AddChatModal({
+        formState: addChatFormState,
+        errorState: errorState,
+        onModalClose: async () => {
+          this.setProps({ isAddChatModal: false });
+        },
+      }),
     });
   }
 
@@ -79,9 +126,9 @@ export default class ChatPage extends Block {
               {{#each ContactCards}}
                 {{{ this }}}
               {{/each}}
+              {{{ AddChatButton }}}
             </ul>
           </div>
-
         </div>
 
         <div class="chat-page__message-block">
@@ -93,6 +140,12 @@ export default class ChatPage extends Block {
             </div>
           {{/if}}
         </div>
+
+        {{#if isAddChatModal}}
+          {{{ AddNewChatModal }}}
+        {{/if}}
     `;
   }
 }
+
+export default withStore(mapStateToProps)(ChatPage);

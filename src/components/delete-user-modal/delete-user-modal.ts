@@ -30,6 +30,8 @@ export default class DeleteUserModal extends Block {
             handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
               login: this.props.formState,
             });
+            props.formSubmit();
+
             props.onModalClose();
             this.setProps({ formState: { login: '' } });
           } else {

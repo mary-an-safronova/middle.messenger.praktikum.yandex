@@ -10,8 +10,13 @@ import { Block } from '../../core';
 import { TSignInForm } from '../../utils/types';
 import { TFormErrorState } from '../../components/sign-in-form/types';
 import { handleValidate } from '../../utils/handle-validate';
+import * as authControllers from '../../services/auth';
+import { StoreData, withStore } from '../../core/store';
 
-export default class SignInPage extends Block {
+const mapStateToProps = ({ currentUser }: StoreData) => ({
+  currentUser,
+});
+class SignInPage extends Block {
   private validateField(evt: Event, inputName: string, inputValue: string, inputChild: any) {
     handleValidate(
       evt,
@@ -46,7 +51,8 @@ export default class SignInPage extends Block {
             handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
               formState: this.props.formState,
             });
-            router.go(PATH.messenger);
+
+            authControllers.signIn(this.props.formState);
             this.setProps({ formState: { login: '', password: '' } });
           } else {
             console.log('errors: ', this.props.errorState);
@@ -92,3 +98,5 @@ export default class SignInPage extends Block {
     `;
   }
 }
+
+export default withStore(mapStateToProps)(SignInPage);

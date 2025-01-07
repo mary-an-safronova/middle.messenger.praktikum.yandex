@@ -7,6 +7,6 @@ export type TChangePassFormErrorState = {
 }
 
 export type TChangePasswordDataBlockProps = {
-  userData: TUserPassword;
+  userData?: TUserPassword;
   errorState: TChangePassFormErrorState;
 };

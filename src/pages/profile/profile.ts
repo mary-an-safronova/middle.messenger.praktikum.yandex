@@ -11,18 +11,21 @@ import {
   Circle,
 } from '../../components';
 import { handleFormSubmit, handleInputChange, handleOverlayClick } from '../../utils';
-import { userProfileInfoData, userProfilePasswordData } from '../../utils/fakeData';
-import {
-  userProfileInfoNames, inputErrorProps, router, PATH,
-
-} from '../../utils/constants';
-import { TAvatarForm, TChangePasswordForm, TChangeUserForm } from '../../utils/types';
+import { userProfileInfoNames, inputErrorProps, router } from '../../utils/constants';
+import { TAvatarForm } from '../../utils/types';
 import { Block } from '../../core';
 import { handleValidate } from '../../utils/handle-validate';
 import { TChangeUserFormErrorState } from '../../components/change-profile-data-block/types';
 import { TChangePassFormErrorState } from '../../components/change-password-data-block/types';
+import * as authControllers from '../../services/auth';
+import * as userControllers from '../../services/user';
+import store, { StoreData, withStore } from '../../core/store';
 
-export default class ProfilePage extends Block {
+const mapStateToProps = ({ currentUser }: StoreData) => ({
+  currentUser,
+});
+
+class ProfilePage extends Block {
   private validateField(evt: Event, inputName: string, inputValue: string, inputChild: any, prevInputValue?: string) {
     handleValidate(
       evt,
@@ -41,25 +44,16 @@ export default class ProfilePage extends Block {
     const isPasswordChange = false;
     const isUserDataChange = false;
 
-    const passwordFormState: TChangePasswordForm = { // Состояние формы изменения пароля юзера
-      oldPassword: userProfilePasswordData.oldPassword,
-      newPassword: userProfilePasswordData.newPassword,
-      confirmation_password: userProfilePasswordData.newPassword,
-    };
+    const userDataFormState = store.getState().currentUser?.data; // Состояние данных юзера
+    const passwordFormState = store.getState().currentUser?.password; // Состояние формы изменения пароля юзера
+
+    const avatarFile = store.getState().currentUser?.avatar_image;
+    const avatarFormState: TAvatarForm = { file: avatarFile }; // Состояние формы изменения аватара
 
     const passwordErrorState: TChangePassFormErrorState = { // Состояние ошибок ввода формы изменения пароля юзера
       oldPassword: inputErrorProps,
       newPassword: inputErrorProps,
       confirmation_password: inputErrorProps,
-    };
-
-    const userDataFormState: TChangeUserForm = { // Состояние формы изменения данных юзера
-      email: userProfileInfoData.email,
-      login: userProfileInfoData.login,
-      first_name: userProfileInfoData.first_name,
-      second_name: userProfileInfoData.second_name,
-      display_name: userProfileInfoData.display_name,
-      phone: userProfileInfoData.phone,
     };
 
     const changeUserErrorState: TChangeUserFormErrorState = { // Состояние ошибок ввода формы изменения данных юзера
@@ -72,17 +66,13 @@ export default class ProfilePage extends Block {
       avatar: inputErrorProps,
     };
 
-    const avatarFormState: TAvatarForm = {
-      file: userProfileInfoData.avatar,
-    }; // Состояние формы изменения аватара
-
     super('div', {
       isAvatarChangeModal,
       isPasswordChange,
       isUserDataChange,
-      avatarFormState,
-      passwordFormState,
-      userDataFormState,
+      avatarFormState: avatarFormState,
+      passwordFormState: passwordFormState,
+      userDataFormState: userDataFormState,
       changeUserErrorState,
       passwordErrorState,
 
@@ -129,7 +119,7 @@ export default class ProfilePage extends Block {
       }),
 
       ProfileTitle: new Title({
-        text: userDataFormState.first_name,
+        text: userDataFormState?.first_name,
         size: 'size-m',
       }),
 
@@ -153,7 +143,7 @@ export default class ProfilePage extends Block {
         },
 
         logOutButtonClick: () => { // Выход из аккаунта
-          router.go(PATH.signIn);
+          authControllers.logout();
         },
       }),
 
@@ -167,13 +157,14 @@ export default class ProfilePage extends Block {
             handleInputChange(evt, this.props.formState, this.setProps.bind(this));
           },
 
-          submit: (evt: Event) => {
+          submit: async (evt: Event) => {
             handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
               formState: this.props.formState,
             });
-            this.setProps({ isAvatarChangeModal: false });
+            await userControllers.changeUserAvatar(this.props.formState);
             const avatarComponent = this.children.ProfileAvatar;
             this.setPropsForChildren(avatarComponent, { avatarIcon: this.props.formState.file });
+            this.setProps({ isAvatarChangeModal: false });
           },
 
           click: (event: MouseEvent) => handleOverlayClick(event, () => {
@@ -203,15 +194,17 @@ export default class ProfilePage extends Block {
             );
           },
 
-          submit: (evt: Event) => { // Сабмит формы
+          submit: async (evt: Event) => { // Сабмит формы
             evt.preventDefault();
-            if (!this.props.errorState.oldPassword.error
-              && !this.props.errorState.newPassword.error
-              && !this.props.errorState.confirmation_password.error) {
+            if (!this.props.errorState.oldPassword?.error
+              && !this.props.errorState.newPassword?.error
+              && !this.props.errorState.confirmation_password?.error) {
               handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
                 passwordFormState: this.props.formState,
-                isPasswordChange: false,
               });
+              // Обновляем пароль пользователя
+              await userControllers.changeUserPassword(this.props.formState);
+              this.setProps({ isPasswordChange: false });
             } else {
               console.log('errors: ', this.props.errorState);
             }
@@ -241,7 +234,7 @@ export default class ProfilePage extends Block {
             this.validateField(evt, 'phone', this.props.formState.phone, ((childChangeProfileForm as Block).children.PhoneItem as Block).children.InputItem);
           },
 
-          submit: (evt: Event) => { // Сабмит формы
+          submit: async (evt: Event) => { // Сабмит формы
             evt.preventDefault();
             if (!this.props.errorState.email.error
               && !this.props.errorState.login.error
@@ -251,18 +244,11 @@ export default class ProfilePage extends Block {
               && !this.props.errorState.phone.error) {
               handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
                 userDataFormState: this.props.formState,
-                isUserDataChange: false,
               });
-              this.setProps({
-                formState: {
-                  email: '',
-                  login: '',
-                  first_name: '',
-                  second_name: '',
-                  display_name: '',
-                  phone: '',
-                },
-              });
+              // Обновляем данные пользователя
+              await userControllers.changeUserData(this.props.formState);
+              this.setPropsForChildren(this.children.ProfileUserInfo, { userData: this.props.formState });
+              this.setProps({ isUserDataChange: false }); // Закрываем форму изменения данных юзера
             } else {
               console.log('errors: ', this.props.errorState);
             }
@@ -286,8 +272,6 @@ export default class ProfilePage extends Block {
         <div class="profile__avatar-wrap">
           {{{ ProfileAvatar }}}
           {{{ ProfileTitle }}}
-        </div>
-
         {{#if isPasswordChange}}
           {{{ ChangeBackButton }}}
           {{{ ChangePasswordDataWrap }}}
@@ -296,7 +280,6 @@ export default class ProfilePage extends Block {
           {{{ ChangeUserDataWrap }}}
         {{else}}
           {{{ ProfileBackButton }}}
-
           <div class="profile__info-raws-wrap">
             {{{ ProfileUserInfo }}}
             {{{ ProfileUserInfoButtons }}}
@@ -310,3 +293,5 @@ export default class ProfilePage extends Block {
     `;
   }
 }
+
+export default withStore(mapStateToProps)(ProfilePage);

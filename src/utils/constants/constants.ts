@@ -5,6 +5,8 @@ import {
   locationIcon,
   deleteIcon,
   addIcon,
+  deleteRedIcon,
+  usersIcon,
 } from '../../assets';
 import { TInputError, TUser } from '../types';
 import Router from '../../core/router';
@@ -41,6 +43,14 @@ export const menuModalItems = [
   {
     icon: deleteIcon,
     text: 'Удалить пользователя',
+  },
+  {
+    icon: deleteRedIcon,
+    text: 'Удалить чат',
+  },
+  {
+    icon: usersIcon,
+    text: 'Участники чата',
   },
 ];
 
@@ -96,12 +106,14 @@ export const inputErrorProps: TInputError = {
   errorText: '',
 };
 
+export const ApiURL = 'https://ya-praktikum.tech/api/v2';
+
 export const PATH = {
   signIn: '/',
   signUp: '/sign-up',
   settings: '/settings',
   messenger: '/messenger',
-  badRequest: '/bad-request',
+  internalServer: '/500',
 };
 
 const APP_ROOT_ELEMENT = '#app';

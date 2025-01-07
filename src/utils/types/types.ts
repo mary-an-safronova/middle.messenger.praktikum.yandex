@@ -1,5 +1,5 @@
 export type TUser = {
-  id?: number;
+  id?: number | null;
   first_name?: string;
   second_name?: string;
   display_name?: string;
@@ -8,6 +8,11 @@ export type TUser = {
   avatar?: string;
   email?: string;
 };
+
+type TUserWithoutPhoneEmail = Omit<TUser, 'phone' | 'email'>;
+export type TUserWithRole = TUserWithoutPhoneEmail & { role?: string };
+
+export type TUserWithoutIdAvatar = Omit<TUser, 'id' | 'avatar'>;
 
 export type TUserPassword = {
   oldPassword?: string;
@@ -26,12 +31,27 @@ export type TLastMessage = {
 };
 
 export type TMessage = {
-  id: number;
-  title: string;
-  avatar: string;
-  unread_count: number;
-  created_by: number;
+  id?: number | null;
+  title?: string;
+  avatar?: string;
+  unread_count?: number;
+  created_by?: number;
   last_message?: TLastMessage;
+};
+
+export type TChatUser = {
+  id?: number;
+  first_name?: string;
+  second_name?: string;
+  display_name?: string;
+  login?: string;
+  avatar?: string;
+  role?: string;
+}
+
+export type TAddUserToChatData = {
+  users: (number | null | undefined)[];
+  chatId: number,
 };
 
 export type TMessageModalItem = {
@@ -53,24 +73,28 @@ export type TSignUpForm = {
   second_name: string;
   phone: string;
   password: string;
-  confirmation_password: string;
-};
-
-export type TAvatarForm = { file?: string; };
-
-export type TChangePasswordForm = {
-  oldPassword?: string;
-  newPassword?: string;
   confirmation_password?: string;
 };
 
-export type TChangeUserForm = TUser;
+export type TAvatarForm = { file?: string | null; };
 
-type TLogin = { login: string };
+export type TLogin = { login: string };
 
 export type TAddUserForm = TLogin;
 export type TDeleteUserForm = TLogin;
 export type TMessageForm = { message: string };
+
+export type TAddChatForm = { title: string };
+
+export type TDeletedChat = {
+  userId: number;
+  result: {
+    id: number;
+    title: string;
+    avatar: string;
+    created_by: number;
+  }
+}
 
 export type TInputError = {
   error: boolean;

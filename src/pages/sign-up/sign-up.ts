@@ -9,8 +9,14 @@ import { Block } from '../../core';
 import { TSignUpForm } from '../../utils/types';
 import { TFormErrorState } from '../../components/sign-up-form/types';
 import { handleValidate } from '../../utils/handle-validate';
+import { StoreData, withStore } from '../../core/store';
+import * as authControllers from '../../services/auth';
 
-export default class SignUpPage extends Block {
+const mapStateToProps = ({ currentUser }: StoreData) => ({
+  currentUser,
+});
+
+class SignUpPage extends Block {
   private validateField(evt: Event, inputName: string, inputValue: string, inputChild: any, prevInputValue?: string) {
     handleValidate(
       evt,
@@ -62,7 +68,7 @@ export default class SignUpPage extends Block {
             handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
               formState: this.props.formState,
             });
-            router.go(PATH.messenger);
+            authControllers.signUp(this.props.formState);
             this.setProps({
               formState: {
                 email: '',
@@ -129,3 +135,5 @@ export default class SignUpPage extends Block {
     `;
   }
 }
+
+export default withStore(mapStateToProps)(SignUpPage);

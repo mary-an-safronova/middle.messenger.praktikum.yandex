@@ -26,3 +26,5 @@ export { MessageModal } from './message-modal';
 export { IconTextItem } from './icon-text-item';
 export { AddUserModal } from './add-user-modal';
 export { DeleteUserModal } from './delete-user-modal';
+export { AddChatModal } from './add-chat-modal';
+export { DeleteChatModal } from './delete-chat-modal';

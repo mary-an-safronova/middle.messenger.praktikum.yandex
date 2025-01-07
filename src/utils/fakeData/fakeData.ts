@@ -1,22 +1,6 @@
 /* eslint-disable object-shorthand */
 import { avatar } from '../../assets';
-import { TMessage, TUser, TUserPassword } from '../types';
-
-export const userProfileInfoData: TUser = {
-  id: 123,
-  first_name: 'Petya',
-  second_name: 'Pupkin',
-  display_name: 'Petya Pupkin',
-  phone: '+79001001100',
-  login: 'userLogin',
-  avatar: avatar,
-  email: 'string@ya.ru',
-};
-
-export const userProfilePasswordData: TUserPassword = {
-  oldPassword: '•••••••••',
-  newPassword: '•••••••••••',
-};
+import { TMessage } from '../types';
 
 export const messageContactsData: TMessage[] = [
   {
