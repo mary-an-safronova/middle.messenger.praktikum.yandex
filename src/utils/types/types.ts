@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import Block from '../../core/block';
+
 export type TUser = {
   id?: number | null;
   first_name?: string;
@@ -99,4 +102,8 @@ export type TDeletedChat = {
 export type TInputError = {
   error: boolean;
   errorText: string
+}
+
+export type BlockConstructable<P = any> = {
+  new(props: P): Block
 }

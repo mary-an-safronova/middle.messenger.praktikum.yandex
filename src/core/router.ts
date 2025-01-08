@@ -1,7 +1,7 @@
 /* eslint-disable no-constructor-return */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Block from './block';
+import { BlockConstructable } from '../utils/types';
 import Route from './route';
 
 export default class Router {
@@ -28,7 +28,7 @@ export default class Router {
     Router.__instance = this;
   }
 
-  use(pathname: string, block: typeof Block) {
+  use(pathname: string, block: BlockConstructable) {
     const route = new Route(pathname, block, { rootQuery: this._rootQuery });
     this.routes?.push(route);
     return this; // для возможности цепочки вызовов

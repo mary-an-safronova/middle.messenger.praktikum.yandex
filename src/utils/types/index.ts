@@ -19,4 +19,5 @@ export type {
   TAddChatForm,
   TDeletedChat,
   TInputError,
+  BlockConstructable,
 } from './types';

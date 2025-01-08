@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 /* eslint-disable no-underscore-dangle */
+import { BlockConstructable } from '../utils/types';
 import Block from './block';
 import renderDOM from './render-dom';
 
@@ -17,13 +18,13 @@ function isEqual(lhs: any, rhs: any) {
 export default class Route implements RouteInterface {
   private _pathname: string;
 
-  private _blockClass: typeof Block;
+  private _blockClass: BlockConstructable;
 
   private _block: Block | null;
 
   private _props: any;
 
-  constructor(pathname: string, view: typeof Block, props: any) {
+  constructor(pathname: string, view: BlockConstructable, props: any) {
     this._pathname = pathname;
     this._blockClass = view;
     this._block = null;
@@ -47,7 +48,7 @@ export default class Route implements RouteInterface {
 
   render() {
     if (!this._block) {
-      this._block = new this._blockClass();
+      this._block = new this._blockClass({});
     }
 
     this._renderDOM(this._props.rootQuery, this._block);
