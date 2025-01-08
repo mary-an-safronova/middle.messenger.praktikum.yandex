@@ -16,7 +16,7 @@ export interface StoreData {
   currentUser?: {
     data?: TUser;
     password: TUserPassword;
-    avatar_image: string | null;
+    avatar_image: string;
   },
   chatList?: TMessage[];
   currentChat?: {
@@ -42,7 +42,7 @@ const initialState: StoreData = {
       oldPassword: '',
       newPassword: '',
     },
-    avatar_image: null,
+    avatar_image: '',
   },
   chatList: [],
   currentChat: {
