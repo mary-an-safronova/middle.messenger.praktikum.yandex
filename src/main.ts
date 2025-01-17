@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import './style.css';
 import Handlebars from 'handlebars';
 import * as Components from './components';
@@ -49,15 +50,15 @@ const onDomLoaded = async () => {
     await chatsControllers.getChatList(); // Загружаем чаты
 
     router
-      .use(PATH.settings, Pages.ProfilePage) // Настройки профиля
-      .use(PATH.messenger, Pages.ChatPage) // Чат
+      .use(PATH.settings, Pages.ProfilePage as any) // Настройки профиля
+      .use(PATH.messenger, Pages.ChatPage as any) // Чат
       .use(PATH.internalServer, Pages.InternalServerErrorPage) // Ошибка сервера
       .use('*', Pages.BadRequestPage) // Если роут неизвестен, перенаправляем на BadRequestPage
       .start();
   } else { // Если юзер неавторизован
     router
-      .use(PATH.signIn, Pages.SignInPage) // Авторизация
-      .use(PATH.signUp, Pages.SignUpPage) // Регистрация
+      .use(PATH.signIn, Pages.SignInPage as any) // Авторизация
+      .use(PATH.signUp, Pages.SignUpPage as any) // Регистрация
       .start();
   }
 };

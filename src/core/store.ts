@@ -7,7 +7,9 @@
 import {
   TChatUser, TChat, TUser, TUserPassword,
   TMessage,
+  BlockConstructable,
 } from '../utils/types';
+import Block from './block';
 import EventBus from './event-bus';
 import isEqual from './utils/is-equal';
 import { set } from './utils/set';
@@ -74,10 +76,6 @@ export class Store extends EventBus {
     Store.__instance = this;
   }
 
-  private handleUpdate(prevState: any, nextState: any) {
-    // console.log('State updated from', prevState, 'to', nextState);
-  }
-
   public getState() {
     return this.state;
   }
@@ -85,14 +83,15 @@ export class Store extends EventBus {
   public set(path: string, nextState: any) {
     set(this.state, path, nextState);
 
-    this.on(Store.EVENTS.UPDATED, this.handleUpdate);
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    this.on(Store.EVENTS.UPDATED, () => {});
     this.emit(Store.EVENTS.UPDATED, this.state, nextState);
   }
 }
 
 const store = new Store();
 
-export function withStore(mapStateToProps: (state: StoreData) => Record<string, any>) {
+export function withStore(mapStateToProps: (state: StoreData) => any) {
   // eslint-disable-next-line func-names
   return function (Component: any) {
     return class extends Component {
