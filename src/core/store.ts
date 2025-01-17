@@ -7,9 +7,7 @@
 import {
   TChatUser, TChat, TUser, TUserPassword,
   TMessage,
-  BlockConstructable,
 } from '../utils/types';
-import Block from './block';
 import EventBus from './event-bus';
 import isEqual from './utils/is-equal';
 import { set } from './utils/set';
