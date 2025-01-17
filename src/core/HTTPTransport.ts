@@ -5,7 +5,7 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable func-names */
 
-import { ApiURL, PATH, router } from '../utils/constants';
+import { baseURL, PATH, router } from '../utils/constants';
 import queryStringify from './utils/query-stringify';
 
 enum METHODS {
@@ -16,17 +16,17 @@ enum METHODS {
 }
 
 type Options = {
-method: METHODS;
-data?: any;
-headers?: Record<string, string>;
-withCredentials?: boolean;
-responseType?: XMLHttpRequestResponseType;
+  method: METHODS;
+  data?: any;
+  headers?: Record<string, string>;
+  withCredentials?: boolean;
+  responseType?: XMLHttpRequestResponseType;
 };
 
 type HTTPMethod = <Response>(url: string, data?: { [x: string]: any }) => Promise<Response>
 
 export default class HTTPTransport {
-  static API_URL = ApiURL;
+  static API_URL = baseURL;
 
   protected endPoint: string;
 

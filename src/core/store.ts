@@ -5,9 +5,9 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  TChatUser, TMessage, TUser, TUserPassword,
+  TChatUser, TChat, TUser, TUserPassword,
+  TMessage,
 } from '../utils/types';
-import Block from './block';
 import EventBus from './event-bus';
 import isEqual from './utils/is-equal';
 import { set } from './utils/set';
@@ -18,10 +18,12 @@ export interface StoreData {
     password: TUserPassword;
     avatar_image: string;
   },
-  chatList?: TMessage[];
+  chatList?: TChat[];
   currentChat?: {
-    chat?: TMessage | null;
+    chat?: TChat | null;
     chat_users?: TChatUser[] | null;
+    chat_token: any;
+    messages: TMessage[],
   },
   foundUsers?: TUser[] | null;
 }
@@ -48,6 +50,8 @@ const initialState: StoreData = {
   currentChat: {
     chat: null,
     chat_users: null,
+    chat_token: null,
+    messages: [],
   },
   foundUsers: null,
 };
@@ -57,7 +61,7 @@ export class Store extends EventBus {
     UPDATED: 'updated',
   } as const;
 
-  private state: StoreData = { ...initialState };
+  public state: StoreData = { ...initialState };
 
   static __instance: any;
 
@@ -71,7 +75,7 @@ export class Store extends EventBus {
   }
 
   private handleUpdate(prevState: any, nextState: any) {
-    console.log('State updated from', prevState, 'to', nextState);
+    // console.log('State updated from', prevState, 'to', nextState);
   }
 
   public getState() {
@@ -88,26 +92,38 @@ export class Store extends EventBus {
 
 const store = new Store();
 
-export const withStore = (mapStateToProps: (state: StoreData) => Record<string, unknown>) => (Component: typeof Block) => {
-  let state: any;
+export function withStore(mapStateToProps: (state: StoreData) => Record<string, any>) {
+  // eslint-disable-next-line func-names
+  return function (Component: any) {
+    return class extends Component {
+      private onChangeStoreCallback: () => void;
 
-  return class extends Component {
-    constructor(props: object) {
-      state = mapStateToProps(store.getState());
+      constructor(props: any) {
+        // сохраняем начальное состояние
+        let state = mapStateToProps(store.getState());
 
-      super({ ...props, ...state });
+        super({ ...props, ...state });
 
-      store.on(Store.EVENTS.UPDATED, () => {
-        const newState = mapStateToProps(store.getState());
+        this.onChangeStoreCallback = () => {
+          // при обновлении получаем новое состояние
+          const newState = mapStateToProps(store.getState());
+          // если что-то из используемых данных поменялось, обновляем компонент
+          if (!isEqual(state, newState)) {
+            this.setProps({ ...newState });
+          }
+          // не забываем сохранить новое состояние
+          state = newState;
+        };
+        // подписываемся на событие
+        store.on(Store.EVENTS.UPDATED, this.onChangeStoreCallback);
+      }
 
-        if (!isEqual(state, newState)) {
-          this.setProps({
-            ...newState,
-          });
-        }
-      });
-    }
+      componentWillUnmount() {
+        super.componentWillUnmount();
+        store.off(Store.EVENTS.UPDATED, this.onChangeStoreCallback);
+      }
+    };
   };
-};
+}
 
 export default store;

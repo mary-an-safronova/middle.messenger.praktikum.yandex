@@ -2,7 +2,7 @@ import {
   TAddChatForm,
   TAddUserToChatData,
   TDeletedChat,
-  TMessage,
+  TChat,
   TUserWithRole,
 } from '../utils/types/types';
 import BaseAPI from './base-api';
@@ -16,7 +16,7 @@ export default class ChatsAPI extends BaseAPI {
     return this.http.post('', data);
   }
 
-  async read(): Promise<TMessage[]> {
+  async read(): Promise<TChat[]> {
     return this.http.get('');
   }
 
@@ -26,6 +26,10 @@ export default class ChatsAPI extends BaseAPI {
 
   async readChatUsers(chatId?: number | null): Promise<TUserWithRole> {
     return this.http.get(`/${chatId}/users`);
+  }
+
+  async getToken(chatId?: number | null): Promise<{ token: string }> {
+    return this.http.post(`/token/${chatId}`);
   }
 
   async addUser(data: TAddUserToChatData) {

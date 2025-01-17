@@ -33,7 +33,7 @@ export type TLastMessage = {
   content?: string;
 };
 
-export type TMessage = {
+export type TChat = {
   id?: number | null;
   title?: string;
   avatar?: string;
@@ -57,12 +57,12 @@ export type TAddUserToChatData = {
   chatId: number,
 };
 
-export type TMessageModalItem = {
+export type TChatModalItem = {
   icon: string;
   text: string;
 };
 
-export type TMessageModalItems = TMessageModalItem[];
+export type TChatModalItems = TChatModalItem[];
 
 export type TSignInForm = {
   login: string;
@@ -106,4 +106,21 @@ export type TInputError = {
 
 export type BlockConstructable<P = any> = {
   new(props: P): Block
+}
+
+export type TMessage = {
+  chat_id?: number;
+  time?: string;
+  type?: string;
+  user_id?: number;
+  content?: string;
+  file?: {
+    id?: number;
+    user_id?: number;
+    path?: string;
+    filename?: string;
+    content_type?: string;
+    content_size?: number;
+    upload_date?: string;
+  }
 }

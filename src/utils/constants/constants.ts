@@ -10,6 +10,7 @@ import {
 } from '../../assets';
 import { TInputError, TUser } from '../types';
 import Router from '../../core/router';
+import { WSTransport } from '../../core';
 
 export const userProfileInfoNames: TUser = {
   email: 'Почта',
@@ -106,7 +107,10 @@ export const inputErrorProps: TInputError = {
   errorText: '',
 };
 
-export const ApiURL = 'https://ya-praktikum.tech/api/v2';
+export const baseURL = 'https://ya-praktikum.tech/api/v2';
+export const wsURL = 'wss://ya-praktikum.tech/ws/chats/';
+
+export const wsTransport: WSTransport | null = null;
 
 export const PATH = {
   signIn: '/',

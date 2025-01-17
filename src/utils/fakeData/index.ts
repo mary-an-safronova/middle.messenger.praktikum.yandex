@@ -1,3 +1,0 @@
-export {
-  messageContactsData,
-} from './fakeData';

@@ -3,6 +3,7 @@ import { PATH, router } from '../utils/constants';
 import AuthAPI from '../api/auth-api';
 import store from '../core/store';
 import { TSignInForm, TSignUpForm } from '../utils/types';
+import * as messagesController from './messeges';
 
 const authAPI = new AuthAPI();
 
@@ -11,7 +12,6 @@ export const signIn = async (data: TSignInForm) => {
     await authAPI.signin(data);
     router.go(PATH.messenger);
     store.set('currentUser.data', data);
-    window.location.reload();
   } catch (err) {
     console.log(err);
   }
@@ -22,7 +22,6 @@ export const signUp = async (data: TSignUpForm) => {
     await authAPI.create(data);
     router.go(PATH.messenger);
     store.set('currentUser.data', data);
-    window.location.reload();
   } catch (err) {
     console.log(err);
   }
@@ -41,7 +40,7 @@ export const logout = async () => {
   try {
     await authAPI.logout();
     router.go(PATH.signIn);
-    window.location.reload();
+    messagesController.closeAll();
   } catch (err) {
     console.log(err);
   }

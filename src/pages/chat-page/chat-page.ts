@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 /* eslint-disable object-shorthand */
 import {
@@ -9,12 +10,10 @@ import { searchIcon, arrowRight, addWhiteIcon } from '../../assets';
 import { inputErrorProps, PATH, router } from '../../utils/constants';
 import store, { StoreData, withStore } from '../../core/store';
 import * as chatsControllers from '../../services/chats';
-
-const mapStateToProps = ({ currentUser, chatList, currentChat }: StoreData) => ({
-  currentUser,
-  chatList,
-  currentChat,
-});
+import * as messagesController from '../../services/messeges';
+import { TBlockProps } from '../../core/block';
+import isEqual from '../../core/utils/is-equal';
+import { TChat } from '../../utils/types';
 
 class ChatPage extends Block {
   private selectedCardId: string | null = null; // Хранит ID выбранной карточки
@@ -25,14 +24,15 @@ class ChatPage extends Block {
     const addChatFormState = { title: '' };
     const errorState = { title: inputErrorProps };
 
-    const messageContactsList = store.getState().chatList; // Состояние данных юзера
+    const { chatList } = store.state; // Состояние данных юзера
 
     super('div', {
       className: 'chat-page',
-      isSelected,
+      isSelected: isSelected,
       isAddChatModal,
       addChatFormState,
       errorState,
+      chatList: chatList,
 
       ChatMessageBlock: new MessageBlock({}), // Инициализируем пустым блоком сообщений
 
@@ -57,36 +57,12 @@ class ChatPage extends Block {
       }),
 
       // Список чатов
-      ContactCards: messageContactsList?.map((contactCardProps) => new MessageContactCard({
+      ContactCards: chatList?.map((contactCardProps) => new MessageContactCard({
         ...contactCardProps,
         isSelected: isSelected,
 
         onSelect: async (selectedId: string | null) => {
-          // Если есть выбранная карточка, сбрасываем ее состояние
-          if (this.selectedCardId) {
-            const previousCard = this.props.ContactCards.find((card: MessageContactCard) => card.props.id.toString() === this.selectedCardId);
-            if (previousCard) {
-              previousCard.setProps({ isSelected: false });
-            }
-          }
-
-          // Устанавливаем новую выбранную карточку
-          this.selectedCardId = selectedId;
-
-          // Обновляем ChatMessageBlock с данными выбранной карточки
-          const selectedContact = messageContactsList.find((contact) => contact.id?.toString() === this.selectedCardId);
-          if (selectedContact) {
-            this.setProps({ isSelected: true });
-            store.set('currentChat.chat', selectedContact);
-            const { currentChat } = store.getState(); // Выбранный чат
-            console.log('currentChat.id: ', currentChat?.chat?.id);
-            await chatsControllers.getChatUsers(currentChat?.chat?.id); // Получаем пользователей чата
-            const chatUsers = store.getState().currentChat?.chat_users; // Выбранный чат
-            console.log('chatUsers in CHAT PAGE: ', chatUsers);
-            this.setPropsForChildren(this.children.ChatMessageBlock, { messageData: selectedContact, chatUsers: chatUsers });
-          } else {
-            console.error('Выбранный контакт не найден');
-          }
+          this.handleSelectContact(selectedId, chatList);
         },
       })),
 
@@ -112,6 +88,96 @@ class ChatPage extends Block {
       }),
     });
   }
+
+  componentDidUpdate(oldProps: TBlockProps, newProps: TBlockProps) {
+    // Если массив чатов изменился
+    if (!isEqual(oldProps.chatList, newProps.chatList)) {
+      // Если создаем новый чат, выбираем новый чат
+      if (oldProps.chatList?.length < newProps.chatList?.length) {
+        this.selectedCardId = newProps.chatList[0].id.toString();
+        // Очищаем блок сообщений в стор
+        store.set('currentChat.messages', []);
+        // Если удаляем чат, убираем выбор с чатов
+      } else if (oldProps.chatList?.length > newProps.chatList?.length) {
+        this.selectedCardId = null;
+        this.setProps({ isSelected: false });
+        // Очищаем блок сообщений в стор
+        store.set('currentChat.messages', []);
+      }
+      // Обновляем компонент с чатами
+      this.children.ContactCards = this.updateContactCards(newProps.chatList);
+    }
+    if (oldProps.messages) {
+      // Если изменился массив сообщений, обновляем компонент с чатами
+      if (!isEqual(oldProps.messages, newProps.messages)) {
+        chatsControllers.getChatList();
+        this.children.ContactCards = this.updateContactCards(newProps.chatList);
+      }
+    }
+    return true;
+  }
+
+  // Метод обновления блока карточек чата
+  updateContactCards(chatList: TChat[] | undefined = []) {
+    return chatList.map((contactCardProps) => new MessageContactCard({
+      ...contactCardProps,
+      isSelected: this.selectedCardId === contactCardProps.id?.toString(),
+
+      onSelect: async (selectedId: string | null) => {
+        this.handleSelectContact(selectedId, chatList);
+      },
+    }));
+  }
+
+  // Метод выбора карточки чата
+  handleSelectContact = async (
+    selectedId: string | null,
+    chatList: TChat[] | undefined = [],
+  ): Promise<void> => {
+    // Если кликнули на уже выбранный, ничего не делаем
+    if (selectedId === this.selectedCardId) {
+      return;
+    }
+
+    // Если есть выбранная карточка, сбрасываем ее состояние
+    if (this.selectedCardId) {
+      const previousCard = (this.children.ContactCards as any).find((card: MessageContactCard) => card.props.id.toString() === this.selectedCardId);
+      if (previousCard) {
+        previousCard.setProps({ isSelected: false });
+      }
+    }
+
+    // Устанавливаем новую выбранную карточку
+    this.selectedCardId = selectedId;
+
+    // Обновляем ChatMessageBlock с данными выбранной карточки
+    const selectedChat = chatList.find((contact) => contact.id?.toString() === this.selectedCardId);
+    if (selectedChat) {
+      this.setProps({ isSelected: true });
+      store.set('currentChat.chat', selectedChat);
+
+      // Получаем из стора выбранный чат
+      const { currentChat } = store.getState();
+      const chatId = currentChat?.chat?.id; // Id выбранного чата
+      console.log('currentChat.id: ', chatId);
+
+      // Получаем пользователей выбранного чата
+      await chatsControllers.getChatUsers(chatId);
+      // Запрашиваем пользователей выбранного чата из стора
+      const chatUsers = store.getState().currentChat?.chat_users;
+      await chatsControllers.getChatToken(chatId); // Получаем токен по id выбранного чата
+      const chatToken = store.getState().currentChat?.chat_token;
+      await messagesController.chatConnect(chatId, chatToken);
+
+      // Передаем пропсы в блок чата
+      this.setPropsForChildren(this.children.ChatMessageBlock, {
+        chat: selectedChat,
+        chatUsers: chatUsers,
+      });
+    } else {
+      console.error('Выбранный контакт не найден');
+    }
+  };
 
   render(): string {
     return `
@@ -147,5 +213,12 @@ class ChatPage extends Block {
     `;
   }
 }
+
+const mapStateToProps = (state: StoreData) => ({
+  currentUser: state.currentUser,
+  chatList: state.chatList,
+  currentChat: state.currentChat,
+  messages: state.currentChat?.messages,
+});
 
 export default withStore(mapStateToProps)(ChatPage);

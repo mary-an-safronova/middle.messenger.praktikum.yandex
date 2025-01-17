@@ -2,6 +2,7 @@
 import ResourcesAPI from '../api/resources-api';
 import UserAPI from '../api/user-api';
 import store from '../core/store';
+import { baseURL } from '../utils/constants';
 import {
   TAvatarForm, TLogin, TUserPassword, TUserWithoutIdAvatar,
 } from '../utils/types/types';
@@ -13,7 +14,6 @@ export const changeUserData = async (data: TUserWithoutIdAvatar) => {
   try {
     await userAPI.update(data);
     store.set('currentUser.data', data);
-    window.location.reload();
   } catch (err) {
     console.log(err);
   }
@@ -23,7 +23,6 @@ export const changeUserPassword = async (data: TUserPassword) => {
   try {
     await userAPI.updatePassword(data);
     store.set('currentUser.password', data);
-    window.location.reload();
   } catch (err) {
     console.log(err);
   }
@@ -37,7 +36,6 @@ export const changeUserAvatar = async (data: TAvatarForm) => {
     }
     const response = await userAPI.updateAvatar(formData);
     store.set('currentUser.data.avatar', response.avatar);
-    window.location.reload();
   } catch (err) {
     console.log(err);
   }
@@ -47,7 +45,7 @@ export const getCurrentUserAvatar = async () => {
   try {
     const avatarPath = store.getState().currentUser?.data?.avatar; // Состояние данных юзера
     await resourcesAPI.getResource(avatarPath);
-    store.set('currentUser.avatar_image', `https://ya-praktikum.tech/api/v2/resources${avatarPath}`);
+    store.set('currentUser.avatar_image', `${baseURL}/resources${avatarPath}`);
   } catch (err) {
     console.log(err);
   }

@@ -1,5 +1,5 @@
 import {
-  TChatUser, TInputError, TMessage, TMessageForm,
+  TChatUser, TInputError, TChat, TMessageForm,
 } from '../../utils/types';
 
 export type TFormErrorState = {
@@ -7,8 +7,9 @@ export type TFormErrorState = {
 }
 
 export type TMessageBlockProps = {
-  messageData?: TMessage;
+  chat?: TChat;
   formState?: TMessageForm;
   errorState?: TFormErrorState;
   chatUsers?: TChatUser[];
+  currentUserId?: number;
 };

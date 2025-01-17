@@ -4,6 +4,7 @@ import { Circle } from '../circle';
 import { TMessageContactCardProps } from './types';
 import { noAvatar } from '../../assets';
 import store from '../../core/store';
+import { formatDate } from '../../utils';
 
 export default class MessageContactCard extends Block {
   constructor(props: TMessageContactCardProps) {
@@ -33,7 +34,16 @@ export default class MessageContactCard extends Block {
     });
   }
 
+  convertTime() {
+    if (!this.props.last_message) {
+      return '';
+    }
+    return formatDate(this.props.last_message?.time);
+  }
+
   render(): string {
+    const convertedTime = this.convertTime();
+
     return `
       <div class="message-contact-card__line"></div>
       <div class="message-contact-card__wrap {{#if isSelected}}message-contact-card__wrap_bg-active{{/if}}" onclick="{{click}}">
@@ -43,7 +53,7 @@ export default class MessageContactCard extends Block {
         <div class="message-contact-card__text-wrap">
           <div class="message-contact-card__name-time-wrap">
               <p class="message-contact-card__bold-text message-contact-card__text">{{title}}</p>
-              <p class="message-contact-card__text message-contact-card__time">{{last_message.time}}</p>
+              <p class="message-contact-card__text message-contact-card__time">${convertedTime}</p>
           </div>
           <div class="message-contact-card__name-time-wrap message-contact-card__text-count-wrap">
             <p class="message-contact-card__text message-contact-card__text-message">

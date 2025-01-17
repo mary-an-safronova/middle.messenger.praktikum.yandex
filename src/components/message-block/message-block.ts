@@ -1,3 +1,5 @@
+/* eslint-disable class-methods-use-this */
+/* eslint-disable object-shorthand */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable no-console */
 /* eslint-disable no-unneeded-ternary */
@@ -15,15 +17,23 @@ import { TMessageForm } from '../../utils/types';
 import { TFormErrorState, TMessageBlockProps } from './types';
 import { clickOnModalItem } from './utils';
 import { handleEmptyInputValidate } from '../../utils/handle-validate';
-import store from '../../core/store';
+import store, { StoreData, withStore } from '../../core/store';
 import * as chatsControllers from '../../services/chats';
 import * as usersControllers from '../../services/user';
 import { TLogin } from '../../utils/types/types';
+import * as messagesController from '../../services/messeges';
+import { TBlockProps } from '../../core/block';
+import isEqual from '../../core/utils/is-equal';
 
-export default class MessageBlock extends Block {
+class MessageBlock extends Block {
   constructor(props: TMessageBlockProps) {
     const formState: TMessageForm = props.formState || { message: '' };
     const errorState: TFormErrorState = props.errorState || { message: inputErrorProps };
+
+    const { currentChat } = store.getState(); // Текущий чат
+
+    const messages = currentChat?.messages; // Получаем массив сообщений из стора
+    const currentUserId = store.getState().currentUser?.data?.id; // Текущий юзер
 
     super('div', {
       ...props,
@@ -36,26 +46,32 @@ export default class MessageBlock extends Block {
       isOpenDeleteUserModal: false,
       isOpenDeleteChatModal: false,
       isOpenChatUsersModal: false,
-      messageData: props.messageData,
+      chat: props.chat,
       chatUsers: props.chatUsers,
 
-      MessageItem: new Message({ position: 'left', type: 'text' }),
-      MyMessageItem: new Message({ position: 'right', type: 'text' }),
+      // Компонент сообщений в чате
+      ChatMessages: messages?.map((message) => new Message({
+        ...message,
+        position: message.user_id === currentUserId ? 'right' : 'left',
+        type: 'text',
+        content: message.content,
+      })),
 
       events: {
-        submit: (evt: Event) => { // Сабмит формы
+        submit: async (evt: Event) => { // Сабмит формы
           evt.preventDefault();
           if (this.props.formState.message !== '') {
             handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
               message: this.props.formState.message,
             });
 
-            this.setPropsForChildren(this.children.MyMessageItem, {
-              ...props,
-              content: this.props.formState.message,
-            });
+            const chatId = currentChat?.chat?.id; // Id выбранного чата
+            messagesController.sendMessage(this.props.formState.message, chatId);
+
             // Сброс состояния формы после сабмита
             this.setPropsForChildren(this.children.MessageInput, { value: '' });
+
+            this.scrollToBottom();
           } else {
             handleEmptyInputValidate(
               evt,
@@ -164,7 +180,7 @@ export default class MessageBlock extends Block {
             users: [
               foundUser.id,
             ],
-            chatId: this.props.messageData?.id,
+            chatId: this.props.chat?.id,
           };
           await chatsControllers.addUserToChat(data); // Добавляем юзера в чат
         },
@@ -177,12 +193,12 @@ export default class MessageBlock extends Block {
           await usersControllers.searchUserByLogin(this.props.formState);
           const foundUser = store.getState().foundUsers![0]; // Найденный по логину юзер
           console.log('foundUser: ', foundUser);
-          console.log('props.chatId: ', this.props.messageData?.id);
+          console.log('props.chatId: ', this.props.chat?.id);
           const data = {
             users: [
               foundUser.id,
             ],
-            chatId: this.props.messageData?.id,
+            chatId: this.props.chat?.id,
           };
           await chatsControllers.deleteUserFromChat(data); // Удаляем юзера из чата
         },
@@ -192,38 +208,78 @@ export default class MessageBlock extends Block {
       MessageDeleteChatModal: new DeleteChatModal({
         formSubmit: async () => {
           const chat: { chatId?: number | null } = {
-            chatId: this.props.messageData?.id,
+            chatId: this.props.chat?.id,
           };
           await chatsControllers.deleteChat(chat);
         },
         onModalClose: () => toggleModal('isOpenDeleteChatModal', this.setProps.bind(this), this.props),
       }),
     });
+    // Прокрутка вниз при инициализации
+    this.scrollToBottom = this.scrollToBottom.bind(this);
+  }
+
+  // Функция для установки скролла внизу
+  scrollToBottom(): void {
+    // Получаем элемент контейнера сообщений
+    const scrollContainer = document.querySelector('.message-block__scroll');
+    if (scrollContainer) {
+      requestAnimationFrame(() => {
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+      });
+    }
+  }
+
+  componentDidMount(): void {
+    // Вызываем scrollToBottom после загрузки сообщений
+    this.scrollToBottom();
+  }
+
+  componentDidUpdate(oldProps: TBlockProps, newProps: TBlockProps) {
+    if (!isEqual(oldProps.messages, newProps.messages)) {
+      this.children.ChatMessages = this.updateChatMessages(newProps.messages);
+      // Используем setTimeout для отложенной прокрутки
+      setTimeout(() => {
+        this.scrollToBottom();
+      }, 0);
+    }
+    return true;
+  }
+
+  // Метод обновления блока сообщений чата
+  updateChatMessages(messages: {
+    content?: string;
+    id?: number;
+    time?: string;
+    type?: string;
+    user_id?: number;
+  }[] | undefined = []) {
+    return messages?.map((message) => new Message({
+      ...message,
+      position: message.user_id === store.getState().currentUser?.data?.id ? 'right' : 'left',
+      type: 'text',
+      content: message.content,
+    }));
   }
 
   render(): string {
-    if (this.props.messageData?.last_message) {
-      this.setPropsForChildren(this.children.MessageItem, {
-        position: 'left',
-        content: this.props.messageData?.last_message.content,
-        type: 'text',
-      });
-    }
-
     return `
       <div class="message-block__head">
         <div class="message-block__img-name-wrap">
           <div class="message-block__img-wrap">
-              <img class="message-block__img" src="${this.props.messageData?.avatar ? this.props.messageData?.avatar : noAvatar}" alt="Аватар чата">
+              <img class="message-block__img" src="${this.props.chat?.avatar ? this.props.chat?.avatar : noAvatar}" alt="Аватар чата">
           </div>
-          <p class="message-block__bold-text">${this.props.messageData?.title}</p>
+          <p class="message-block__bold-text">${this.props.chat?.title}</p>
         </div>
         {{{ DotsButton }}}
       </div>
 
-      <div class="message-block__content">
-        {{{ MessageItem }}}
-        {{{ MyMessageItem }}}
+      <div class="message-block__scroll-wrap">
+        <ul class="message-block__content message-block__scroll">
+          {{#each ChatMessages}}
+            {{{ this }}}
+          {{/each}}
+        </ul>
       </div>
 
       <form id="{{message-form}}" name="{{message-form}}" class="message-block__interaction" onsubmit="{{submit}}" novalidate>
@@ -261,3 +317,11 @@ export default class MessageBlock extends Block {
     `;
   }
 }
+
+const mapStateToProps = (state: StoreData) => ({
+  currentUser: state.currentUser,
+  currentChat: state.currentChat,
+  messages: state.currentChat?.messages,
+});
+
+export default withStore(mapStateToProps)(MessageBlock);

@@ -5,11 +5,10 @@ export type {
   TUserPassword,
   TFile,
   TLastMessage,
-  TMessage,
+  TChat,
   TChatUser,
-  TMessageModalItem,
-  TMessageModalItems,
-
+  TChatModalItem,
+  TChatModalItems,
   TSignInForm,
   TSignUpForm,
   TAvatarForm,
@@ -20,4 +19,5 @@ export type {
   TDeletedChat,
   TInputError,
   BlockConstructable,
+  TMessage,
 } from './types';

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable class-methods-use-this */
-import HTTPTransport from '../core/HTTPTransport';
+import { HTTPTransport } from '../core';
 
 export default class BaseAPI {
   protected http: HTTPTransport;

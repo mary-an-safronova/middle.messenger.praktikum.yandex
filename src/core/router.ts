@@ -2,7 +2,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BlockConstructable } from '../utils/types';
-import Route from './route';
+import { Route } from '.';
 
 export default class Router {
   static __instance: any;
