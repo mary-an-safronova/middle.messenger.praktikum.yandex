@@ -1,4 +1,4 @@
 export type TAvatarProps = {
-  avatarIcon?: string;
+  avatarIcon?: string | null;
   changeAvatarClick?:() => void;
 }

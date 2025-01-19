@@ -3,14 +3,20 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormWrap, SignUpForm } from '../../components';
-import { handleFormSubmit, handleInputChange, navigate } from '../../utils';
-import { inputErrorProps } from '../../utils/constants';
+import { handleFormSubmit, handleInputChange } from '../../utils';
+import { inputErrorProps, PATH, router } from '../../utils/constants';
 import { Block } from '../../core';
 import { TSignUpForm } from '../../utils/types';
 import { TFormErrorState } from '../../components/sign-up-form/types';
 import { handleValidate } from '../../utils/handle-validate';
+import { StoreData, withStore } from '../../core/store';
+import * as authControllers from '../../services/auth';
 
-export default class SignUpPage extends Block {
+const mapStateToProps = ({ currentUser }: StoreData) => ({
+  currentUser,
+});
+
+class SignUpPage extends Block {
   private validateField(evt: Event, inputName: string, inputValue: string, inputChild: any, prevInputValue?: string) {
     handleValidate(
       evt,
@@ -24,8 +30,8 @@ export default class SignUpPage extends Block {
     );
   }
 
-  constructor(props: Record<string, any>) {
-    const formState: TSignUpForm = props.formState || {
+  constructor() {
+    const formState: TSignUpForm = {
       email: '',
       login: '',
       first_name: '',
@@ -35,7 +41,7 @@ export default class SignUpPage extends Block {
       confirmation_password: '',
     };
 
-    const errorState: TFormErrorState = props.errorState || {
+    const errorState: TFormErrorState = {
       email: inputErrorProps,
       login: inputErrorProps,
       first_name: inputErrorProps,
@@ -46,8 +52,6 @@ export default class SignUpPage extends Block {
     };
 
     super('div', {
-      ...props,
-
       formState,
       errorState,
 
@@ -64,7 +68,7 @@ export default class SignUpPage extends Block {
             handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
               formState: this.props.formState,
             });
-            navigate('navigatePage');
+            authControllers.signUp(this.props.formState);
             this.setProps({
               formState: {
                 email: '',
@@ -104,7 +108,7 @@ export default class SignUpPage extends Block {
         click: (evt: Event) => { // Клик на ссылку
           const target = evt.target as HTMLElement;
           if (target.closest('.link')) {
-            navigate('signInPage');
+            router.go(PATH.signIn);
           }
         },
       },
@@ -114,7 +118,6 @@ export default class SignUpPage extends Block {
         id: 'sign-up-form',
         titleSize: 'size-l',
         titleText: 'Регистрация',
-        onSubmit: props.submit,
 
         children: new SignUpForm({
           formState: formState,
@@ -132,3 +135,5 @@ export default class SignUpPage extends Block {
     `;
   }
 }
+
+export default withStore(mapStateToProps)(SignUpPage);

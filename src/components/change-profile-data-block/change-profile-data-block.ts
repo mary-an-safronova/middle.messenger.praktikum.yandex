@@ -15,7 +15,7 @@ export default class ChangeProfileDataBlock extends Block {
 
       EmailItem: new UserInfoItem({
         name: props.userInfo.email,
-        inputValue: props.userData.email,
+        inputValue: props.userData?.email,
         inputItemType: true,
         inputName: 'email',
         inputType: 'email',
@@ -26,7 +26,7 @@ export default class ChangeProfileDataBlock extends Block {
 
       LoginItem: new UserInfoItem({
         name: props.userInfo.login,
-        inputValue: props.userData.login,
+        inputValue: props.userData?.login,
         inputItemType: true,
         inputName: 'login',
         inputType: 'text',
@@ -37,7 +37,7 @@ export default class ChangeProfileDataBlock extends Block {
 
       FirstNameItem: new UserInfoItem({
         name: props.userInfo.first_name,
-        inputValue: props.userData.first_name,
+        inputValue: props.userData?.first_name,
         inputItemType: true,
         inputName: 'first_name',
         inputType: 'text',
@@ -48,7 +48,7 @@ export default class ChangeProfileDataBlock extends Block {
 
       SecondNameItem: new UserInfoItem({
         name: props.userInfo.second_name,
-        inputValue: props.userData.second_name,
+        inputValue: props.userData?.second_name,
         inputItemType: true,
         inputName: 'second_name',
         inputType: 'text',
@@ -59,7 +59,7 @@ export default class ChangeProfileDataBlock extends Block {
 
       DisplayNameItem: new UserInfoItem({
         name: props.userInfo.display_name,
-        inputValue: props.userData.display_name,
+        inputValue: props.userData?.display_name,
         inputItemType: true,
         inputName: 'display_name',
         inputType: 'text',
@@ -70,7 +70,7 @@ export default class ChangeProfileDataBlock extends Block {
 
       PhoneItem: new UserInfoItem({
         name: props.userInfo.phone,
-        inputValue: props.userData.phone,
+        inputValue: props.userData?.phone,
         inputItemType: true,
         inputName: 'phone',
         inputType: 'phone',

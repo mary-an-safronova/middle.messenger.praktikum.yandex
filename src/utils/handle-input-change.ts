@@ -1,4 +1,4 @@
-/* eslint-disable max-params */
+/* eslint-disable object-shorthand */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 
@@ -9,16 +9,35 @@ const handleInputChange = (
   setProps: (props: Record<string, any>) => void,
 ) => {
   const target = evt.target as HTMLInputElement;
-  const updatedFormState = {
-    ...formState,
-    [target.name]: target.value,
-  };
+  if (target.files && target.files[0]) { // Если тип инпута 'file'
+    const file = target.files[0];
+    const arr = target.value.split('\\');
+    const fileName = arr[arr.length - 1];
 
-  setProps({
-    formState: updatedFormState,
-  });
+    const updatedFormState = {
+      ...formState,
+      file: file,
+    };
 
-  console.log(`onChange${target.name.charAt(0).toUpperCase() + target.name.slice(1)}: `, updatedFormState);
+    setProps({
+      formState: updatedFormState, // Сохраняем данные инпута в состоянии
+      placeholder: fileName,
+    });
+
+    console.log(`onChange${target.name.charAt(0).toUpperCase() + target.name.slice(1)}: `, updatedFormState);
+    console.log(fileName);
+  } else {
+    const updatedFormState = {
+      ...formState,
+      [target.name]: target.value,
+    };
+
+    setProps({
+      formState: updatedFormState, // Сохраняем данные инпута в состоянии
+    });
+
+    console.log(`onChange${target.name.charAt(0).toUpperCase() + target.name.slice(1)}: `, updatedFormState);
+  }
 };
 
 export default handleInputChange;

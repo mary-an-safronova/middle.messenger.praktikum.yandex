@@ -1,9 +1,9 @@
 import { Block } from '../../core';
-import { TMessageModalItem } from '../../utils/types';
+import { TChatModalItem } from '../../utils/types';
 
 export default class IconTextItem extends Block {
-  constructor(props: TMessageModalItem & {
-    buttonType: string;
+  constructor(props: TChatModalItem & {
+    buttonType: 'button' | 'submit' | 'reset';
     onClick: (evt: MouseEvent) => void,
   }) {
     super('button', {

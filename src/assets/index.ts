@@ -9,8 +9,11 @@ export { default as photoVideoIcon } from './icons/photo_video.svg';
 export { default as fileIcon } from './icons/file.svg';
 export { default as locationIcon } from './icons/location.svg';
 export { default as deleteIcon } from './icons/delete.png';
+export { default as deleteRedIcon } from './icons/delete_red.png';
 export { default as addIcon } from './icons/add.png';
+export { default as addWhiteIcon } from './icons/add_white.png';
 export { default as noAvatar } from './icons/no_avatar.png';
+export { default as usersIcon } from './icons/users.png';
 
 export { default as avatar } from './images/person.png';
 export { default as imgMessage } from './images/img_message.png';

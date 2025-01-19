@@ -14,10 +14,10 @@ export default class ChangePasswordDataBlock extends Block {
 
       OldPasswordItem: new UserInfoItem({
         name: 'Старый пароль',
-        inputValue: props.userData.oldPassword,
+        inputValue: props.userData?.oldPassword,
         inputItemType: true,
         inputName: 'oldPassword',
-        inputType: 'text',
+        inputType: 'password',
         required: true,
         error: props.errorState.oldPassword.error,
         errorText: props.errorState.oldPassword.errorText,
@@ -25,10 +25,10 @@ export default class ChangePasswordDataBlock extends Block {
 
       NewPasswordItem: new UserInfoItem({
         name: 'Новый пароль',
-        inputValue: props.userData.newPassword,
+        inputValue: props.userData?.newPassword,
         inputItemType: true,
         inputName: 'newPassword',
-        inputType: 'text',
+        inputType: 'password',
         required: true,
         error: props.errorState.newPassword.error,
         errorText: props.errorState.newPassword.errorText,
@@ -36,10 +36,10 @@ export default class ChangePasswordDataBlock extends Block {
 
       ConfirmationPasswordItem: new UserInfoItem({
         name: 'Повторите новый пароль',
-        inputValue: props.userData.confirmation_password,
+        inputValue: props.userData?.confirmation_password,
         inputItemType: true,
         inputName: 'confirmation_password',
-        inputType: 'text',
+        inputType: 'password',
         required: true,
         error: props.errorState.confirmation_password.error,
         errorText: props.errorState.confirmation_password.errorText,

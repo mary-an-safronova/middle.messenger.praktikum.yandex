@@ -8,4 +8,5 @@ export type TAddUserModalProps = {
   formState?: TAddUserForm;
   errorState?: TFormErrorState;
   onModalClose: () => void;
+  formSubmit: () => void;
 }
