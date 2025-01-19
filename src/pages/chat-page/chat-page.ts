@@ -10,6 +10,7 @@ import { searchIcon, arrowRight, addWhiteIcon } from '../../assets';
 import { inputErrorProps, PATH, router } from '../../utils/constants';
 import store, { StoreData, withStore } from '../../core/store';
 import * as chatsControllers from '../../services/chats';
+import * as authControllers from '../../services/auth';
 import * as messagesController from '../../services/messeges';
 import { TBlockProps } from '../../core/block';
 import isEqual from '../../core/utils/is-equal';
@@ -87,6 +88,14 @@ class ChatPage extends Block {
         },
       }),
     });
+  }
+
+  componentDidMount(): void {
+    // Подгружаем чатлист и данные юзера при монтировании
+    chatsControllers.getChatList(); // Загружаем чаты
+    authControllers.getUser(); // Получаем данные юзера
+    const { chatList } = store.getState();
+    this.children.ContactCards = this.updateContactCards(chatList);
   }
 
   componentDidUpdate(oldProps: TBlockProps, newProps: TBlockProps) {

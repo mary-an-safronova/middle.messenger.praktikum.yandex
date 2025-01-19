@@ -7,8 +7,6 @@ import * as Pages from './pages';
 import { BlockConstructable } from './core/register-component';
 import { PATH, router } from './utils/constants';
 import * as authControllers from './services/auth';
-import * as chatsControllers from './services/chats';
-import * as usersControllers from './services/user';
 
 // Регистрация хелперов
 Handlebars.registerHelper({
@@ -29,27 +27,32 @@ Object.entries(Components).forEach(([name, template]) => {
 });
 
 // Навигация по страницам
-const onDomLoaded = async () => {
-  await authControllers.getUser(); // Получаем данные юзера
-
+const onDomLoaded = async (): Promise<void> => {
   const auth = await authControllers.checkAuth();
+  const currentPath = window.location.pathname;
 
-  if (auth) { // Если юзер авторизован
-    await usersControllers.getCurrentUserAvatar(); // Получаем корректный аватар юзера
-    await chatsControllers.getChatList(); // Загружаем чаты
+  router
+    .use(PATH.settings, Pages.ProfilePage as any) // Настройки профиля
+    .use(PATH.messenger, Pages.ChatPage as any) // Чат
+    .use(PATH.internalServer, Pages.InternalServerErrorPage) // Ошибка сервера
+    .use('*', Pages.BadRequestPage) // Если роут неизвестен, перенаправляем на BadRequestPage
+    .use(PATH.signIn, Pages.SignInPage as any) // Авторизация
+    .use(PATH.signUp, Pages.SignUpPage as any) // Регистрация
+    .start();
 
-    router
-      .use(PATH.settings, Pages.ProfilePage as any) // Настройки профиля
-      .use(PATH.messenger, Pages.ChatPage as any) // Чат
-      .use(PATH.internalServer, Pages.InternalServerErrorPage) // Ошибка сервера
-      .use('*', Pages.BadRequestPage) // Если роут неизвестен, перенаправляем на BadRequestPage
-      .start();
-  } else { // Если юзер неавторизован
-    router
-      .use(PATH.signIn, Pages.SignInPage as any) // Авторизация
-      .use(PATH.signUp, Pages.SignUpPage as any) // Регистрация
-      .start();
+  if (!auth) {
+    router.go(PATH.signIn);
+    return;
   }
+
+  if (currentPath === PATH.signIn || currentPath === PATH.signUp) {
+    setTimeout(() => {
+      router.go(PATH.messenger);
+    }, 0);
+    return;
+  }
+
+  router.go(currentPath);
 };
 
 // Инициализация после загрузки документа

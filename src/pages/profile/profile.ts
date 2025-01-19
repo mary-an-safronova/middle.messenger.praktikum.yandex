@@ -261,6 +261,11 @@ class ProfilePage extends Block {
     });
   }
 
+  componentDidMount(): void {
+    // Подгружаем аватар и данные юзера при монтировании
+    this.getUserData();
+  }
+
   componentDidUpdate(_oldProps: TBlockProps, _newProps: TBlockProps) {
     const user = store.getState().currentUser;
     this.children.ProfileUserInfo = this.updateUserInfo(user?.data);
@@ -292,11 +297,15 @@ class ProfilePage extends Block {
     });
   }
 
+  getUserData = async () => {
+    await userControllers.getCurrentUserAvatar(); // Получаем корректный аватар юзера
+    const user = store.getState().currentUser;
+    this.setPropsForChildren(this.children.ProfileAvatar, { avatarIcon: user?.avatar_image });
+  };
+
   render(): string {
     return `
-
       <div class="profile">
-
         <div class="profile__avatar-wrap">
           {{{ ProfileAvatar }}}
           {{{ ProfileTitle }}}

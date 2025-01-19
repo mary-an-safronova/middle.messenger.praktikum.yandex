@@ -192,8 +192,6 @@ class MessageBlock extends Block {
         formSubmit: async () => {
           await usersControllers.searchUserByLogin(this.props.formState);
           const foundUser = store.getState().foundUsers![0]; // Найденный по логину юзер
-          console.log('foundUser: ', foundUser);
-          console.log('props.chatId: ', this.props.chat?.id);
           const data = {
             users: [
               foundUser.id,

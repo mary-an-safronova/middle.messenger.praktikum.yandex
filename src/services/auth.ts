@@ -21,7 +21,6 @@ export const signIn = async (data: TSignInForm) => {
     await authAPI.signin(data);
     store.set('currentUser.data', data);
     router.go(PATH.messenger);
-    window.location.reload();
   } catch (err) {
     console.log(err);
   }
@@ -32,7 +31,6 @@ export const signUp = async (data: TSignUpForm) => {
     await authAPI.create(data);
     router.go(PATH.messenger);
     store.set('currentUser.data', data);
-    window.location.reload();
   } catch (err) {
     console.log(err);
   }
@@ -41,9 +39,18 @@ export const signUp = async (data: TSignUpForm) => {
 export const logout = async () => {
   try {
     await authAPI.logout();
+    store.set('currentUser.data', {
+      id: null,
+      first_name: '',
+      second_name: '',
+      display_name: '',
+      phone: '',
+      login: '',
+      avatar: '',
+      email: '',
+    });
     router.go(PATH.signIn);
     messagesController.closeAll();
-    window.location.reload();
   } catch (err) {
     console.log(err);
   }
@@ -51,6 +58,7 @@ export const logout = async () => {
 
 // Функция для проверки авторизации
 export const checkAuth = async () => {
+  await getUser(); // Получаем данные юзера
   const userInState = store.getState().currentUser?.data; // Получаем данные пользователя из store
   if (userInState?.id === null) {
     router.go(PATH.signIn); // Неавторизованного юзера перенаправляем на signIn
