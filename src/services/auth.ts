@@ -43,6 +43,7 @@ export const logout = async () => {
     await authAPI.logout();
     router.go(PATH.signIn);
     messagesController.closeAll();
+    window.location.reload();
   } catch (err) {
     console.log(err);
   }
