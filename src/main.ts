@@ -9,7 +9,6 @@ import { PATH, router } from './utils/constants';
 import * as authControllers from './services/auth';
 import * as chatsControllers from './services/chats';
 import * as usersControllers from './services/user';
-import store from './core/store';
 
 // Регистрация хелперов
 Handlebars.registerHelper({
@@ -29,21 +28,11 @@ Object.entries(Components).forEach(([name, template]) => {
   Handlebars.registerPartial(name, template);
 });
 
-// Функция для проверки авторизации
-const checkAuth = async () => {
-  const userInState = store.getState().currentUser?.data; // Получаем данные пользователя из store
-  if (userInState?.id === null) {
-    router.go(PATH.signIn); // Неавторизованного юзера перенаправляем на signIn
-    return false;
-  }
-  return true;
-};
-
 // Навигация по страницам
 const onDomLoaded = async () => {
   await authControllers.getUser(); // Получаем данные юзера
 
-  const auth = await checkAuth();
+  const auth = await authControllers.checkAuth();
 
   if (auth) { // Если юзер авторизован
     await usersControllers.getCurrentUserAvatar(); // Получаем корректный аватар юзера

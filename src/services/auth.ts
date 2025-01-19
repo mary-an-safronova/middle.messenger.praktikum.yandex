@@ -7,11 +7,21 @@ import * as messagesController from './messeges';
 
 const authAPI = new AuthAPI();
 
+export const getUser = async () => {
+  try {
+    const data = await authAPI.read();
+    store.set('currentUser.data', data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const signIn = async (data: TSignInForm) => {
   try {
     await authAPI.signin(data);
-    router.go(PATH.messenger);
     store.set('currentUser.data', data);
+    router.go(PATH.messenger);
+    window.location.reload();
   } catch (err) {
     console.log(err);
   }
@@ -22,15 +32,7 @@ export const signUp = async (data: TSignUpForm) => {
     await authAPI.create(data);
     router.go(PATH.messenger);
     store.set('currentUser.data', data);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-export const getUser = async () => {
-  try {
-    const data = await authAPI.read();
-    store.set('currentUser.data', data);
+    window.location.reload();
   } catch (err) {
     console.log(err);
   }
@@ -44,4 +46,14 @@ export const logout = async () => {
   } catch (err) {
     console.log(err);
   }
+};
+
+// Функция для проверки авторизации
+export const checkAuth = async () => {
+  const userInState = store.getState().currentUser?.data; // Получаем данные пользователя из store
+  if (userInState?.id === null) {
+    router.go(PATH.signIn); // Неавторизованного юзера перенаправляем на signIn
+    return false;
+  }
+  return true;
 };

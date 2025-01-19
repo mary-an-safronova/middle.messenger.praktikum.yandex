@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable class-methods-use-this */
 /* eslint-disable max-params */
 /* eslint-disable no-console */
 /* eslint-disable object-shorthand */
@@ -12,7 +14,7 @@ import {
 } from '../../components';
 import { handleFormSubmit, handleInputChange, handleOverlayClick } from '../../utils';
 import { userProfileInfoNames, inputErrorProps, router } from '../../utils/constants';
-import { TAvatarForm } from '../../utils/types';
+import { TAvatarForm, TUser } from '../../utils/types';
 import { Block } from '../../core';
 import { handleValidate } from '../../utils/handle-validate';
 import { TChangeUserFormErrorState } from '../../components/change-profile-data-block/types';
@@ -20,10 +22,7 @@ import { TChangePassFormErrorState } from '../../components/change-password-data
 import * as authControllers from '../../services/auth';
 import * as userControllers from '../../services/user';
 import store, { StoreData, withStore } from '../../core/store';
-
-const mapStateToProps = ({ currentUser }: StoreData) => ({
-  currentUser,
-});
+import { TBlockProps } from '../../core/block';
 
 class ProfilePage extends Block {
   private validateField(evt: Event, inputName: string, inputValue: string, inputChild: any, prevInputValue?: string) {
@@ -162,8 +161,7 @@ class ProfilePage extends Block {
               formState: this.props.formState,
             });
             await userControllers.changeUserAvatar(this.props.formState);
-            const avatarComponent = this.children.ProfileAvatar;
-            this.setPropsForChildren(avatarComponent, { avatarIcon: this.props.formState.file });
+            await userControllers.getCurrentUserAvatar(); // Получаем корректный аватар юзера
             this.setProps({ isAvatarChangeModal: false });
           },
 
@@ -247,7 +245,6 @@ class ProfilePage extends Block {
               });
               // Обновляем данные пользователя
               await userControllers.changeUserData(this.props.formState);
-              this.setPropsForChildren(this.children.ProfileUserInfo, { userData: this.props.formState });
               this.setProps({ isUserDataChange: false }); // Закрываем форму изменения данных юзера
             } else {
               console.log('errors: ', this.props.errorState);
@@ -261,6 +258,37 @@ class ProfilePage extends Block {
           errorState: changeUserErrorState,
         }),
       }),
+    });
+  }
+
+  componentDidUpdate(_oldProps: TBlockProps, _newProps: TBlockProps) {
+    const user = store.getState().currentUser;
+    this.children.ProfileUserInfo = this.updateUserInfo(user?.data);
+    this.children.ProfileTitle = this.updateProfileTitle(user?.data);
+    this.children.ProfileAvatar = this.updateProfileAvatar(user?.avatar_image);
+    return true;
+  }
+
+  // Метод обновления блока данных юзера
+  updateUserInfo(userData: TUser | undefined) {
+    return new UserInfo({
+      userInfo: userProfileInfoNames,
+      userData: userData,
+    });
+  }
+
+  // Метод обновления заголовка
+  updateProfileTitle(userData: TUser | undefined) {
+    return new Title({ text: userData?.first_name, size: 'size-m' });
+  }
+
+  // Метод обновления аватара
+  updateProfileAvatar(userImg: string | undefined) {
+    return new Avatar({
+      avatarIcon: userImg,
+      changeAvatarClick: () => {
+        this.setProps({ isAvatarChangeModal: true });
+      },
     });
   }
 
@@ -293,5 +321,9 @@ class ProfilePage extends Block {
     `;
   }
 }
+
+const mapStateToProps = (state: StoreData) => ({
+  currentUser: state.currentUser,
+});
 
 export default withStore(mapStateToProps)(ProfilePage);

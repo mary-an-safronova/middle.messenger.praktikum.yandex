@@ -41,10 +41,18 @@ export const changeUserAvatar = async (data: TAvatarForm) => {
   }
 };
 
+export const getResourceByPath = async (path?: string) => {
+  try {
+    await resourcesAPI.getResource(path);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const getCurrentUserAvatar = async () => {
   try {
     const avatarPath = store.getState().currentUser?.data?.avatar; // Состояние данных юзера
-    await resourcesAPI.getResource(avatarPath);
+    await getResourceByPath(avatarPath);
     store.set('currentUser.avatar_image', `${baseURL}/resources${avatarPath}`);
   } catch (err) {
     console.log(err);

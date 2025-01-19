@@ -159,7 +159,6 @@ class ChatPage extends Block {
       // Получаем из стора выбранный чат
       const { currentChat } = store.getState();
       const chatId = currentChat?.chat?.id; // Id выбранного чата
-      console.log('currentChat.id: ', chatId);
 
       // Получаем пользователей выбранного чата
       await chatsControllers.getChatUsers(chatId);

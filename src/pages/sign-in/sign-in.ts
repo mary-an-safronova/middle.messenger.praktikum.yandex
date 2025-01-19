@@ -13,9 +13,6 @@ import { handleValidate } from '../../utils/handle-validate';
 import * as authControllers from '../../services/auth';
 import { StoreData, withStore } from '../../core/store';
 
-const mapStateToProps = ({ currentUser }: StoreData) => ({
-  currentUser,
-});
 class SignInPage extends Block {
   private validateField(evt: Event, inputName: string, inputValue: string, inputChild: any) {
     handleValidate(
@@ -45,14 +42,13 @@ class SignInPage extends Block {
       errorState,
 
       events: {
-        submit: (evt: Event) => { // Сабмит формы
+        submit: async (evt: Event) => { // Сабмит формы
           evt.preventDefault();
           if (!this.props.errorState.login.error && !this.props.errorState.password.error) {
             handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
               formState: this.props.formState,
             });
-
-            authControllers.signIn(this.props.formState);
+            await authControllers.signIn(this.props.formState);
             this.setProps({ formState: { login: '', password: '' } });
           } else {
             console.log('errors: ', this.props.errorState);
@@ -98,5 +94,9 @@ class SignInPage extends Block {
     `;
   }
 }
+
+const mapStateToProps = (state: StoreData) => ({
+  currentUser: state.currentUser,
+});
 
 export default withStore(mapStateToProps)(SignInPage);
