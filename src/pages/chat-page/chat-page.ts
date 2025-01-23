@@ -143,11 +143,6 @@ class ChatPage extends Block {
     selectedId: string | null,
     chatList: TChat[] | undefined = [],
   ): Promise<void> => {
-    // Если кликнули на уже выбранный, ничего не делаем
-    if (selectedId === this.selectedCardId) {
-      return;
-    }
-
     // Если есть выбранная карточка, сбрасываем ее состояние
     if (this.selectedCardId) {
       const previousCard = (this.children.ContactCards as any).find((card: MessageContactCard) => card.props.id.toString() === this.selectedCardId);
