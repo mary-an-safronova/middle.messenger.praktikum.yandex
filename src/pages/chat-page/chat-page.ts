@@ -1,20 +1,33 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable class-methods-use-this */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 /* eslint-disable object-shorthand */
 import {
   AddChatModal,
-  Button, Input, MessageBlock, MessageContactCard,
+  Button, FileUploadModal, Input, MessageBlock, MessageContactCard,
 } from '../../components';
 import { Block } from '../../core';
-import { searchIcon, arrowRight, addWhiteIcon } from '../../assets';
-import { inputErrorProps, PATH, router } from '../../utils/constants';
+import {
+  searchIcon, arrowRight, addWhiteIcon, noAvatar,
+} from '../../assets';
+import {
+  baseURL, inputErrorProps, PATH, router,
+} from '../../utils/constants';
 import store, { StoreData, withStore } from '../../core/store';
 import * as chatsControllers from '../../services/chats';
 import * as authControllers from '../../services/auth';
 import * as messagesController from '../../services/messeges';
 import { TBlockProps } from '../../core/block';
 import isEqual from '../../core/utils/is-equal';
-import { TChat } from '../../utils/types';
+import {
+  TAvatarForm, TChat, TCurrentUser,
+} from '../../utils/types';
+import {
+  handleFormSubmit, handleInputChange, handleOverlayClick,
+} from '../../utils';
+import { handleAvatarImg } from '../../utils/handle-chat-avatar';
+import ChatsAPI from '../../api/chats-api';
 
 class ChatPage extends Block {
   private selectedCardId: string | null = null; // Хранит ID выбранной карточки
@@ -27,6 +40,11 @@ class ChatPage extends Block {
 
     const { chatList } = store.state; // Состояние данных юзера
 
+    const avatarFile = store.getState().currentChat?.avatar_image;
+    const avatarFormState: TAvatarForm = { file: avatarFile }; // Состояние формы изменения аватара
+
+    const { currentChat } = store.getState(); // Текущий чат
+
     super('div', {
       className: 'chat-page',
       isSelected: isSelected,
@@ -34,8 +52,14 @@ class ChatPage extends Block {
       addChatFormState,
       errorState,
       chatList: chatList,
+      isOpenUploadAvatarModel: false,
+      avatarFormState: avatarFormState,
 
-      ChatMessageBlock: new MessageBlock({}), // Инициализируем пустым блоком сообщений
+      ChatMessageBlock: new MessageBlock({
+        onAvatarImgClick: () => {
+          this.setProps({ isOpenUploadAvatarModel: true });
+        },
+      }), // Инициализируем пустым блоком сообщений
 
       // Переход на страницу профиля
       ProfileButton: new Button({
@@ -87,15 +111,46 @@ class ChatPage extends Block {
           this.setProps({ isAddChatModal: false });
         },
       }),
+
+      // Компонент - модальное окно с формой изменения аватара чата
+      ChatAvatarFileUploadModal: new FileUploadModal({
+        avatarFormState: avatarFormState,
+        placeholder: 'Выбрать файл на компьютере',
+
+        events: {
+          change: (evt: Event) => { // Отслеживание изменения инпутов
+            handleInputChange(evt, this.props.formState, this.setProps.bind(this));
+          },
+
+          submit: async (evt: Event) => {
+            handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
+              formState: this.props.formState,
+            });
+            const chatId = currentChat?.chat?.id; // Id выбранного чата
+            await chatsControllers.addChatAvatar(this.props.formState, chatId);
+            this.getChatAvatar(); // Получаем аватар выбранного чата
+            await chatsControllers.getChatList(); // Обновляем чаты
+            this.setProps({ isOpenUploadAvatarModel: false });
+          },
+
+          click: (event: MouseEvent) => handleOverlayClick(event, () => {
+            this.setProps({ isOpenUploadAvatarModel: false });
+          }), // Клик на оверлей модального окна
+        },
+      }),
     });
   }
 
-  componentDidMount(): void {
-    // Подгружаем чатлист и данные юзера при монтировании
-    chatsControllers.getChatList(); // Загружаем чаты
-    authControllers.getUser(); // Получаем данные юзера
-    const { chatList } = store.getState();
-    this.children.ContactCards = this.updateContactCards(chatList);
+  componentDidMount() {
+    Promise.all([
+      chatsControllers.getChatList(),
+      authControllers.getUser(),
+    ]).then(async () => {
+      const { chatList, currentUser } = store.getState();
+      const updateChatList = await this.handleChatCardsAvatarImges(chatList, currentUser);
+      store.set('chatList', updateChatList);
+      this.children.ContactCards = this.updateContactCards(updateChatList);
+    });
   }
 
   componentDidUpdate(oldProps: TBlockProps, newProps: TBlockProps) {
@@ -113,13 +168,16 @@ class ChatPage extends Block {
         // Очищаем блок сообщений в стор
         store.set('currentChat.messages', []);
       }
-      // Обновляем компонент с чатами
-      this.children.ContactCards = this.updateContactCards(newProps.chatList);
+
+      const { chatList, currentUser } = store.getState();
+
+      this.handleChatCardsAvatarImges(chatList, currentUser).then((updatedChatList) => {
+        this.children.ContactCards = this.updateContactCards(updatedChatList);
+      });
     }
     if (oldProps.messages) {
       // Если изменился массив сообщений, обновляем компонент с чатами
       if (!isEqual(oldProps.messages, newProps.messages)) {
-        chatsControllers.getChatList();
         this.children.ContactCards = this.updateContactCards(newProps.chatList);
       }
     }
@@ -164,23 +222,61 @@ class ChatPage extends Block {
       const { currentChat } = store.getState();
       const chatId = currentChat?.chat?.id; // Id выбранного чата
 
-      // Получаем пользователей выбранного чата
-      await chatsControllers.getChatUsers(chatId);
-      // Запрашиваем пользователей выбранного чата из стора
-      const chatUsers = store.getState().currentChat?.chat_users;
       await chatsControllers.getChatToken(chatId); // Получаем токен по id выбранного чата
       const chatToken = store.getState().currentChat?.chat_token;
       await messagesController.chatConnect(chatId, chatToken);
 
+      this.getChatAvatar(); // Получаем аватар выбранного чата
+
+      const messageBlock = this.children.ChatMessageBlock;
+
       // Передаем пропсы в блок чата
-      this.setPropsForChildren(this.children.ChatMessageBlock, {
+      this.setPropsForChildren(messageBlock, {
         chat: selectedChat,
-        chatUsers: chatUsers,
+        chatUsers: selectedChat.chat_users,
       });
     } else {
       console.error('Выбранный контакт не найден');
     }
   };
+
+  // Обновление аватара чата
+  getChatAvatar = async () => {
+    await chatsControllers.getCurrentChatAvatar();
+    const { currentChat, currentUser } = store.getState();
+
+    const chatAvatar = handleAvatarImg(currentChat, currentUser);
+
+    const messageBlock = this.children.ChatMessageBlock;
+    this.setPropsForChildren((messageBlock as Block).children.ChatImageName, {
+      chat: currentChat?.chat,
+      avatarImage: chatAvatar,
+    });
+  };
+
+  async handleChatCardsAvatarImges(chatList?: TChat[] | undefined, currentUser?: TCurrentUser) {
+    const chatsApi = new ChatsAPI();
+    if (!chatList || !currentUser) {
+      return Promise.resolve(chatList); // Возвращаем промис, если данные отсутствуют
+    }
+
+    const chatPromises = chatList.map(async (chat: TChat) => {
+      const response = await chatsApi.readChatUsers(chat.id);
+      chat.chat_users = response;
+      const chatUsersLength = chat.chat_users?.length;
+      if (chatUsersLength === 2) {
+        const chatPartner = chat.chat_users.filter((user) => user?.id !== currentUser?.data?.id);
+        if ((chat.avatar === '' || chat.avatar === null) && chatPartner[0]?.avatar) {
+          chat.avatar_image = `${baseURL}/resources${chatPartner[0].avatar}`;
+        } else if (chat.avatar === '' || chat.avatar === null) {
+          chat.avatar_image = noAvatar;
+        }
+      }
+    });
+    // Ждем завершения всех промисов
+    await Promise.all(chatPromises);
+    return chatList; // Возвращаем обновленный массив chatList
+  }
 
   render(): string {
     return `
@@ -212,6 +308,10 @@ class ChatPage extends Block {
 
         {{#if isAddChatModal}}
           {{{ AddNewChatModal }}}
+        {{/if}}
+
+        {{#if isOpenUploadAvatarModel}}
+          {{{ ChatAvatarFileUploadModal }}}
         {{/if}}
     `;
   }

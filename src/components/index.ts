@@ -28,3 +28,4 @@ export { AddUserModal } from './add-user-modal';
 export { DeleteUserModal } from './delete-user-modal';
 export { AddChatModal } from './add-chat-modal';
 export { DeleteChatModal } from './delete-chat-modal';
+export { ImgName } from './img-name';

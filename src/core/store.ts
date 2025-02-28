@@ -5,8 +5,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  TChatUser, TChat, TUser, TUserPassword,
-  TMessage,
+  TChat, TUser, TUserPassword, TCurrentChat,
 } from '../utils/types';
 import EventBus from './event-bus';
 import isEqual from './utils/is-equal';
@@ -19,12 +18,7 @@ export interface StoreData {
     avatar_image: string;
   },
   chatList?: TChat[];
-  currentChat?: {
-    chat?: TChat | null;
-    chat_users?: TChatUser[] | null;
-    chat_token: any;
-    messages: TMessage[],
-  },
+  currentChat?: TCurrentChat,
   foundUsers?: TUser[] | null;
 }
 
@@ -52,6 +46,7 @@ const initialState: StoreData = {
     chat_users: null,
     chat_token: null,
     messages: [],
+    avatar_image: '',
   },
   foundUsers: null,
 };

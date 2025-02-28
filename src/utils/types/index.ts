@@ -20,4 +20,6 @@ export type {
   TInputError,
   BlockConstructable,
   TMessage,
+  TCurrentChat,
+  TCurrentUser,
 } from './types';
