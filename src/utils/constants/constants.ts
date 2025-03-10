@@ -1,23 +1,16 @@
 /* eslint-disable no-useless-escape */
-import * as Pages from '../../pages';
 import {
-  iconRight,
-  iconLeft,
-  avatarIcon,
-  searchIcon,
-  arrowRight,
-  avatar,
   photoVideoIcon,
   fileIcon,
   locationIcon,
   deleteIcon,
   addIcon,
+  deleteRedIcon,
+  usersIcon,
 } from '../../assets';
-import {
-  messageContactsData,
-  userProfileInfoData,
-} from '../fakeData';
 import { TInputError, TUser } from '../types';
+import Router from '../../core/router';
+import { WSTransport } from '../../core';
 
 export const userProfileInfoNames: TUser = {
   email: 'Почта',
@@ -26,30 +19,6 @@ export const userProfileInfoNames: TUser = {
   second_name: 'Фамилия',
   display_name: 'Имя в чате',
   phone: 'Телефон',
-};
-
-export const pages = {
-  signInPage: [Pages.SignInPage],
-  signUpPage: [Pages.SignUpPage],
-  navigatePage: [Pages.NavigatePage],
-  internalServerErrorPage: [Pages.InternalServerErrorPage],
-  badRequestPage: [Pages.BadRequestPage],
-  profilePage: [
-    Pages.ProfilePage,
-    {
-      iconLeft,
-      iconRight,
-      avatarIcon,
-      userProfileInfoNames,
-      userProfileInfoData,
-    },
-  ],
-  chatPage: [
-    Pages.ChatPage,
-    {
-      searchIcon, arrowRight, avatar, messageContactsData,
-    },
-  ],
 };
 
 export const fileMessageModalItems = [
@@ -75,6 +44,14 @@ export const menuModalItems = [
   {
     icon: deleteIcon,
     text: 'Удалить пользователя',
+  },
+  {
+    icon: deleteRedIcon,
+    text: 'Удалить чат',
+  },
+  {
+    icon: usersIcon,
+    text: 'Участники чата',
   },
 ];
 
@@ -129,3 +106,19 @@ export const inputErrorProps: TInputError = {
   error: false,
   errorText: '',
 };
+
+export const baseURL = 'https://ya-praktikum.tech/api/v2';
+export const wsURL = 'wss://ya-praktikum.tech/ws/chats/';
+
+export const wsTransport: WSTransport | null = null;
+
+export const PATH = {
+  signIn: '/',
+  signUp: '/sign-up',
+  settings: '/settings',
+  messenger: '/messenger',
+  internalServer: '/500',
+};
+
+const APP_ROOT_ELEMENT = '#app';
+export const router = new Router(APP_ROOT_ELEMENT);

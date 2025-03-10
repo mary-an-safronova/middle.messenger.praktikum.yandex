@@ -1,7 +1,7 @@
-import { TMessageModalItems } from '../../utils/types';
+import { TChatModalItems } from '../../utils/types';
 
 export type TMessageModalProps = {
   position: 'top' | 'bottom';
-  modalItems: TMessageModalItems;
+  modalItems: TChatModalItems;
   onClick: (evt: MouseEvent) => void;
 }

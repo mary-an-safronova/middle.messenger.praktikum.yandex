@@ -1,3 +1,4 @@
+import { noAvatar } from '../../assets';
 import { Block } from '../../core';
 import { TAvatarProps } from './types';
 
@@ -10,14 +11,20 @@ export default class Avatar extends Block {
       avatarIcon: props.avatarIcon,
 
       events: {
-        click: props.changeAvatarClick,
+        click: (evt: Event) => {
+          evt.stopPropagation();
+          if (props.changeAvatarClick) {
+            evt.preventDefault();
+            props.changeAvatarClick();
+          }
+        },
       },
     });
   }
 
   render(): string {
     return `
-      <img class="avatar__img" src="{{avatarIcon}}" alt="Аватар" />
+      <img class="avatar__img" src="${this.props.avatarIcon ? this.props.avatarIcon : noAvatar}" alt="Аватар" />
       <div class="avatar__cover">
         <p class="avatar__text">Поменять аватар</p>
       </div>

@@ -3,9 +3,9 @@ import { TMessageProps } from './types';
 
 export default class Message extends Block {
   constructor(props: TMessageProps) {
-    super('div', {
+    super('li', {
       ...props,
-      className: `message message_${props.position}`,
+      className: 'message message-item',
       position: props.position,
       content: props.content,
       type: props.type,

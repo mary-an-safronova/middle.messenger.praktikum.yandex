@@ -7,8 +7,9 @@
 import { nanoid } from 'nanoid';
 import Handlebars from 'handlebars';
 import { EventBus } from './index';
+import isEqual from './utils/is-equal';
 
-type TBlockProps = Record<string, any>
+export type TBlockProps = Record<string, any>
 
 type TBlockChildren = Record<string, Block | Block[]>
 
@@ -27,6 +28,7 @@ export default class Block {
     FLOW_CDM: 'flow:component-did-mount', // Монтирование
     FLOW_RENDER: 'flow:render', // Рендеринг
     FLOW_CDU: 'flow:component-did-update', // Обновление
+    FLOW_CWUM: 'flow:component-will-unmount', // Размонтирование
   };
 
   _element: HTMLElement | null = null; // HTML-элемент, который будет создан для компонента
@@ -72,6 +74,7 @@ export default class Block {
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+    eventBus.on(Block.EVENTS.FLOW_CWUM, this._componentWillUnmount.bind(this));
   }
 
   // Метод для создания ресурсов компонента (HTML-элемента)
@@ -151,8 +154,16 @@ export default class Block {
 
   // Метод жизненного цикла, может переопределяться пользователем
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  componentDidUpdate(_oldProps: TBlockProps, _newProps: TBlockProps): boolean {
-    return true; // По умолчанию возвращаем true, что значит, что обновление происходит
+  componentDidUpdate(oldProps: TBlockProps, newProps: TBlockProps): boolean {
+    return !isEqual(oldProps, newProps);
+  }
+
+  _componentWillUnmount() {
+    this.componentWillUnmount();
+  }
+
+  componentWillUnmount() {
+    this._removeEvents();
   }
 
   // Метод для установки новых свойств
@@ -254,7 +265,9 @@ export default class Block {
   }
 
   // Метод, который может переопределяться пользователем для рендеринга
-  render(): string { return ''; }
+  render(): string {
+    return '';
+  }
 
   // Метод для получения содержимого компонента
   getContent(): HTMLElement {

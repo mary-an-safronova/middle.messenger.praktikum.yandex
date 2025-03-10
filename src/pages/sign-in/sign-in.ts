@@ -4,14 +4,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormWrap } from '../../components';
 import { SignInForm } from '../../components/sign-in-form';
-import { handleFormSubmit, handleInputChange, navigate } from '../../utils';
-import { inputErrorProps } from '../../utils/constants';
+import { handleFormSubmit, handleInputChange } from '../../utils';
+import { inputErrorProps, PATH, router } from '../../utils/constants';
 import { Block } from '../../core';
 import { TSignInForm } from '../../utils/types';
 import { TFormErrorState } from '../../components/sign-in-form/types';
 import { handleValidate } from '../../utils/handle-validate';
+import * as authControllers from '../../services/auth';
+import { StoreData, withStore } from '../../core/store';
 
-export default class SignInPage extends Block {
+class SignInPage extends Block {
   private validateField(evt: Event, inputName: string, inputValue: string, inputChild: any) {
     handleValidate(
       evt,
@@ -24,31 +26,29 @@ export default class SignInPage extends Block {
     );
   }
 
-  constructor(props: Record<string, any>) {
-    const formState: TSignInForm = props.formState || {
+  constructor() {
+    const formState: TSignInForm = {
       login: '',
       password: '',
     };
 
-    const errorState: TFormErrorState = props.errorState || {
+    const errorState: TFormErrorState = {
       login: inputErrorProps,
       password: inputErrorProps,
     };
 
     super('div', {
-      ...props,
-
       formState,
       errorState,
 
       events: {
-        submit: (evt: Event) => { // Сабмит формы
+        submit: async (evt: Event) => { // Сабмит формы
           evt.preventDefault();
           if (!this.props.errorState.login.error && !this.props.errorState.password.error) {
             handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
               formState: this.props.formState,
             });
-            navigate('navigatePage');
+            await authControllers.signIn(this.props.formState);
             this.setProps({ formState: { login: '', password: '' } });
           } else {
             console.log('errors: ', this.props.errorState);
@@ -67,7 +67,7 @@ export default class SignInPage extends Block {
         click: (evt: Event) => { // Клик на ссылку
           const target = evt.target as HTMLElement;
           if (target.closest('.link')) {
-            navigate('signUpPage');
+            router.go(PATH.signUp);
           }
         },
       },
@@ -77,7 +77,6 @@ export default class SignInPage extends Block {
         id: 'sign-in-form',
         titleSize: 'size-l',
         titleText: 'Вход',
-        onSubmit: props.submit,
 
         children: new SignInForm({
           formState: formState,
@@ -95,3 +94,9 @@ export default class SignInPage extends Block {
     `;
   }
 }
+
+const mapStateToProps = (state: StoreData) => ({
+  currentUser: state.currentUser,
+});
+
+export default withStore(mapStateToProps)(SignInPage);

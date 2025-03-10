@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
-import { TMessageModalItems } from '../../../utils/types';
+import { TChatModalItems } from '../../../utils/types';
 
 export default function clickOnModalItem(
   evt: MouseEvent,
-  items: TMessageModalItems,
+  items: TChatModalItems,
 ) {
   evt.stopPropagation();
   const targetItem = (evt.target as HTMLElement);

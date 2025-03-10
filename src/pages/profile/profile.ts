@@ -1,23 +1,30 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable class-methods-use-this */
 /* eslint-disable max-params */
 /* eslint-disable no-console */
 /* eslint-disable object-shorthand */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  Avatar, BackButton, ChangeProfileData, ChangePasswordDataBlock,
+  Avatar, ChangeProfileData, ChangePasswordDataBlock,
   Title, UserInfo, UserInfoButtons,
   ChangeProfileDataBlock,
   FileUploadModal,
+  Button,
+  Circle,
 } from '../../components';
-import { handleFormSubmit, handleInputChange, navigate } from '../../utils';
-import { userProfileInfoData, userProfilePasswordData } from '../../utils/fakeData';
-import { userProfileInfoNames, inputErrorProps } from '../../utils/constants';
-import { TAvatarForm, TChangePasswordForm, TChangeUserForm } from '../../utils/types';
+import { handleFormSubmit, handleInputChange, handleOverlayClick } from '../../utils';
+import { userProfileInfoNames, inputErrorProps, router } from '../../utils/constants';
+import { TAvatarForm, TUser } from '../../utils/types';
 import { Block } from '../../core';
 import { handleValidate } from '../../utils/handle-validate';
 import { TChangeUserFormErrorState } from '../../components/change-profile-data-block/types';
 import { TChangePassFormErrorState } from '../../components/change-password-data-block/types';
+import * as authControllers from '../../services/auth';
+import * as userControllers from '../../services/user';
+import store, { StoreData, withStore } from '../../core/store';
+import { TBlockProps } from '../../core/block';
 
-export default class ProfilePage extends Block {
+class ProfilePage extends Block {
   private validateField(evt: Event, inputName: string, inputValue: string, inputChild: any, prevInputValue?: string) {
     handleValidate(
       evt,
@@ -31,36 +38,24 @@ export default class ProfilePage extends Block {
     );
   }
 
-  constructor(props: Record<string, any>) {
+  constructor() {
     const isAvatarChangeModal = false;
     const isPasswordChange = false;
     const isUserDataChange = false;
 
-    const avatarFormState: TAvatarForm = props.formState || { file: '' }; // Состояние формы изменения аватара
+    const userDataFormState = store.getState().currentUser?.data; // Состояние данных юзера
+    const passwordFormState = store.getState().currentUser?.password; // Состояние формы изменения пароля юзера
 
-    const passwordFormState: TChangePasswordForm = props.passwordFormState || { // Состояние формы изменения пароля юзера
-      oldPassword: userProfilePasswordData.oldPassword,
-      newPassword: userProfilePasswordData.newPassword,
-      confirmation_password: userProfilePasswordData.newPassword,
-    };
+    const avatarFile = store.getState().currentUser?.avatar_image;
+    const avatarFormState: TAvatarForm = { file: avatarFile }; // Состояние формы изменения аватара
 
-    const passwordErrorState: TChangePassFormErrorState = props.passwordFormState || { // Состояние ошибок ввода формы изменения пароля юзера
+    const passwordErrorState: TChangePassFormErrorState = { // Состояние ошибок ввода формы изменения пароля юзера
       oldPassword: inputErrorProps,
       newPassword: inputErrorProps,
       confirmation_password: inputErrorProps,
     };
 
-    const userDataFormState: TChangeUserForm = props.userDataFormState || { // Состояние формы изменения данных юзера
-      email: userProfileInfoData.email,
-      login: userProfileInfoData.login,
-      first_name: userProfileInfoData.first_name,
-      second_name: userProfileInfoData.second_name,
-      display_name: userProfileInfoData.display_name,
-      phone: userProfileInfoData.phone,
-      avatar: userProfileInfoData.avatar,
-    };
-
-    const changeUserErrorState: TChangeUserFormErrorState = props.errorState || { // Состояние ошибок ввода формы изменения данных юзера
+    const changeUserErrorState: TChangeUserFormErrorState = { // Состояние ошибок ввода формы изменения данных юзера
       email: inputErrorProps,
       login: inputErrorProps,
       first_name: inputErrorProps,
@@ -71,22 +66,49 @@ export default class ProfilePage extends Block {
     };
 
     super('div', {
-      ...props,
-
       isAvatarChangeModal,
       isPasswordChange,
       isUserDataChange,
-      avatarFormState,
-      passwordFormState,
-      userDataFormState,
+      avatarFormState: avatarFormState,
+      passwordFormState: passwordFormState,
+      userDataFormState: userDataFormState,
       changeUserErrorState,
       passwordErrorState,
 
       // Компоненты
-      ProfileBackButton: new BackButton({}),
+      ProfileBackButton: new Button({
+        extraClass: 'profile__back-button',
+        type: 'button',
+        onClick: () => {
+          if (!this.props.isUserDataChange && !this.props.isPasswordChange) {
+            router.back();
+          }
+        },
+        variant: 'btnWithChildren',
+        children: new Circle({
+          direction: 'left',
+        }),
+      }),
+
+      ChangeBackButton: new Button({
+        extraClass: 'profile__back-button',
+        type: 'button',
+        onClick: () => {
+          if (this.props.isUserDataChange) {
+            this.setProps({ isUserDataChange: false });
+          }
+          if (this.props.isPasswordChange) {
+            this.setProps({ isPasswordChange: false });
+          }
+        },
+        variant: 'btnWithChildren',
+        children: new Circle({
+          direction: 'left',
+        }),
+      }),
 
       ProfileAvatar: new Avatar({
-        avatarIcon: userDataFormState.avatar,
+        avatarIcon: avatarFormState.file,
 
         changeAvatarClick: () => {
           this.setProps({
@@ -96,7 +118,7 @@ export default class ProfilePage extends Block {
       }),
 
       ProfileTitle: new Title({
-        text: userDataFormState.first_name,
+        text: userDataFormState?.first_name,
         size: 'size-m',
       }),
 
@@ -120,25 +142,37 @@ export default class ProfilePage extends Block {
         },
 
         logOutButtonClick: () => { // Выход из аккаунта
-          navigate('navigatePage');
+          authControllers.logout();
         },
       }),
 
       // Компонент - модальное окно с формой изменения аватара пользователя
       ProfileAvatarFileUploadModal: new FileUploadModal({
         avatarFormState: avatarFormState,
+        placeholder: 'Выбрать файл на компьютере',
 
-        onModalClose: () => {
-          this.setProps({
-            isAvatarChangeModal: false,
-          });
+        events: {
+          change: (evt: Event) => { // Отслеживание изменения инпутов
+            handleInputChange(evt, this.props.formState, this.setProps.bind(this));
+          },
+
+          submit: async (evt: Event) => {
+            handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
+              formState: this.props.formState,
+            });
+            await userControllers.changeUserAvatar(this.props.formState);
+            await userControllers.getCurrentUserAvatar(); // Получаем корректный аватар юзера
+            this.setProps({ isAvatarChangeModal: false });
+          },
+
+          click: (event: MouseEvent) => handleOverlayClick(event, () => {
+            this.setProps({ isAvatarChangeModal: false });
+          }), // Клик на оверлей модального окна
         },
       }),
 
       // Компонент с формой изменения пароля пользователя
       ChangePasswordDataWrap: new ChangeProfileData({
-        avatarIcon: userDataFormState.avatar,
-
         events: {
           change: (evt: Event) => { // Отслеживание изменения инпутов
             handleInputChange(evt, this.props.formState, this.setProps.bind(this));
@@ -158,15 +192,17 @@ export default class ProfilePage extends Block {
             );
           },
 
-          submit: (evt: Event) => { // Сабмит формы
+          submit: async (evt: Event) => { // Сабмит формы
             evt.preventDefault();
-            if (!this.props.errorState.oldPassword.error
-              && !this.props.errorState.newPassword.error
-              && !this.props.errorState.confirmation_password.error) {
+            if (!this.props.errorState.oldPassword?.error
+              && !this.props.errorState.newPassword?.error
+              && !this.props.errorState.confirmation_password?.error) {
               handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
                 passwordFormState: this.props.formState,
-                isPasswordChange: false,
               });
+              // Обновляем пароль пользователя
+              await userControllers.changeUserPassword(this.props.formState);
+              this.setProps({ isPasswordChange: false });
             } else {
               console.log('errors: ', this.props.errorState);
             }
@@ -181,7 +217,6 @@ export default class ProfilePage extends Block {
 
       // Компонент с формой изменения данных пользователя
       ChangeUserDataWrap: new ChangeProfileData({
-        avatarIcon: userDataFormState.avatar,
         formName: 'changec-profile-data',
 
         events: {
@@ -197,7 +232,7 @@ export default class ProfilePage extends Block {
             this.validateField(evt, 'phone', this.props.formState.phone, ((childChangeProfileForm as Block).children.PhoneItem as Block).children.InputItem);
           },
 
-          submit: (evt: Event) => { // Сабмит формы
+          submit: async (evt: Event) => { // Сабмит формы
             evt.preventDefault();
             if (!this.props.errorState.email.error
               && !this.props.errorState.login.error
@@ -207,18 +242,10 @@ export default class ProfilePage extends Block {
               && !this.props.errorState.phone.error) {
               handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
                 userDataFormState: this.props.formState,
-                isUserDataChange: false,
               });
-              this.setProps({
-                formState: {
-                  email: '',
-                  login: '',
-                  first_name: '',
-                  second_name: '',
-                  display_name: '',
-                  phone: '',
-                },
-              });
+              // Обновляем данные пользователя
+              await userControllers.changeUserData(this.props.formState);
+              this.setProps({ isUserDataChange: false }); // Закрываем форму изменения данных юзера
             } else {
               console.log('errors: ', this.props.errorState);
             }
@@ -234,28 +261,78 @@ export default class ProfilePage extends Block {
     });
   }
 
+  componentDidMount(): void {
+    // Подгружаем аватар и данные юзера при монтировании
+    this.getUserData();
+  }
+
+  componentDidUpdate(_oldProps: TBlockProps, _newProps: TBlockProps) {
+    const user = store.getState().currentUser;
+    this.children.ProfileUserInfo = this.updateUserInfo(user?.data);
+    this.children.ProfileTitle = this.updateProfileTitle(user?.data);
+    this.children.ProfileAvatar = this.updateProfileAvatar(user?.avatar_image);
+    return true;
+  }
+
+  // Метод обновления блока данных юзера
+  updateUserInfo(userData: TUser | undefined) {
+    return new UserInfo({
+      userInfo: userProfileInfoNames,
+      userData: userData,
+    });
+  }
+
+  // Метод обновления заголовка
+  updateProfileTitle(userData: TUser | undefined) {
+    return new Title({ text: userData?.first_name, size: 'size-m' });
+  }
+
+  // Метод обновления аватара
+  updateProfileAvatar(userImg: string | undefined) {
+    return new Avatar({
+      avatarIcon: userImg,
+      changeAvatarClick: () => {
+        this.setProps({ isAvatarChangeModal: true });
+      },
+    });
+  }
+
+  getUserData = async () => {
+    await userControllers.getCurrentUserAvatar(); // Получаем корректный аватар юзера
+    const user = store.getState().currentUser;
+    this.setPropsForChildren(this.children.ProfileAvatar, { avatarIcon: user?.avatar_image });
+  };
+
   render(): string {
     return `
-      {{{ ProfileBackButton }}}
       <div class="profile">
+        <div class="profile__avatar-wrap">
+          {{{ ProfileAvatar }}}
+          {{{ ProfileTitle }}}
         {{#if isPasswordChange}}
+          {{{ ChangeBackButton }}}
           {{{ ChangePasswordDataWrap }}}
         {{else if isUserDataChange}}
+          {{{ ChangeBackButton }}}
           {{{ ChangeUserDataWrap }}}
         {{else}}
-          <div class="profile__avatar-wrap">
-            {{{ ProfileAvatar }}}
-            {{{ ProfileTitle }}}
-          </div>
+          {{{ ProfileBackButton }}}
           <div class="profile__info-raws-wrap">
             {{{ ProfileUserInfo }}}
             {{{ ProfileUserInfoButtons }}}
           </div>
         {{/if}}
       </div>
+
       {{#if isAvatarChangeModal}}
         {{{ ProfileAvatarFileUploadModal }}}
       {{/if}}
     `;
   }
 }
+
+const mapStateToProps = (state: StoreData) => ({
+  currentUser: state.currentUser,
+});
+
+export default withStore(mapStateToProps)(ProfilePage);

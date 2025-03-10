@@ -5,8 +5,9 @@ export type TButtonProps = {
   disabled?: boolean;
   text?: string;
   onClick?: () => void;
-  variant: 'text' | 'image' | 'btnWithChildren';
+  variant: 'text' | 'image' | 'btnWithChildren' | 'textAndImg';
   imgIcon?: string;
   imgIconAlt?: string;
   [x: string]: any;
+  extraClass?: string;
 }

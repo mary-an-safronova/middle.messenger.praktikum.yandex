@@ -1,12 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ErrorComponent } from '../../components';
 import { Block } from '../../core';
 
 export default class InternalServerErrorPage extends Block {
-  constructor(props: Record<string, any>) {
+  constructor() {
     super('div', {
-      ...props,
-
       ErrComponent: new ErrorComponent({
         titleText: '500',
         subtitleText: 'Мы уже фиксим',

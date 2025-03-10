@@ -1,6 +1,6 @@
-import { TMessage } from '../../utils/types';
+import { TChat } from '../../utils/types';
 
-export type TMessageContactCardProps = TMessage & {
-  onSelect: (selectedId: string) => void;
-  isSelected: boolean;
+export type TMessageContactCardProps = TChat & {
+  onSelect: (selectedId: string | null) => void;
+  isSelected?: boolean;
 }

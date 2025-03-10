@@ -16,3 +16,24 @@
   flex-direction: column;
   gap: 40px;
 }
+
+.profile__back-button {
+  /* position: fixed; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-right: 1px solid var(--secondary-dark-bg-color);
+  background-color: var(--secondary-bg-color);
+  width: 64px;
+  max-height: 100wh;
+  height: 100%;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile__back-button:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}

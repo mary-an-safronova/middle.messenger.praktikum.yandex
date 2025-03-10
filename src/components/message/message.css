@@ -5,14 +5,6 @@
   margin-bottom: 30px;
 }
 
-.message_right {
-  justify-self: end;
-}
-
-.message_left {
-  justify-self: start;
-}
-
 .message__wrap {
   max-width: 402px;
   border-radius: 12px;
@@ -21,10 +13,12 @@
 
 .message__wrap_right {
   background-color: var(--primary-bg-message);
+  align-self: end;
 }
 
 .message__wrap_left {
   background-color: var(--active-bg-color);
+  align-self: start;
 }
 
 .message__text {

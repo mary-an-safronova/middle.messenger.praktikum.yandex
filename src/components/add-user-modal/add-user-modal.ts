@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { Form, FormWrap } from '..';
 import {
-  handleFormSubmit, handleInputChange, handleOverlayClick, navigate,
+  handleFormSubmit, handleInputChange, handleOverlayClick,
 } from '../../utils';
 import { inputErrorProps } from '../../utils/constants';
 import { Block } from '../../core';
@@ -23,14 +23,16 @@ export default class AddUserModal extends Block {
       errorState,
 
       events: {
-        submit: (evt: Event) => { // Сабмит формы
+        submit: async (evt: Event) => { // Сабмит формы
           evt.stopPropagation();
           evt.preventDefault();
           if (!this.props.errorState.login.error) {
             handleFormSubmit(evt, this.props.formState, this.setProps.bind(this), {
               login: this.props.formState,
             });
-            navigate('chatPage');
+            props.formSubmit();
+
+            props.onModalClose();
             this.setProps({ formState: { login: '' } });
           } else {
             console.log('errors: ', this.props.errorState);

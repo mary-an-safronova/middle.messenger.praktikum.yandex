@@ -12,6 +12,6 @@ export type TChangeUserFormErrorState = {
 
 export type TChangeProfileDataBlockProps = {
   userInfo: TUser;
-  userData: TUser;
+  userData?: TUser;
   errorState: TChangeUserFormErrorState;
 };

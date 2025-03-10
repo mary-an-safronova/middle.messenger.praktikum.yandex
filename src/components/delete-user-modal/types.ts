@@ -8,4 +8,5 @@ export type TDeleteUserModalProps = {
   formState?: TDeleteUserForm;
   errorState?: TFormErrorState;
   onModalClose: () => void;
+  formSubmit: () => void;
 }

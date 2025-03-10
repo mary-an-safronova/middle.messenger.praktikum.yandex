@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import './style.css';
 import Handlebars from 'handlebars';
 import * as Components from './components';
 import { registerComponent } from './core';
-import { navigate } from './utils';
-import { PageKey } from './utils/types';
+import * as Pages from './pages';
 import { BlockConstructable } from './core/register-component';
+import { PATH, router } from './utils/constants';
+import * as authControllers from './services/auth';
 
 // Регистрация хелперов
 Handlebars.registerHelper({
@@ -24,26 +26,34 @@ Object.entries(Components).forEach(([name, template]) => {
   Handlebars.registerPartial(name, template);
 });
 
-// Обработчик события для 'popstate'
-window.addEventListener('popstate', (event) => {
-  if (event.state && event.state.page) {
-    navigate(event.state.page);
-  } else {
-    // Возврат на страницу навигации
-    navigate('navigatePage');
+// Навигация по страницам
+const onDomLoaded = async (): Promise<void> => {
+  const auth = await authControllers.checkAuth();
+  const currentPath = window.location.pathname;
+
+  router
+    .use(PATH.settings, Pages.ProfilePage as any) // Настройки профиля
+    .use(PATH.messenger, Pages.ChatPage as any) // Чат
+    .use(PATH.internalServer, Pages.InternalServerErrorPage) // Ошибка сервера
+    .use('*', Pages.BadRequestPage) // Если роут неизвестен, перенаправляем на BadRequestPage
+    .use(PATH.signIn, Pages.SignInPage as any) // Авторизация
+    .use(PATH.signUp, Pages.SignUpPage as any) // Регистрация
+    .start();
+
+  if (!auth) {
+    router.go(PATH.signIn);
+    return;
   }
-});
+
+  if (currentPath === PATH.signIn || currentPath === PATH.signUp) {
+    setTimeout(() => {
+      router.go(PATH.messenger);
+    }, 0);
+    return;
+  }
+
+  router.go(currentPath);
+};
 
 // Инициализация после загрузки документа
-document.addEventListener('DOMContentLoaded', () => navigate('navigatePage'));
-
-document.addEventListener('click', (e) => {
-  const target = e.target as HTMLElement;
-  const page = target.getAttribute('page');
-  if (page) {
-    navigate(page as PageKey);
-
-    e.preventDefault();
-    e.stopImmediatePropagation();
-  }
-});
+document.addEventListener('DOMContentLoaded', onDomLoaded);
