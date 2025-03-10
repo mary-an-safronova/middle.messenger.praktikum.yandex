@@ -1,14 +1,13 @@
 /* eslint-disable no-console */
-import ResourcesAPI from '../api/resources-api';
 import UserAPI from '../api/user-api';
 import store from '../core/store';
 import { baseURL } from '../utils/constants';
 import {
   TAvatarForm, TLogin, TUserPassword, TUserWithoutIdAvatar,
 } from '../utils/types/types';
+import { getResourceByPath } from './resource';
 
 const userAPI = new UserAPI();
-const resourcesAPI = new ResourcesAPI();
 
 export const changeUserData = async (data: TUserWithoutIdAvatar) => {
   try {
@@ -36,14 +35,6 @@ export const changeUserAvatar = async (data: TAvatarForm) => {
     }
     const response = await userAPI.updateAvatar(formData);
     store.set('currentUser.data.avatar', response.avatar);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-export const getResourceByPath = async (path?: string) => {
-  try {
-    await resourcesAPI.getResource(path);
   } catch (err) {
     console.log(err);
   }

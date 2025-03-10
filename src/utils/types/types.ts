@@ -33,15 +33,6 @@ export type TLastMessage = {
   content?: string;
 };
 
-export type TChat = {
-  id?: number | null;
-  title?: string;
-  avatar?: string;
-  unread_count?: number;
-  created_by?: number;
-  last_message?: TLastMessage;
-};
-
 export type TChatUser = {
   id?: number;
   first_name?: string;
@@ -51,6 +42,17 @@ export type TChatUser = {
   avatar?: string;
   role?: string;
 }
+
+export type TChat = {
+  id?: number | null;
+  title?: string;
+  avatar?: string;
+  avatar_image?: string | null;
+  chat_users?: TUserWithRole[];
+  unread_count?: number;
+  created_by?: number;
+  last_message?: TLastMessage;
+};
 
 export type TAddUserToChatData = {
   users: (number | null | undefined)[];
@@ -123,4 +125,18 @@ export type TMessage = {
     content_size?: number;
     upload_date?: string;
   }
+}
+
+export type TCurrentChat = {
+  chat?: TChat | null;
+  chat_users?: TChatUser[] | null;
+  chat_token: any;
+  messages: TMessage[],
+  avatar_image: string;
+}
+
+export type TCurrentUser = {
+  data?: TUser;
+  password: TUserPassword;
+  avatar_image: string;
 }

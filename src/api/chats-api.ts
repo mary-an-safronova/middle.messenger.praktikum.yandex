@@ -24,7 +24,7 @@ export default class ChatsAPI extends BaseAPI {
     return this.http.delete('', data);
   }
 
-  async readChatUsers(chatId?: number | null): Promise<TUserWithRole> {
+  async readChatUsers(chatId?: number | null): Promise<TUserWithRole[]> {
     return this.http.get(`/${chatId}/users`);
   }
 
@@ -38,5 +38,13 @@ export default class ChatsAPI extends BaseAPI {
 
   async deleteUser(data: TAddUserToChatData) {
     return this.http.delete('/users', data);
+  }
+
+  async addAvatar(data: FormData): Promise<TChat> {
+    return this.http.put('/avatar', data);
+  }
+
+  async readCommonChat(chatId?: number | null): Promise<TChat[]> {
+    return this.http.get(`/${chatId}/common`);
   }
 }

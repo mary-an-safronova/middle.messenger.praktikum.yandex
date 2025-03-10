@@ -5,13 +5,15 @@
 /* eslint-disable no-unneeded-ternary */
 import { Block } from '../../core';
 import {
-  menuIcon, clipIcon, noAvatar,
+  menuIcon, clipIcon,
 } from '../../assets';
 import {
   AddUserModal,
-  Button, Circle, DeleteChatModal, DeleteUserModal, Input, Message, MessageModal,
+  Button, Circle, DeleteChatModal, DeleteUserModal, ImgName, Input, Message, MessageModal,
 } from '..';
-import { handleFormSubmit, handleInputChange, toggleModal } from '../../utils';
+import {
+  handleFormSubmit, handleInputChange, toggleModal,
+} from '../../utils';
 import { fileMessageModalItems, menuModalItems, inputErrorProps } from '../../utils/constants';
 import { TMessageForm } from '../../utils/types';
 import { TFormErrorState, TMessageBlockProps } from './types';
@@ -48,6 +50,7 @@ class MessageBlock extends Block {
       isOpenChatUsersModal: false,
       chat: props.chat,
       chatUsers: props.chatUsers,
+      onAvatarImgClick: props.onAvatarImgClick,
 
       // Компонент сообщений в чате
       ChatMessages: messages?.map((message) => new Message({
@@ -98,6 +101,12 @@ class MessageBlock extends Block {
           );
         },
       },
+
+      // Компонент аватара и названия чата
+      ChatImageName: new ImgName({
+        chat: props.chat,
+        onClick: props.onAvatarImgClick,
+      }),
 
       // Компонент меню
       DotsButton: new Button({
@@ -263,12 +272,7 @@ class MessageBlock extends Block {
   render(): string {
     return `
       <div class="message-block__head">
-        <div class="message-block__img-name-wrap">
-          <div class="message-block__img-wrap">
-              <img class="message-block__img" src="${this.props.chat?.avatar ? this.props.chat?.avatar : noAvatar}" alt="Аватар чата">
-          </div>
-          <p class="message-block__bold-text">${this.props.chat?.title}</p>
-        </div>
+        {{{ ChatImageName }}}
         {{{ DotsButton }}}
       </div>
 

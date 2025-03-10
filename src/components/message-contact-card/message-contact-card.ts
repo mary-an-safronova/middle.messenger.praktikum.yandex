@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Block } from '../../core';
 import { Circle } from '../circle';
@@ -48,7 +49,7 @@ export default class MessageContactCard extends Block {
       <div class="message-contact-card__line"></div>
       <div class="message-contact-card__wrap {{#if isSelected}}message-contact-card__wrap_bg-active{{/if}}" onclick="{{click}}">
         <div class="message-contact-card__img-wrap">
-            <img class="message-contact-card__img" src="${this.props.avatar ? this.props.avatar : noAvatar}" alt="Аватар контакта">
+            <img class="message-contact-card__img" src="${this.props.avatar_image === '' || null ? noAvatar : this.props.avatar_image}" alt="Аватар контакта">
         </div>
         <div class="message-contact-card__text-wrap">
           <div class="message-contact-card__name-time-wrap">

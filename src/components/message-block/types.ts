@@ -12,4 +12,5 @@ export type TMessageBlockProps = {
   errorState?: TFormErrorState;
   chatUsers?: TChatUser[];
   currentUserId?: number;
+  onAvatarImgClick: () => void;
 };

@@ -16,43 +16,6 @@
   padding-right: 11px;
 }
 
-.message-block__img-name-wrap {
-  display: flex;
-  align-items: center;
-
-  &:hover {
-    opacity: 0.6;
-    cursor: pointer;
-  }
-}
-
-.message-block__img-wrap {
-  width: 34px;
-  height: 34px;
-  background-color: var(--avatar-light-bg-color);
-  border-radius: 50%;
-  overflow: hidden;
-  position: relative;
-  margin-right: 10px;
-}
-
-.message-block__img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  width: 34px;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-}
-
-.message-block__bold-text {
-  font-size: 13px;
-  line-height: 13px;
-  font-weight: var(--font-weigth-bold);
-  color: var(--text-primary-color);
-}
-
 .message-block__button {
   margin: 0;
   padding: 0;
