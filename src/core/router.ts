@@ -9,7 +9,7 @@ export default class Router {
 
   public routes!: Route[];
 
-  private history!: History;
+  history!: History;
 
   private _currentRoute: Route | null | undefined;
 

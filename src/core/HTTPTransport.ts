@@ -28,7 +28,7 @@ type HTTPMethod = <Response>(url: string, data?: { [x: string]: any }) => Promis
 export default class HTTPTransport {
   static API_URL = baseURL;
 
-  protected endPoint: string;
+  endPoint: string;
 
   constructor(endPoint: string) {
     this.endPoint = `${HTTPTransport.API_URL}${endPoint}`;
